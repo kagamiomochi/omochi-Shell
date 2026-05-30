@@ -65,7 +65,6 @@ freetype2
 libopenraw
 poppler-glib
 libgsf
-tumbler-extra-thumbnailers
 tumbler-folder-thumbnailer
 vlc
 vlc-plugins-all
