@@ -1,5 +1,4 @@
--- See https://wiki.hypr.land/Configuring/Basics/Autostart/
--- Autostart necessary processes (like notifications daemons, status bars, etc.)
+-- https://wiki.hypr.land/Configuring/Basics/Autostart/
 
 hl.on("hyprland.start", function () 
   hl.exec_cmd("exec-once = dbus-update-activation-environment --systemd --all")
@@ -17,6 +16,7 @@ hl.on("hyprland.start", function ()
   hl.exec_cmd("~/.config/hypr/scripts/update-notify.sh")
   hl.exec_cmd("gsr-ui")
   hl.exec_cmd("sunshine")
+  hl.exec_cmd("ollama serve")
 
   hl.exec_cmd("vesktop --start-minimized")
   hl.exec_cmd("steam -silent")

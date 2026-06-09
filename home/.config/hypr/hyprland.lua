@@ -5,11 +5,10 @@
 -- For a full list, see the wiki
 
 require("conf/autostart")
---require("conf/env")
+require("conf/env")
 --require("conf/keybinds")
 require("conf/windowrule")
---require("conf/lookandfeel")
-require("conf/input")
+--require("conf/variables")
 --require("conf/plugin")
 require("conf/monitor")
 require("private")

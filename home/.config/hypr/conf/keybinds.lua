@@ -63,7 +63,7 @@ bind = $mainMod SHIFT, 8, movetoworkspace, 8
 bind = $mainMod SHIFT, 9, movetoworkspace, 9
 bind = $mainMod SHIFT, 0, movetoworkspace, empty
 
-# special workspace (scratchpad)
+# special workspace
 bind = $mainMod, S, togglespecialworkspace, special
 bind = $mainMod SHIFT, S, exec, ~/.config/hypr/scripts/toggle_scratchpad.sh
 

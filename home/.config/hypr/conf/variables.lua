@@ -109,3 +109,10 @@ misc {
     enable_swallow = true
     swallow_regex = ^(kitty)$
 }
+
+# https://wiki.hypr.land/Configuring/Basics/Variables/#input
+input {
+    kb_layout = us
+    accel_profile = flat
+    sensitivity = -0.3
+}
