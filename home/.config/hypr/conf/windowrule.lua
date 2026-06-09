@@ -1,6 +1,7 @@
 -- See https://wiki.hypr.land/Configuring/Basics/Window-Rules/
 -- and https://wiki.hypr.land/Configuring/Basics/Workspace-Rules/
 
+hl.workspace_rule( workspace = "s[true]", gaps_in = 5, gaps_out = 30 )
 hl.window_rule({ match = { fullscreen = true }, immediate = true })
 hl.window_rule({ match = { class = "fcitx5" }, no_initial_focus = true, no_focus = true })
 
@@ -19,17 +20,15 @@ hl.window_rule({
     no_focus = true,
 })
 
-
+hl.window_rule({
+  name = "YTMusic",
+  match = {
+    class = "chrome-music.youtube.com__-Default"
+  },
+  workspace = "special",
+  opacity = "0.7"
+})
 -----------------
-workspace = special:special, gapsin:5, gapsout:30
-windowrule = match:modal true, float true
-
-windowrule {
-  name = YTMusic
-  match:class = chrome-music.youtube.com__-Default
-  workspace = special
-  opacity = 0.7
-}
 
 windowrule {
     name = float-btop
