@@ -26,42 +26,51 @@ hl.window_rule({
     class = "chrome-music.youtube.com__-Default"
   },
   workspace = "special",
-  opacity = "0.7"
+  opacity = 0.7
 })
------------------
 
-windowrule {
-    name = float-btop
-    match:class = btop
-    float = yes
-}
+hl.window_rule({
+    name = "btop"
+    match = {
+        class = "btop"
+    },
+    float = true
+})
 
-windowrule {
-    name = Virtual-Box
-    match:class = VirtualBox Machine
-    fullscreen = yes
-}
+hl.window_rule({
+    name = "VirtualBox"
+    match = {
+        class = "VirtualBox Machine"
+    }
+    fullscreen = true
+})
 
-windowrule {
-    name = GPU Screen Recorder Notify
-    match:title  = gsr notify
+hl.window_rule({
+    name = "gsr notify"
+    match = {
+        class = "gsr notify"
+    }
     rounding = 0
     no_focus = true
-}
+})
 
-windowrule {
-    name = Vesktop
-    match:class = vesktop
-    workspace = special
+hl.window_rule({
+    name = "Vesktop"
+    match = {
+        class = "vesktop"
+    }
+    workspace = "special"
     opacity = 0.9
-}
+})
 
-windowrule {
-  name = UnrealEditor
-  match:class = UnrealEditor
-  border_size = 0
-  decorate = no
-  no_blur = yes
-  no_dim = yes
-  no_shadow = yes
-}
+hl.window_rule({
+    name = "UnrealEditor"
+    match = {
+        class = "UnrealEditor"
+    }
+    border_size = 0
+    decorate = false
+    no_blur = true
+    no_dim = true
+    no_shadow = true
+})
