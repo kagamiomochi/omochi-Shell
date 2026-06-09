@@ -1,7 +1,7 @@
 -- See https://wiki.hypr.land/Configuring/Basics/Window-Rules/
 -- and https://wiki.hypr.land/Configuring/Basics/Workspace-Rules/
 
-hl.workspace_rule( workspace = "s[true]", gaps_in = 5, gaps_out = 30 )
+hl.workspace_rule({ workspace = "s[true]", gaps_in = 5, gaps_out = 30 })
 hl.window_rule({ match = { fullscreen = true }, immediate = true })
 hl.window_rule({ match = { class = "fcitx5" }, no_initial_focus = true, no_focus = true })
 
@@ -16,7 +16,6 @@ hl.window_rule({
         fullscreen = false,
         pin        = false,
     },
-
     no_focus = true,
 })
 
@@ -30,7 +29,7 @@ hl.window_rule({
 })
 
 hl.window_rule({
-    name = "btop"
+    name = "btop",
     match = {
         class = "btop"
     },
@@ -38,39 +37,39 @@ hl.window_rule({
 })
 
 hl.window_rule({
-    name = "VirtualBox"
+    name = "VirtualBox",
     match = {
         class = "VirtualBox Machine"
-    }
+    },
     fullscreen = true
 })
 
 hl.window_rule({
-    name = "gsr notify"
+    name = "gsr notify",
     match = {
         class = "gsr notify"
-    }
-    rounding = 0
+    },
+    rounding = 0,
     no_focus = true
 })
 
 hl.window_rule({
-    name = "Vesktop"
+    name = "Vesktop",
     match = {
         class = "vesktop"
-    }
-    workspace = "special"
+    },
+    workspace = "special",
     opacity = 0.9
 })
 
 hl.window_rule({
-    name = "UnrealEditor"
+    name = "UnrealEditor",
     match = {
         class = "UnrealEditor"
-    }
-    border_size = 0
-    decorate = false
-    no_blur = true
-    no_dim = true
+    },
+    border_size = 0,
+    decorate = false,
+    no_blur = true,
+    no_dim = true,
     no_shadow = true
 })
