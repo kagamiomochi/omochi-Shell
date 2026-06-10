@@ -1,118 +1,109 @@
-#####################
-### LOOK AND FEEL ###
-#####################
+-- https://wiki.hypr.land/Configuring/Basics/Variables/
 
-# Refer to https://wiki.hypr.land/Configuring/Variables/
+hl.config({
+    general = {
+        gaps_in  = 5,
+        gaps_out = 20,
 
-# https://wiki.hypr.land/Configuring/Variables/#general
-general {
-    gaps_in = 3
-    gaps_out = 10
+        border_size = 1,
 
-    border_size = 1
+        col = {
+            active_border   = { colors = {"rgba(33ccffee)", "rgba(00ff99ee)"}, angle = 45 },
+            inactive_border = "rgba(595959aa)",
+        },
 
-    col.active_border = rgba(C56E6Eff) rgba(D69A6Bff) rgba(E6C35Cff) rgba(87A37Eff) rgba(6B8EADff) rgba(5E6C84ff) rgba(9B7E9Bff)
-    col.inactive_border = rgba(ffffff80)
+        -- Set to true to enable resizing windows by clicking and dragging on borders and gaps
+        resize_on_border = false,
 
-    # Set to true enable resizing windows by clicking and dragging on borders and gaps
-    resize_on_border = false
+        -- Please see https://wiki.hypr.land/Configuring/Advanced-and-Cool/Tearing/ before you turn this on
+        allow_tearing = true,
 
-    # Please see https://wiki.hypr.land/Configuring/Tearing/ before you turn this on
-    allow_tearing = true
+        layout = "dwindle",
+    },
 
-    layout = dwindle
+    decoration = {
+        rounding       = 15,
+        rounding_power = 3,
 
-    snap {
-        enabled = true
-        window_gap = 10
-        monitor_gap = 10
-    }
+        -- Change transparency of focused and unfocused windows
+        active_opacity   = 1.0,
+        inactive_opacity = 0.8,
 
-}
+        shadow = {
+            enabled      = true,
+            range        = 4,
+            render_power = 3,
+            color        = 0xee1a1a1a,
+        },
 
-# https://wiki.hypr.land/Configuring/Variables/#decoration
-decoration {
-    rounding = 15
-    rounding_power = 3
+        blur = {
+            enabled   = true,
+            size      = 3,
+            passes    = 1,
+            vibrancy  = 0.1696,
+        },
+    },
 
-    # Change transparency of focused and unfocused windows
-    active_opacity = 1.0
-    inactive_opacity = 0.8
+    animations = {
+        enabled = true,
+    },
+})
 
-    shadow {
-        enabled = false
-    }
+-- Default curves and animations, see https://wiki.hypr.land/Configuring/Advanced-and-Cool/Animations/
+hl.curve("easeOutQuint",   { type = "bezier", points = { {0.23, 1},    {0.32, 1}    } })
+hl.curve("easeInOutCubic", { type = "bezier", points = { {0.65, 0.05}, {0.36, 1}    } })
+hl.curve("linear",         { type = "bezier", points = { {0, 0},       {1, 1}       } })
+hl.curve("almostLinear",   { type = "bezier", points = { {0.5, 0.5},   {0.75, 1}    } })
+hl.curve("quick",          { type = "bezier", points = { {0.15, 0},    {0.1, 1}     } })
+hl.curve("softAccl",       { type = "bezier", points = { {0.26, 0.92}, {0.41, 1}    } })
 
-    # https://wiki.hypr.land/Configuring/Variables/#blur
-    blur {
-        enabled = true
-        size = 8
-        passes = 3
+-- Default springs
+hl.curve("easy",           { type = "spring", mass = 1, stiffness = 71.2633, dampening = 15.8273644 })
 
-        special = true
-        popups = true
-        input_methods = true
-    }
-}
+hl.animation({ leaf = "global",        enabled = true,  speed = 10,   bezier = "default" })
+hl.animation({ leaf = "border",        enabled = true,  speed = 5.39, bezier = "easeOutQuint" })
+hl.animation({ leaf = "windows",       enabled = true,  speed = 4.79, spring = "easy" })
+hl.animation({ leaf = "windowsIn",     enabled = true,  speed = 4.1,  spring = "easy",         style = "popin 87%" })
+hl.animation({ leaf = "windowsOut",    enabled = true,  speed = 1.49, bezier = "linear",       style = "popin 87%" })
+hl.animation({ leaf = "fadeIn",        enabled = true,  speed = 1.73, bezier = "almostLinear" })
+hl.animation({ leaf = "fadeOut",       enabled = true,  speed = 1.46, bezier = "almostLinear" })
+hl.animation({ leaf = "fade",          enabled = true,  speed = 3.03, bezier = "quick" })
+hl.animation({ leaf = "layers",        enabled = true,  speed = 3.81, bezier = "easeOutQuint" })
+hl.animation({ leaf = "layersIn",      enabled = true,  speed = 4,    bezier = "easeOutQuint", style = "fade" })
+hl.animation({ leaf = "layersOut",     enabled = true,  speed = 1.5,  bezier = "linear",       style = "fade" })
+hl.animation({ leaf = "fadeLayersIn",  enabled = true,  speed = 1.79, bezier = "almostLinear" })
+hl.animation({ leaf = "fadeLayersOut", enabled = true,  speed = 1.39, bezier = "almostLinear" })
+hl.animation({ leaf = "workspaces",    enabled = true,  speed = 1.94, bezier = "almostLinear", style = "fade" })
+hl.animation({ leaf = "workspacesIn",  enabled = true,  speed = 1.21, bezier = "almostLinear", style = "fade" })
+hl.animation({ leaf = "workspacesOut", enabled = true,  speed = 1.94, bezier = "almostLinear", style = "fade" })
+hl.animation({ leaf = "specialWorkspace",   enable = true, speed = 4, bezier = "softAccl", style = "slidevert" })
+hl.animation({ leaf = "zoomFactor",    enabled = true,  speed = 7,    bezier = "quick" })
 
-# https://wiki.hypr.land/Configuring/Variables/#animations
-animations {
-    enabled = yes, please :)
+-- See https://wiki.hypr.land/Configuring/Layouts/Dwindle-Layout/ for more
+hl.config({
+    dwindle = {
+        preserve_split = true, -- You probably want this
+    },
+})
 
-    # Default curves, see https://wiki.hypr.land/Configuring/Animations/#curves
-    #        NAME,           X0,   Y0,   X1,   Y1
-    bezier = easeOutQuint,   0.23, 1,    0.32, 1
-    bezier = easeInOutCubic, 0.65, 0.05, 0.36, 1
-    bezier = linear,         0,    0,    1,    1
-    bezier = almostLinear,   0.5,  0.5,  0.75, 1
-    bezier = quick,          0.15, 0,    0.1,  1
-    bezier = softAccl,     0.26, 0.92, 0.41, 1
+-- See https://wiki.hypr.land/Configuring/Layouts/Master-Layout/ for more
+hl.config({
+    master = {
+        new_status = "master",
+    },
+})
 
-    # Default animations, see https://wiki.hypr.land/Configuring/Animations/
-    #           NAME,          ONOFF, SPEED, CURVE,        [STYLE]
-    animation = global,        1,     10,    default
-    animation = border,        1,     5.39,  easeOutQuint
-    animation = windows,       1,     4.79,  easeOutQuint
-    animation = windowsIn,     1,     4.1,   easeOutQuint, popin 87%
-    animation = windowsOut,    1,     1.49,  linear,       popin 87%
-    animation = fadeIn,        1,     1.73,  almostLinear
-    animation = fadeOut,       1,     1.46,  almostLinear
-    animation = fade,          1,     3.03,  quick
-    animation = layers,        1,     3.81,  easeOutQuint
-    animation = layersIn,      1,     4,     easeOutQuint, fade
-    animation = layersOut,     1,     1.5,   linear,       fade
-    animation = fadeLayersIn,  1,     1.79,  almostLinear
-    animation = fadeLayersOut, 1,     1.39,  almostLinear
-    animation = workspacesIn,  1,     4,  softAccl, slidefade 20%
-    animation = workspacesOut, 1,     4,  softAccl, slidefade 20%
-    animation = specialWorkspace, 1, 4, softAccl, slidevert
-    animation = zoomFactor,    1,     7,     quick
-    animation = borderangle, 1, 50, linear, loop
-}
+-- See https://wiki.hypr.land/Configuring/Layouts/Scrolling-Layout/ for more
+hl.config({
+    scrolling = {
+        fullscreen_on_one_column = true,
+    },
+})
 
-# See https://wiki.hypr.land/Configuring/Dwindle-Layout/ for more
-dwindle {
-    pseudotile = true # Master switch for pseudotiling. Enabling is bound to mainMod + P in the keybinds section below
-    preserve_split = true # You probably want this
-}
-
-# See https://wiki.hypr.land/Configuring/Master-Layout/ for more
-master {
-    new_status = master
-}
-
-# https://wiki.hypr.land/Configuring/Variables/#misc
-misc {
-    force_default_wallpaper = -1 # Set to 0 or 1 to disable the anime mascot wallpapers
-    disable_hyprland_logo = false # If true disables the random hyprland logo / anime girl background. :(
-    animate_manual_resizes = true
-    enable_swallow = true
-    swallow_regex = ^(kitty)$
-}
-
-# https://wiki.hypr.land/Configuring/Basics/Variables/#input
-input {
-    kb_layout = us
-    accel_profile = flat
-    sensitivity = -0.3
-}
+hl.config({
+    input = {
+        kb_layout  = "us",
+        sensitivity = -0.3, -- -1.0 - 1.0, 0 means no modification.
+        accel_profile = "flat"
+    },
+})
