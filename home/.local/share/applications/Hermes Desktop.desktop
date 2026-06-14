@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Hermes Desktop
+Comment=Launch Hermes Desktop
+Exec=sh -c 'export PATH="$HOME/.local/bin:$PATH"; hermes desktop'
+Terminal=false
+Categories=Utility;Network;Chat;
+Icon=logo
+Path=
+StartupNotify=false
