@@ -105,21 +105,22 @@ hl.bind(mainMod .. " + SHIFT + R", function()
 end)
 
 -- Move focus
-hl.bind(mainMod .. " + Left",  hl.dsp.focus.move("l"))
-hl.bind(mainMod .. " + Right", hl.dsp.focus.move("r"))
-hl.bind(mainMod .. " + Up",    hl.dsp.focus.move("u"))
-hl.bind(mainMod .. " + Down",  hl.dsp.focus.move("d"))
+hl.bind(mainMod .. " + left",  hl.dsp.focus({ direction = "left" }))
+hl.bind(mainMod .. " + right", hl.dsp.focus({ direction = "right" }))
+hl.bind(mainMod .. " + up",    hl.dsp.focus({ direction = "up" }))
+hl.bind(mainMod .. " + down",  hl.dsp.focus({ direction = "down" }))
 -- Move Window
-hl.bind(mainMod .. " + SHIFT + Left",  hl.dsp.window.move({ direction = "l" }))
-hl.bind(mainMod .. " + SHIFT + Down",  hl.dsp.window.move({ direction = "d" }))
-hl.bind(mainMod .. " + SHIFT + Up",    hl.dsp.window.move({ direction = "u" }))
-hl.bind(mainMod .. " + SHIFT + Right", hl.dsp.window.move({ direction = "r" }))
+hl.bind(mainMod .. " + SHIFT + left",  hl.dsp.window.move({ direction = "left" }))
+hl.bind(mainMod .. " + SHIFT + down",  hl.dsp.window.move({ direction = "down" }))
+hl.bind(mainMod .. " + SHIFT + up",    hl.dsp.window.move({ direction = "up" }))
+hl.bind(mainMod .. " + SHIFT + right", hl.dsp.window.move({ direction = "right" }))
 
 -- Switch workspaces (0 moves to empty)
 for i = 1, 9 do
-    hl.bind(mainMod .. " + " .. i, hl.dsp.workspace.go(i))
+    local key = i % 9 -- 10 maps to key 0
+    hl.bind(mainMod .. " + " .. key, hl.dsp.focus({ workspace = i}))
 end
-hl.bind(mainMod .. " + 0", hl.dsp.workspace.go("empty"))
+hl.bind(mainMod .. " + 0 ", hl.dsp.focus({ workspace = "empty"}))
 
 -- Move window to workspace (0 moves to empty)
 for i = 1, 9 do
@@ -135,12 +136,12 @@ hl.bind(mainMod .. " + S",
 hl.bind(mainMod .. " + SHIFT + S", toggle_scratchpad)
 
 -- Scrolling the workspace with the mouse
-hl.bind(mainMod .. " + mouse_down", hl.dsp.workspace.go("m-1"))
-hl.bind(mainMod .. " + mouse_up",   hl.dsp.workspace.go("m+1"))
+hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "m-1" }))
+hl.bind(mainMod .. " + mouse_up",   hl.dsp.focus({ workspace = "m+1" }))
 
 --Move/resize windows
-hl.bind(mainMod .. " + mouse:272", hl.dsp.window.move_mouse())
-hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize_mouse())
+hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(),   { mouse = true })
+hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
 -- Volume
 hl.bind("XF86AudioRaiseVolume",

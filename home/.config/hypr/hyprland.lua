@@ -6,7 +6,7 @@
 
 require("conf/autostart")
 require("conf/env")
---require("conf/keybinds")
+require("conf/keybinds")
 require("conf/windowrule")
 require("conf/variables")
 --require("conf/plugin")
