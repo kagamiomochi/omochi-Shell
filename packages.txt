@@ -65,7 +65,6 @@ noto-fonts
 noto-fonts-cjk
 noto-fonts-emoji
 nvidia-container-toolkit
-nvidia-open-dkms
 nvidia-settings
 nvidia-utils
 nwg-displays
