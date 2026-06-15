@@ -96,6 +96,7 @@ rust
 snap-pac
 snapper
 steam
+stow
 sudo
 sunshine
 thunar
