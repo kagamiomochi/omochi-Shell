@@ -113,7 +113,6 @@ video-trimmer
 visual-studio-code-bin
 vlc
 vlc-plugins-all
-vlc-plugins-extra
 wget
 wireplumber
 wl-clipboard
