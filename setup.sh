@@ -64,4 +64,4 @@ stow_with_overwrite() {
 stow_with_overwrite "$HOME" home
 stow_with_overwrite "/" system sudo
 
-echo "Installation complete!"
+echo "Installation complete! Please restart your computer."
