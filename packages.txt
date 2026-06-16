@@ -123,3 +123,4 @@ yt-dlp
 zam-plugins-lv2
 zip
 git-credential-manager-bin
+python-terminaltexteffects
