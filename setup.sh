@@ -4,7 +4,7 @@ set -e
 
 PACKAGES_FILE="packages.txt"
 
-# Check for the existence of packages.txt
+# Check for the existence of packages list
 if [ ! -f "$PACKAGES_FILE" ]; then
     echo "Error: $PACKAGES_FILE not found."
     exit 1
