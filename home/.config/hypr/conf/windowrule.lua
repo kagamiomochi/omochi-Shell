@@ -29,6 +29,15 @@ hl.window_rule({
 })
 
 hl.window_rule({
+    name = "zen-pip",
+    match = {
+        class = "zen",
+        title = "ピクチャーインピクチャー"
+    },
+    float = true,
+})
+
+hl.window_rule({
     name = "btop",
     match = {
         class = "btop"
