@@ -132,8 +132,8 @@ hl.bind(mainMod .. " + S",
 hl.bind(mainMod .. " + SHIFT + S", toggle_scratchpad)
 
 -- Scrolling the workspace with the mouse
-hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "m-1" }))
-hl.bind(mainMod .. " + mouse_up",   hl.dsp.focus({ workspace = "m+1" }))
+hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "r-1" }))
+hl.bind(mainMod .. " + mouse_up",   hl.dsp.focus({ workspace = "r+1" }))
 
 --Move/resize windows
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(),   { mouse = true })
