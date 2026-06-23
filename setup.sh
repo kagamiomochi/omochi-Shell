@@ -101,4 +101,11 @@ stow_with_overwrite "/" system sudo
 sudo systemctl enable --now bluetooth
 sudo systemctl enable --now keyd
 
-echo "Installation complete! Please restart your computer."
+echo "Installation complete!"
+read -rp "Reboot now? [y/N] " answer
+
+if [[ "$answer" =~ ^[Yy]$ ]]; then
+    sudo reboot
+else
+    echo "Please reboot your computer later."
+fi
