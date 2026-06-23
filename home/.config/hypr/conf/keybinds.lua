@@ -27,21 +27,17 @@ local function toggle_scratchpad()
     local w = hl.get_active_window()
     if w == nil then return end
 
-    local ws_name = w.workspace.name or ""
-    if ws_name:sub(1, 7) == "special" then
-        local monitors = hl.get_monitors()
-        local active_ws = nil
-        for _, m in ipairs(monitors) do
-            if m.focused then
-                active_ws = m.activeWorkspace.id
-                break
-            end
-        end
-        if active_ws ~= nil then
-            hl.dispatch(hl.dsp.window.move({ workspace = tostring(active_ws) }))
-        end
+    local ws = w.workspace.name or ""
+
+    if ws:find("special") then
+        hl.dispatch(hl.dsp.window.move({
+            workspace = "previous"
+        }))
     else
-        hl.dispatch(hl.dsp.window.move({ workspace = "special", silent = true }))
+        hl.dispatch(hl.dsp.window.move({
+            workspace = "special:special",
+            silent = true
+        }))
     end
 end
 
