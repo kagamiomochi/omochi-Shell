@@ -29,6 +29,15 @@ hl.window_rule({
 })
 
 hl.window_rule({
+    name = "PiP",
+    match = {
+        title = "ピクチャーインピクチャー"
+    },
+    float = true,
+    keep_aspect_ratio = true,
+})
+
+hl.window_rule({
     name = "btop",
     match = {
         class = "btop"
