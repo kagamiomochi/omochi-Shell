@@ -98,4 +98,7 @@ stow_with_overwrite() {
 
 stow_with_overwrite "/" system sudo
 
+sudo systemctl enable --now bluetooth
+sudo systemctl enable --now keyd
+
 echo "Installation complete! Please restart your computer."
