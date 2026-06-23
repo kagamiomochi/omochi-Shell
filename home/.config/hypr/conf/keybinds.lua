@@ -2,7 +2,7 @@
 
 local mainMod  = "SUPER"
 local fileManager = "thunar"
-local browser = "google-chrome-stable"
+local browser = "vivaldi"
 
 -- pin window
 local function toggle_pin()
@@ -43,9 +43,9 @@ end
 
 -- lockscreen
 local function lockscreen()
-    hl.dispatch(hl.dsp.workspace.toggle_special("lock-space"))
+    hl.dispatch(hl.dsp.workspace.toggle_special("lock"))
     hl.exec_cmd(
-        "bash -c 'sleep 0.3 && hyprlock && hyprctl dispatch togglespecialworkspace lock-space'"
+        "bash -c 'sleep 0.3 && hyprlock && hyprctl dispatch togglespecialworkspace lock'"
     )
 end
 
