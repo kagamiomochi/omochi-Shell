@@ -3,6 +3,7 @@
 
 hl.workspace_rule({ workspace = "s[true]", gaps_in = 5, gaps_out = 30 })
 hl.window_rule({ match = { fullscreen = true }, immediate = true })
+hl.window_rule({ match = { title = "^$" }, float = true })
 hl.window_rule({ match = { class = "fcitx5" }, no_initial_focus = true, no_focus = true })
 
 hl.window_rule({
