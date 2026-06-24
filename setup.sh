@@ -40,8 +40,8 @@ echo "Creating symbolic links with stow..."
 SCRIPT_DIR=$(cd "$(dirname "$0")"; pwd)
 
 stow_app() {
-    local app_dir="$1"
-    local target="$2"
+    local app_dir="$1"   # 例: home/.config/hypr
+    local target="$2"    # 例: ~/.config
     local sudo_prefix="${3:-}"
 
     local app=$(basename "$app_dir")
@@ -61,7 +61,12 @@ stow_app() {
     $sudo_prefix stow --dir="$parent" --target="$target" "$app"
 }
 
-# home/.config/
+# ターゲットディレクトリを事前に作成
+mkdir -p "$HOME/.config"
+mkdir -p "$HOME/.local/share"
+mkdir -p "$HOME/.local/bin"
+
+# home/.config/ 以下を個別に
 if [ -d "$SCRIPT_DIR/home/.config" ]; then
     find "$SCRIPT_DIR/home/.config" -mindepth 1 -maxdepth 1 -type d | while read -r dir; do
         echo "Stowing: $dir -> $HOME/.config"
@@ -69,14 +74,16 @@ if [ -d "$SCRIPT_DIR/home/.config" ]; then
     done
 fi
 
-# home/.local/
+# home/.local/ 以下を個別に
 if [ -d "$SCRIPT_DIR/home/.local" ]; then
     find "$SCRIPT_DIR/home/.local" -mindepth 1 -maxdepth 1 -type d | while read -r dir; do
+        mkdir -p "$HOME/.local/$(basename "$dir")"
         echo "Stowing: $dir -> $HOME/.local"
         stow_app "$dir" "$HOME/.local"
     done
 fi
 
+# system/ 以下はそのまま sudo で
 stow_with_overwrite() {
     local target="$1"
     local package="$2"
@@ -95,8 +102,6 @@ stow_with_overwrite() {
 
     $sudo_prefix stow --dir="$SCRIPT_DIR" --target="$target" "$package"
 }
-
-stow_with_overwrite "/" system sudo
 
 sudo systemctl enable --now bluetooth
 sudo systemctl enable --now keyd
