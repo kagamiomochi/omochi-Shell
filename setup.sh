@@ -35,6 +35,9 @@ grep -Ev '^\s*($|#)' "$PACKAGES_FILE" | xargs -r paru -S --needed --noconfirm
 
 # stow
 
+
+
+# startup
 sudo systemctl enable --now bluetooth
 sudo systemctl enable --now keyd
 
