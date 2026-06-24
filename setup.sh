@@ -31,86 +31,20 @@ fi
 
 # Load packages from packages.txt and install them
 echo "Install packages from packages.txt..."
-
 grep -Ev '^\s*($|#)' "$PACKAGES_FILE" | xargs -r paru -S --needed --noconfirm
 
-# Create symbolic links with stow
-echo "Creating symbolic links with stow..."
-
-SCRIPT_DIR=$(cd "$(dirname "$0")"; pwd)
-
-stow_app() {
-    local app_dir="$1"   # 例: home/.config/hypr
-    local target="$2"    # 例: ~/.config
-    local sudo_prefix="${3:-}"
-
-    local app=$(basename "$app_dir")
-    local parent=$(dirname "$app_dir")
-
-    conflicts=$(stow --dir="$parent" --target="$target" --simulate "$app" 2>&1 \
-        | grep "existing target is" \
-        | sed "s|.*existing target is neither a link nor a directory: ||")
-
-    if [ -n "$conflicts" ]; then
-        echo "$conflicts" | while read -r file; do
-            echo "Removing: $target/$file"
-            $sudo_prefix rm -f "$target/$file"
-        done
-    fi
-
-    $sudo_prefix stow --dir="$parent" --target="$target" "$app"
-}
-
-# ターゲットディレクトリを事前に作成
-mkdir -p "$HOME/.config"
-mkdir -p "$HOME/.local/share"
-mkdir -p "$HOME/.local/bin"
-
-# home/.config/ 以下を個別に
-if [ -d "$SCRIPT_DIR/home/.config" ]; then
-    find "$SCRIPT_DIR/home/.config" -mindepth 1 -maxdepth 1 -type d | while read -r dir; do
-        echo "Stowing: $dir -> $HOME/.config"
-        stow_app "$dir" "$HOME/.config"
-    done
-fi
-
-# home/.local/ 以下を個別に
-if [ -d "$SCRIPT_DIR/home/.local" ]; then
-    find "$SCRIPT_DIR/home/.local" -mindepth 1 -maxdepth 1 -type d | while read -r dir; do
-        mkdir -p "$HOME/.local/$(basename "$dir")"
-        echo "Stowing: $dir -> $HOME/.local"
-        stow_app "$dir" "$HOME/.local"
-    done
-fi
-
-# system/ 以下はそのまま sudo で
-stow_with_overwrite() {
-    local target="$1"
-    local package="$2"
-    local sudo_prefix="${3:-}"
-
-    conflicts=$(stow --dir="$SCRIPT_DIR" --target="$target" --simulate "$package" 2>&1 \
-        | grep "existing target is" \
-        | sed "s|.*existing target is neither a link nor a directory: ||")
-
-    if [ -n "$conflicts" ]; then
-        echo "$conflicts" | while read -r file; do
-            echo "Removing: $target/$file"
-            $sudo_prefix rm -f "$target/$file"
-        done
-    fi
-
-    $sudo_prefix stow --dir="$SCRIPT_DIR" --target="$target" "$package"
-}
+# stow
 
 sudo systemctl enable --now bluetooth
 sudo systemctl enable --now keyd
 
 echo "Installation complete!"
-read -rp "Reboot now? [y/N] " answer
 
-if [[ "$answer" =~ ^[Yy]$ ]]; then
-    sudo reboot
-else
-    echo "Please reboot your computer later."
-fi
+for i in {5..1}
+do
+    printf "Restarting in %d ..." "$i"
+    sleep 1
+done
+
+echo
+reboot
