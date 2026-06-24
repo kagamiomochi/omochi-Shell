@@ -47,4 +47,4 @@ do
 done
 
 echo
-reboot
+sudo reboot
