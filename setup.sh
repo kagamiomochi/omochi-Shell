@@ -42,7 +42,7 @@ echo "Installation complete!"
 
 for i in {5..1}
 do
-    printf "Restarting in %d ..." "$i"
+    printf "\rRestarting in %d ..." "$i"
     sleep 1
 done
 
