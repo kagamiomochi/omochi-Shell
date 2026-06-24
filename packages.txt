@@ -76,7 +76,6 @@ p7zip
 pavucontrol
 pipewire
 pipewire-alsa
-pipewire-jack
 pipewire-pulse
 playerctl
 poppler-glib
