@@ -43,7 +43,7 @@ sudo systemctl enable --now keyd
 
 echo "Installation complete!"
 
-for i in {5..1}
+for ((i=5; i>=1; i--))
 do
     printf "\rRestarting in %d ..." "$i"
     sleep 1
