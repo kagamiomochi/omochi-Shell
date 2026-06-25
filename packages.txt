@@ -36,6 +36,7 @@ gvfs-smb
 gvfs-wsdd
 hypridle
 hyprland
+hyprlock
 hyprpicker
 hyprpolkitagent
 jellyfin-server
