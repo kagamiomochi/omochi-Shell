@@ -2,7 +2,7 @@
 
 local mainMod  = "SUPER"
 local fileManager = "thunar"
-local browser = "vivaldi"
+local browser = "zen-browser"
 
 -- pin window
 local function toggle_pin()
