@@ -25,7 +25,6 @@ file-roller
 freetype2
 gamescope
 gnome-keyring
-google-chrome
 gpu-screen-recorder-ui
 gvfs
 gvfs-afc
@@ -123,4 +122,4 @@ zam-plugins-lv2
 zip
 git-credential-manager-bin
 python-terminaltexteffects
-vivaldi
+zen-browser
