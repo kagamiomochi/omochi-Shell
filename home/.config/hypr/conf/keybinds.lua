@@ -35,18 +35,9 @@ local function toggle_scratchpad()
         }))
     else
         hl.dispatch(hl.dsp.window.move({
-            workspace = "special:special",
-            silent = true
+            workspace = "special:special"
         }))
     end
-end
-
--- lockscreen
-local function lockscreen()
-    hl.dispatch(hl.dsp.workspace.toggle_special("lock"))
-    hl.exec_cmd(
-        "bash -c 'sleep 0.3 && hyprlock && hyprctl dispatch togglespecialworkspace lock'"
-    )
 end
 
 -- General
@@ -63,7 +54,7 @@ hl.bind(mainMod .. " + T",
 )
 
 hl.bind(mainMod .. " + C",  hl.dsp.window.close())
-hl.bind(mainMod .. " + L",  lockscreen)
+hl.bind(mainMod .. " + L",  hl.dsp.exec_cmd("hyprlock"))
 hl.bind(mainMod .. " + E",  hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + W",  hl.dsp.exec_cmd(browser))
 hl.bind(mainMod .. " + P",  toggle_pin)
