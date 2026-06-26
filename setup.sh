@@ -67,6 +67,9 @@ echo "Register a Startup..."
 sudo systemctl enable --now bluetooth
 sudo systemctl enable --now keyd
 
+sudo ufw allow 1714:1764/tcp
+sudo ufw allow 1714:1764/udp
+
 echo "Installation complete!"
 
 for ((i=5; i>=1; i--))
