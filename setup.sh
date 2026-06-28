@@ -70,11 +70,14 @@ sudo systemctl enable --now keyd
 sudo ufw allow 1714:1764/tcp
 sudo ufw allow 1714:1764/udp
 
+echo
 echo "Installation complete!"
+echo "The system will reboot in 10 seconds."
+echo "Press Ctrl+C to cancel."
 
-for ((i=5; i>=1; i--))
+for ((i=10; i>=1; i--))
 do
-    printf "\rRestarting in %d..." "$i"
+    printf "\rRebooting in %d seconds..." "$i"
     sleep 1
 done
 
