@@ -20,6 +20,7 @@ PanelWindow {
     exclusionMode: ExclusionMode.Ignore
     color: "transparent"
 
+    WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
     WlrLayershell.layer: WlrLayer.Overlay
 
     // ====== カラーテーマ (Tokyo Night) ======
@@ -64,12 +65,20 @@ PanelWindow {
     }
 
     // ====== 表示時に検索バーをリセット ======
+    // Timerで少し遅延させてウィンドウがコンポジターに接続されてからフォーカスを渡す
     onVisibleChanged: {
         if (visible) {
             launcherWindow.searchQuery = ""
             searchInput.text = ""
-            searchInput.forceActiveFocus()
+            focusTimer.start()
         }
+    }
+
+    Timer {
+        id: focusTimer
+        interval: 50
+        repeat: false
+        onTriggered: searchInput.forceActiveFocus()
     }
 
     // ======================================================
@@ -78,18 +87,25 @@ PanelWindow {
     Item {
         id: rootItem
         anchors.fill: parent
-        focus: true
-
-        // ESCで閉じる
-        Keys.onEscapePressed: launcherWindow.requestClose()
+        // focusはTextInputに任せる。rootItemにfocus:trueを置くと
+        // TextInputへの入力が競合してブロックされる。
+        // ESCキーはTextInputのKeysハンドラで処理する。
 
         // --------------------------------------------------
-        // 外側クリックで閉じる (z=0, パネルの下)
+        // 外側クリックで閉じる (パネル領域外のクリックのみ反応)
         // --------------------------------------------------
         MouseArea {
             anchors.fill: parent
             z: 0
-            onClicked: launcherWindow.requestClose()
+            onClicked: (mouse) => {
+                // クリック座標がパネル内なら無視
+                const mapped = panelContent.mapFromItem(rootItem, mouse.x, mouse.y)
+                if (mapped.x < 0 || mapped.y < 0 ||
+                    mapped.x > panelContent.width ||
+                    mapped.y > panelContent.height) {
+                    launcherWindow.requestClose()
+                }
+            }
         }
 
         // --------------------------------------------------
@@ -116,13 +132,6 @@ PanelWindow {
             border.width: 1
             layer.enabled: true
 
-            // パネル内クリックを止める (外側MouseAreaに届かせない)
-            MouseArea {
-                anchors.fill: parent
-                z: 1
-                onClicked: {} // 消費するだけ
-            }
-
             // ========== 検索バー ==========
             Rectangle {
                 id: searchRow
@@ -139,8 +148,6 @@ PanelWindow {
                               ? launcherWindow.colorAccent
                               : launcherWindow.colorBorder
                 border.width: searchInput.activeFocus ? 2 : 1
-                z: 2
-
                 Behavior on border.color { ColorAnimation { duration: 150 } }
 
                 RowLayout {
@@ -195,7 +202,6 @@ PanelWindow {
 
                         MouseArea {
                             anchors.fill: parent
-                            z: 3
                             onClicked: {
                                 searchInput.text = ""
                                 searchInput.forceActiveFocus()
@@ -218,8 +224,6 @@ PanelWindow {
                     leftMargin:   12
                     rightMargin:  12
                 }
-                z: 2
-
                 ScrollView {
                     anchors.fill:  parent
                     clip:          true
