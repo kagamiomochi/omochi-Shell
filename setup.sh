@@ -70,7 +70,7 @@ sudo systemctl enable --now keyd
 sudo ufw allow 1714:1764/tcp
 sudo ufw allow 1714:1764/udp
 
-echo
+clear
 echo "Installation complete!"
 echo "The system will reboot in 10 seconds."
 echo "Press Ctrl+C to cancel."
@@ -81,5 +81,4 @@ do
     sleep 1
 done
 
-echo
 sudo reboot
