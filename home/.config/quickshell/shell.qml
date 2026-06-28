@@ -4,9 +4,12 @@ import Quickshell.Wayland
 import Quickshell.Io
 import QtQuick
 import "PanelBar"
-import "AppLauncher"
+import "Launcher"
 
 ShellRoot {
+    id: root
+
+    // ====== ステータスバー ======
     Variants {
         model: Quickshell.screens
 
@@ -16,8 +19,7 @@ ShellRoot {
         }
     }
 
-    id: root
-
+    // ====== アプリランチャー ======
     property bool launcherVisible: false
 
     IpcHandler {
