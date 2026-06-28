@@ -68,7 +68,7 @@ hl.bind(mainMod .. " + SHIFT + Space",
 
 -- App Launcher
 hl.bind(mainMod .. " + SUPER_L",
-    hl.dsp.exec_cmd("pkill rofi || rofi -show drun"),
+    hl.dsp.exec_cmd("qs ipc call launcher toggle"),
     { release = true })
 
 -- Clipboard history

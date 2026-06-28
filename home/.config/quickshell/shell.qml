@@ -1,9 +1,10 @@
 //@ pragma UseQApplication
-// shell.qml - メインエントリポイント
-// UseQApplication: QsMenuAnchor (システムトレイの右クリックメニュー) に必要
 import Quickshell
 import Quickshell.Wayland
+import Quickshell.Io
 import QtQuick
+import "PanelBar"
+import "AppLauncher"
 
 ShellRoot {
     Variants {
@@ -13,5 +14,22 @@ ShellRoot {
             required property var modelData
             screen: modelData
         }
+    }
+
+    id: root
+
+    property bool launcherVisible: false
+
+    IpcHandler {
+        target: "launcher"
+
+        function show():   void { root.launcherVisible = true  }
+        function hide():   void { root.launcherVisible = false }
+        function toggle(): void { root.launcherVisible = !root.launcherVisible }
+    }
+
+    AppLauncher {
+        visible: root.launcherVisible
+        onRequestClose: root.launcherVisible = false
     }
 }
