@@ -1,4 +1,6 @@
+//@ pragma UseQApplication
 // shell.qml - メインエントリポイント
+// UseQApplication: QsMenuAnchor (システムトレイの右クリックメニュー) に必要
 import Quickshell
 import Quickshell.Wayland
 import QtQuick
@@ -8,8 +10,6 @@ ShellRoot {
         model: Quickshell.screens
 
         PanelBar {
-            // required property var modelData はPanelBar側で宣言
-            // Variantsが自動でmodelDataをインジェクトする
             required property var modelData
             screen: modelData
         }
