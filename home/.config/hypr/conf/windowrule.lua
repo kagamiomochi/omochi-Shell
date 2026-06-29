@@ -39,6 +39,15 @@ hl.window_rule({
 })
 
 hl.window_rule({
+    name = "thunar",
+    match = {
+        class = "thunar",
+        title = "ファイル操作の進捗"
+    },
+    float = true
+})
+
+hl.window_rule({
     name = "btop",
     match = {
         class = "btop"
