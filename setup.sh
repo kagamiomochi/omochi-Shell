@@ -2,6 +2,8 @@
 
 set -e
 
+sudo -v
+
 PACKAGES_FILE="packages.txt"
 
 # Check for the existence of package list
