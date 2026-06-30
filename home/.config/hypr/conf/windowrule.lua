@@ -92,3 +92,12 @@ hl.window_rule({
     no_dim = true,
     no_shadow = true
 })
+
+hl.window_rule({
+    name = "ShadowverseWB",
+    match = {
+        class = "steam_app_2584990",
+        title = "ShadowverseWB"
+    },
+    immediate = false
+})
