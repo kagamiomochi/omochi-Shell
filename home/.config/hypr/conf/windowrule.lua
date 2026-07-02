@@ -21,15 +21,6 @@ hl.window_rule({
 })
 
 hl.window_rule({
-  name = "YTMusic",
-  match = {
-    class = "chrome-music.youtube.com__-Default"
-  },
-  workspace = "special",
-  opacity = 0.7
-})
-
-hl.window_rule({
     name = "PiP",
     match = {
         title = "ピクチャーインピクチャー"
@@ -73,15 +64,6 @@ hl.window_rule({
 })
 
 hl.window_rule({
-    name = "Vesktop",
-    match = {
-        class = "vesktop"
-    },
-    workspace = "special",
-    opacity = 0.9
-})
-
-hl.window_rule({
     name = "UnrealEditor",
     match = {
         class = "UnrealEditor"
@@ -91,13 +73,4 @@ hl.window_rule({
     no_blur = true,
     no_dim = true,
     no_shadow = true
-})
-
-hl.window_rule({
-    name = "ShadowverseWB",
-    match = {
-        class = "steam_app_2584990",
-        title = "ShadowverseWB"
-    },
-    immediate = false
 })
