@@ -30,6 +30,14 @@ hl.window_rule({
 })
 
 hl.window_rule({
+    name = "vesktop",
+    match = {
+        class = "vesktop"
+    },
+    workspace = "special"
+})
+
+hl.window_rule({
     name = "thunar",
     match = {
         class = "thunar",
