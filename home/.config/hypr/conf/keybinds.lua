@@ -24,20 +24,14 @@ end
 
 -- toggle scratchpad
 local function toggle_scratchpad()
-    local w = hl.get_active_window()
-    if w == nil then return end
-
-    local ws = w.workspace.name or ""
-
-    if ws:find("special") then
-        hl.dispatch(hl.dsp.window.move({
-            workspace = "previous"
-        }))
-    else
-        hl.dispatch(hl.dsp.window.move({
-            workspace = "special:special"
-        }))
-    end
+  local w = hl.get_active_window()
+  if w == nil then return end
+  local ws = w.workspace.name or ""
+  if ws:find("special") then
+    hl.dispatch(hl.dsp.window.move({ workspace = "r+0" }))
+  else
+    hl.dispatch(hl.dsp.window.move({ workspace = "special" }))
+  end
 end
 
 -- General
