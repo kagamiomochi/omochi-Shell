@@ -3,32 +3,38 @@
 set -e
 
 sudo -v
+(while true; do sudo -n true; sleep 60; kill -0 "$$" 2>/dev/null || exit; done) &
+SUDO_KEEPALIVE_PID=$!
+
+BUILD_DIR=""
+
+cleanup() {
+    kill "$SUDO_KEEPALIVE_PID" 2>/dev/null || true
+    [ -n "$BUILD_DIR" ] && rm -rf "$BUILD_DIR"
+}
+trap cleanup EXIT
 
 PACKAGES_FILE="packages.txt"
 
-# Check for the existence of package list
 if [ ! -f "$PACKAGES_FILE" ]; then
     echo "Error: $PACKAGES_FILE not found."
     exit 1
 fi
 
-# Check if paru is installed.
+# Check if Paru is installed.
 if ! command -v paru &> /dev/null; then
     echo "paru not found. Starting installation..."
     
     sudo pacman -Syu --needed --noconfirm base-devel git
     BUILD_DIR=$(mktemp -d)
-    trap 'rm -rf "$BUILD_DIR"' EXIT
 
     git clone https://aur.archlinux.org/paru.git "$BUILD_DIR/paru"
     (
         cd "$BUILD_DIR/paru"
         makepkg -si --noconfirm
     )
-    
+
     echo "The installation of paru is complete."
-else
-    echo "Paru is already installed. Continue..."
 fi
 
 # Load packages from package list and install them
@@ -80,6 +86,7 @@ sudo ufw allow 1714:1764/udp
 
 clear
 figlet -c -t -f slant "Welcome to omochi-Shell ! "
+echo
 echo
 echo "Installation complete!"
 echo "The system will reboot in 10 seconds."
