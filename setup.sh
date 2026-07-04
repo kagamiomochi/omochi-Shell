@@ -46,18 +46,22 @@ link() {
     mkdir -p "$(dirname "$dst")"
     ln -sfn "$src" "$dst"
 }
- 
+
+# home
+link "$HOME_DIR/.zshrc"                         "$HOME/.zshrc"
+link "$HOME_DIR/.p10k.zsh"                      "$HOME/.p10k.zsh"
+
 # .config
-link "$HOME_DIR/.config/hypr"               "$HOME/.config/hypr"
-link "$HOME_DIR/.config/quickshell"         "$HOME/.config/quickshell"
-link "$HOME_DIR/.config/kitty"              "$HOME/.config/kitty"
-link "$HOME_DIR/.config/fcitx5"             "$HOME/.config/fcitx5"
-link "$HOME_DIR/.config/mozc"               "$HOME/.config/mozc"
-link "$HOME_DIR/.config/Thunar"             "$HOME/.config/Thunar"
-link "$HOME_DIR/.config/xfce4"             "$HOME/.config/xfce4"
-link "$HOME_DIR/.config/gpu-screen-recorder" "$HOME/.config/gpu-screen-recorder"
-link "$HOME_DIR/.config/yt-dlp"             "$HOME/.config/yt-dlp"
-link "$HOME_DIR/.config/vesktop"             "$HOME/.config/vesktop"
+link "$HOME_DIR/.config/hypr"                   "$HOME/.config/hypr"
+link "$HOME_DIR/.config/quickshell"             "$HOME/.config/quickshell"
+link "$HOME_DIR/.config/kitty"                  "$HOME/.config/kitty"
+link "$HOME_DIR/.config/fcitx5"                 "$HOME/.config/fcitx5"
+link "$HOME_DIR/.config/mozc"                   "$HOME/.config/mozc"
+link "$HOME_DIR/.config/Thunar"                 "$HOME/.config/Thunar"
+link "$HOME_DIR/.config/xfce4"                  "$HOME/.config/xfce4"
+link "$HOME_DIR/.config/gpu-screen-recorder"    "$HOME/.config/gpu-screen-recorder"
+link "$HOME_DIR/.config/yt-dlp"                 "$HOME/.config/yt-dlp"
+link "$HOME_DIR/.config/vesktop"                "$HOME/.config/vesktop"
  
 # .local
 link "$HOME_DIR/.local/share/applications"  "$HOME/.local/share/applications"
