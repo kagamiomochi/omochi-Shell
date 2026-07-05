@@ -112,3 +112,4 @@ yt-dlp
 zam-plugins-lv2
 zip
 figlet
+gnome-themes-extra

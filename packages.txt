@@ -125,3 +125,4 @@ git-credential-manager-bin
 python-terminaltexteffects
 zen-browser
 figlet
+gnome-themes-extra
