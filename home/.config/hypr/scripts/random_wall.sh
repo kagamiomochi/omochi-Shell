@@ -10,12 +10,12 @@ if ! pgrep -x "awww-daemon" > /dev/null; then
     sleep 0.5
 fi
 
-mapfile -t PICS < <(find "$WALLPAPER_DIR" -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" -o -name "*.gif" \) 2>/dev/null)
+mapfile -t PICS < <(find "$WALLPAPER_DIR" -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" -o -name "*.gif" -o -name "*.pbm" -o -name "*.pgm" -o -name "*.ppm" -o -name "*.tga" -o -name "*.tif" -o -name "*.tiff" -o -name "*.webp" -o -name "*.bmp" -o -name "*.ff" \) 2>/dev/null)
 
 if [ ${#PICS[@]} -eq 0 ]; then
     if [ -f /etc/os-release ] && grep -qi '^ID=cachyos' /etc/os-release; then
         echo "No images found in $WALLPAPER_DIR, falling back to $FALLBACK_DIR"
-        mapfile -t PICS < <(find "$FALLBACK_DIR" -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" -o -name "*.gif" \) 2>/dev/null)
+        mapfile -t PICS < <(find "$FALLBACK_DIR" -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" -o -name "*.gif" -o -name "*.pbm" -o -name "*.pgm" -o -name "*.ppm" -o -name "*.tga" -o -name "*.tif" -o -name "*.tiff" -o -name "*.webp" -o -name "*.bmp" -o -name "*.ff" \) 2>/dev/null)
     fi
 fi
 
@@ -26,4 +26,12 @@ fi
 
 RANDOM_PIC=${PICS[RANDOM % ${#PICS[@]}]}
 
-awww img "$RANDOM_PIC" --transition-type grow --transition-duration 2
+CURSOR=$(hyprctl cursorpos | tr -d ' ')
+X=$(echo "$CURSOR" | cut -d',' -f1)
+Y=$(echo "$CURSOR" | cut -d',' -f2)
+
+HEIGHT=$(hyprctl monitors -j | jq '.[] | select(.focused==true) | .height')
+
+NEW_Y=$((HEIGHT - Y))
+
+awww img "$RANDOM_PIC" --transition-fps 60 --transition-bezier 0.3,0.0,0.0,0.8 --transition-pos "${X},${NEW_Y}" --transition-type grow
