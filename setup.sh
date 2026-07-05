@@ -85,6 +85,8 @@ sudo ufw allow 1714:1764/tcp
 sudo ufw allow 1714:1764/udp
 
 clear
+echo
+echo
 figlet -c -t -f slant "Welcome to omochi-Shell ! "
 echo
 echo
