@@ -101,8 +101,6 @@ hyprpolkitagent
 
 
 blender
-btrfs-assistant
-cuda
 vesktop
 discord
 docker
@@ -127,8 +125,8 @@ snap-pac
 snapper
 sudo
 wget
-
-
+btrfs-assistant
+cuda
 
 
 breezex-cursor-theme
