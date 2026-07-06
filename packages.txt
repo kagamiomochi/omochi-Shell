@@ -92,6 +92,7 @@ exfatprogs
 unrar
 unzip
 zip
+7zip
 
 jq
 jdk-openjdk
@@ -134,7 +135,6 @@ bt-dualboot
 fcitx5-im
 fcitx5-mozc-ut
 minecraft-launcher
-p7zip
 qdirstat
 qdiskinfo
 tumbler-folder-thumbnailer
