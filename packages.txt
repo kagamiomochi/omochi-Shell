@@ -25,6 +25,8 @@ quickshell
 video-trimmer
 vlc
 vlc-plugins-all
+catfish
+
 
 easyeffects
 calf
