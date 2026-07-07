@@ -137,8 +137,6 @@ bt-dualboot
 fcitx5-im
 fcitx5-mozc-ut
 minecraft-launcher
-qdirstat
-qdiskinfo
 tumbler-folder-thumbnailer
 visual-studio-code-bin
 git-credential-manager-bin
