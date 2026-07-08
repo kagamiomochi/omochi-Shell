@@ -130,6 +130,7 @@ sudo
 wget
 btrfs-assistant
 cuda
+webkit2gtk-4.1
 
 
 breezex-cursor-theme
