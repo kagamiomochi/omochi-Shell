@@ -142,3 +142,4 @@ visual-studio-code-bin
 git-credential-manager-bin
 python-terminaltexteffects
 zen-browser
+youtube-music-pake
