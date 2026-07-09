@@ -126,8 +126,6 @@ snapper
 sudo
 wget
 btrfs-assistant
-cuda
-webkit2gtk-4.1
 
 
 breezex-cursor-theme
@@ -140,4 +138,3 @@ visual-studio-code-bin
 git-credential-manager-bin
 python-terminaltexteffects
 zen-browser
-youtube-music-pake
