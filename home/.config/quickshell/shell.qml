@@ -34,4 +34,6 @@ ShellRoot {
         visible: root.launcherVisible
         onRequestClose: root.launcherVisible = false
     }
+
+    PolkitDialog {}
 }

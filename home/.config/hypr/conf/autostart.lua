@@ -2,7 +2,6 @@
 
 hl.on("hyprland.start", function () 
   hl.exec_cmd("exec-once = dbus-update-activation-environment --systemd --all")
-  hl.exec_cmd("systemctl --user start hyprpolkitagent")
   hl.exec_cmd("gnome-keyring-daemon --start --components=secrets")
   hl.exec_cmd("hyprctl setcursor BreezeX-Dark 28")
   hl.exec_cmd("quickshell")

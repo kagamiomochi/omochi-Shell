@@ -26,7 +26,6 @@ vlc
 vlc-plugins-all
 catfish
 
-
 easyeffects
 calf
 lsp-plugins-lv2
@@ -98,7 +97,6 @@ zip
 jq
 jdk-openjdk
 gnome-keyring
-hyprpolkitagent
 
 
 
