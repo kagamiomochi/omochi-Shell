@@ -37,6 +37,9 @@ if ! command -v paru &> /dev/null; then
     echo "The installation of paru is complete."
 fi
 
+echo "Install prerequisite packages..."
+sudo pacman -S hyprland
+
 # Load packages from package list and install them
 echo "Install packages from $PACKAGES_FILE..."
 grep -Ev '^\s*($|#)' "$PACKAGES_FILE" | xargs -r paru -S --needed --noconfirm
