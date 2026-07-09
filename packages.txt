@@ -1,4 +1,3 @@
-hyprland
 hypridle
 hyprlock
 hyprpicker
