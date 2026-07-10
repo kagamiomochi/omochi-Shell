@@ -18,6 +18,7 @@ hl.on("hyprland.start", function ()
   hl.exec_cmd("gsr-ui")
   hl.exec_cmd("sunshine")
   hl.exec_cmd("ollama serve")
+  hl.exec_cmd("easyeffects --gapplication-service")
 
   hl.exec_cmd("vesktop --start-minimized")
   hl.exec_cmd("steam -silent")

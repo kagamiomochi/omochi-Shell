@@ -1,6 +1,7 @@
 -- https://wiki.hypr.land/Configuring/Basics/Binds/
 
 local mainMod  = "SUPER"
+local terminal = "kitty"
 local fileManager = "thunar"
 local browser = "zen-browser"
 
@@ -35,18 +36,6 @@ local function toggle_scratchpad()
 end
 
 -- General
-hl.bind(mainMod .. " + T",
-    hl.dsp.exec_cmd(
-        "kitty --hold sh -c \"fastfetch | tte highlight"
-        .. " --highlight-brightness 1.5"
-        .. " --highlight-direction diagonal_top_left_to_bottom_right"
-        .. " --highlight-width 5"
-        .. " --final-gradient-stops 3B5DA0 A18FD9 D69FDA DABFC8 DAD5BE"
-        .. " --final-gradient-steps 12"
-        .. " --final-gradient-direction vertical\""
-    )
-)
-
 hl.bind(mainMod .. " + C",  hl.dsp.window.close())
 hl.bind(mainMod .. " + L",  hl.dsp.exec_cmd("hyprlock"))
 hl.bind(mainMod .. " + E",  hl.dsp.exec_cmd(fileManager))
@@ -55,6 +44,12 @@ hl.bind(mainMod .. " + P",  toggle_pin)
 
 hl.bind(mainMod .. " + Space", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen())
+
+-- Terminal
+hl.bind(mainMod .. " + T",
+    hl.dsp.exec_cmd(
+        terminal .. "fastfetch | tte highlight --highlight-brightness 1.5 --highlight-direction diagonal_top_left_to_bottom_right --highlight-width 5 --final-gradient-stops 3B5DA0 A18FD9 D69FDA DABFC8 DAD5BE --final-gradient-steps 12 --final-gradient-direction vertical"
+    ))
 
 -- Window Mode
 hl.bind(mainMod .. " + SHIFT + Space",
@@ -77,7 +72,7 @@ hl.bind(mainMod .. " + SHIFT + P",
 
 -- btop
 hl.bind("CONTROL + SHIFT + Escape",
-    hl.dsp.exec_cmd("kitty --class btop -e btop"))
+    hl.dsp.exec_cmd("btop"))
 
 -- Reload Hyprland
 hl.bind(mainMod .. " + SHIFT + R", function()
@@ -98,10 +93,9 @@ hl.bind(mainMod .. " + SHIFT + right", hl.dsp.window.move({ direction = "right" 
 
 -- Switch workspaces (0 moves to empty)
 for i = 1, 9 do
-    local key = i % 9 -- 10 maps to key 0
-    hl.bind(mainMod .. " + " .. key, hl.dsp.focus({ workspace = i}))
+    hl.bind(mainMod .. " + " .. i, hl.dsp.focus({ workspace = i }))
 end
-hl.bind(mainMod .. " + 0 ", hl.dsp.focus({ workspace = "empty"}))
+hl.bind(mainMod .. " + 0 ", hl.dsp.focus({ workspace = "empty" }))
 
 -- Move window to workspace (0 moves to empty)
 for i = 1, 9 do
@@ -126,10 +120,10 @@ hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
 -- Volume
 hl.bind("XF86AudioRaiseVolume",
-    hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"),
+    hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 2%+"),
     { repeating = true })
 hl.bind("XF86AudioLowerVolume",
-    hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"),
+    hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 2%-"),
     { repeating = true })
 hl.bind("XF86AudioMute",
     hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"),
