@@ -15,7 +15,6 @@ keyd
 kitty
 libnotify
 gnome-themes-extra
-figlet
 loupe
 ly
 ollama

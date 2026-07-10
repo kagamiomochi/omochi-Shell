@@ -93,6 +93,8 @@ sudo systemctl enable --now keyd
 sudo ufw allow 1714:1764/tcp
 sudo ufw allow 1714:1764/udp
 
+
+sudo pacman -S figlet --noconfirm
 clear
 echo
 echo
@@ -102,6 +104,7 @@ echo
 echo "Installation complete!"
 echo "The system will reboot in 10 seconds."
 echo "Press Ctrl+C to cancel."
+sudo pacman -R figlet --noconfirm >/dev/null 2>&1
 
 for ((i=10; i>=1; i--))
 do
