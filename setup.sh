@@ -21,11 +21,13 @@ if [ ! -f "$PACKAGES_FILE" ]; then
     exit 1
 fi
 
+sudo pacman -Syu --noconfirm
+
 # Check if Paru is installed.
 if ! command -v paru &> /dev/null; then
     echo "paru not found. Starting installation..."
     
-    sudo pacman -Syu --needed --noconfirm base-devel git
+    sudo pacman -S --needed --noconfirm base-devel git
     BUILD_DIR=$(mktemp -d)
 
     git clone https://aur.archlinux.org/paru.git "$BUILD_DIR/paru"
