@@ -1,6 +1,7 @@
 home/.config/fcitx5/conf/cached_layouts
 home/.config/mozc/.server.lock
 home/.config/mozc/.session.ipc
+home/.config/mozc/cform.db
 home/.config/mozc/boundary.db
 home/.config/mozc/segment.db
 home/.config/vesktop/Crashpad/
@@ -9,4 +10,5 @@ home/.config/vesktop/SingletonLock
 home/.config/vesktop/SingletonSocket
 home/.config/vesktop/sessionData/
 home/.config/vesktop/state.json
+home/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml
 home/.config/xfce4/xfconf/xfce-perchannel-xml/thunar-shares-plugin.xml
