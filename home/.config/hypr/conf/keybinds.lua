@@ -48,7 +48,7 @@ hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen())
 -- Terminal
 hl.bind(mainMod .. " + T",
     hl.dsp.exec_cmd(
-        terminal .. "fastfetch | tte highlight --highlight-brightness 1.5 --highlight-direction diagonal_top_left_to_bottom_right --highlight-width 5 --final-gradient-stops 3B5DA0 A18FD9 D69FDA DABFC8 DAD5BE --final-gradient-steps 12 --final-gradient-direction vertical"
+        terminal .. " -- sh -c 'fastfetch | tte highlight --highlight-brightness 1.5 --highlight-direction diagonal_top_left_to_bottom_right --highlight-width 5 --final-gradient-stops 3B5DA0 A18FD9 D69FDA DABFC8 DAD5BE --final-gradient-steps 12 --final-gradient-direction vertical; exec $SHELL'"
     ))
 
 -- Window Mode
