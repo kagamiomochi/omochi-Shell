@@ -9,6 +9,6 @@
     "customTitleBar": false,
     "enableMenu": false,
     "staticTitle": false,
-    "splashColor": "rgb(243, 243, 244)",
-    "splashBackground": "rgb(44, 45, 50)"
+    "splashColor": "rgb(163, 173, 194)",
+    "splashBackground": "rgba(22, 24, 29, 0.6)"
 }
