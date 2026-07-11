@@ -27,7 +27,7 @@ sudo pacman -Syu --noconfirm
 if ! command -v paru &> /dev/null; then
     echo "paru not found. Starting installation..."
     
-    sudo pacman -S --needed --noconfirm base-devel git
+    sudo pacman -S --needed --noconfirm base-devel git rust
     BUILD_DIR=$(mktemp -d)
 
     git clone https://aur.archlinux.org/paru.git "$BUILD_DIR/paru"
