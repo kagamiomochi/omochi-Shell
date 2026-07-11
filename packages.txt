@@ -119,7 +119,6 @@ rclone
 
 
 reflector
-rust
 snap-pac
 snapper
 sudo
