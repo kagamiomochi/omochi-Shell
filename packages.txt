@@ -27,9 +27,10 @@ catfish
 
 easyeffects
 calf
-lsp-plugins-lv2
-zam-plugins-lv2
 mda.lv2
+lsp-plugins-lv2
+x42-plugins-lv2
+zam-plugins-lv2
 
 thunar
 thunar-archive-plugin
