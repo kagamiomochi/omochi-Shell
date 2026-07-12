@@ -5,8 +5,8 @@
 	<name>ここでターミナルを開く</name>
 	<submenu></submenu>
 	<unique-id>1769827333303289-1</unique-id>
-	<command>kitty --directory %f</command>
-	<description>kittyを現在のディレクトリで開く</description>
+	<command>kitty -- %f</command>
+	<description>ターミナルを現在のディレクトリで開く</description>
 	<range></range>
 	<patterns>*</patterns>
 	<startup-notify/>
@@ -19,6 +19,17 @@
 	<unique-id>1774615748834947-1</unique-id>
 	<command>thunar admin:///%f/  </command>
 	<description>root権限でディレクトリを開く</description>
+	<range>*</range>
+	<patterns>*</patterns>
+	<directories/>
+</action>
+<action>
+	<icon>org.xfce.catfish</icon>
+	<name>詳細検索</name>
+	<submenu></submenu>
+	<unique-id>1783820039367781-1</unique-id>
+	<command>catfish --path=%f</command>
+	<description>catfishを使用してディレクトリを検索する</description>
 	<range>*</range>
 	<patterns>*</patterns>
 	<directories/>
