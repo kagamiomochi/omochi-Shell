@@ -48,6 +48,9 @@ hyprland \
 echo "Install packages from $PACKAGES_FILE..."
 grep -Ev '^\s*($|#)' "$PACKAGES_FILE" | xargs -r paru -S --needed --noconfirm
 
+# Hyprland plugins
+yes | hyprpm add https://github.com/hyprwm/hyprland-plugins
+
 echo "Linking dotfiles..."
  
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
