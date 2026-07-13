@@ -97,6 +97,7 @@ zip
 jq
 jdk-openjdk
 gnome-keyring
+cmake
 
 
 
