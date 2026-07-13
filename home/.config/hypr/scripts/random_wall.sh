@@ -13,10 +13,8 @@ fi
 mapfile -t PICS < <(find "$WALLPAPER_DIR" -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" -o -name "*.gif" -o -name "*.pbm" -o -name "*.pgm" -o -name "*.ppm" -o -name "*.tga" -o -name "*.tif" -o -name "*.tiff" -o -name "*.webp" -o -name "*.bmp" -o -name "*.ff" \) 2>/dev/null)
 
 if [ ${#PICS[@]} -eq 0 ]; then
-    if [ -f /etc/os-release ] && grep -qi '^ID=cachyos' /etc/os-release; then
-        echo "No images found in $WALLPAPER_DIR, falling back to $FALLBACK_DIR"
-        mapfile -t PICS < <(find "$FALLBACK_DIR" -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" -o -name "*.gif" -o -name "*.pbm" -o -name "*.pgm" -o -name "*.ppm" -o -name "*.tga" -o -name "*.tif" -o -name "*.tiff" -o -name "*.webp" -o -name "*.bmp" -o -name "*.ff" \) 2>/dev/null)
-    fi
+    echo "No images found in $WALLPAPER_DIR, falling back to $FALLBACK_DIR"
+    mapfile -t PICS < <(find "$FALLBACK_DIR" -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" -o -name "*.gif" -o -name "*.pbm" -o -name "*.pgm" -o -name "*.ppm" -o -name "*.tga" -o -name "*.tif" -o -name "*.tiff" -o -name "*.webp" -o -name "*.bmp" -o -name "*.ff" \) 2>/dev/null)
 fi
 
 if [ ${#PICS[@]} -eq 0 ]; then
