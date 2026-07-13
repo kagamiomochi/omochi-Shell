@@ -13,7 +13,7 @@ function M.setup_hyprbars()
                     bar_button_padding = 15,
                     bar_part_of_window = true,
                     bar_precedence_over_border = true,
-                    on_double_click = "hyprctl dispatch fullscreen 1",
+                    on_double_click = "hyprctl dispatch 'hl.dsp.window.fullscreen({mode=1})'",
                 },
             },
         })
@@ -23,7 +23,7 @@ function M.setup_hyprbars()
             fg_color = "rgb(ffffff)",
             size = 18,
             icon = "✕",
-            action = "hyprctl dispatch killactive",
+            action = "hyprctl dispatch 'hl.dsp.window.close()'",
         })
 
         hl.plugin.hyprbars.add_button({
@@ -31,7 +31,7 @@ function M.setup_hyprbars()
             fg_color = "rgb(ffffff)",
             size = 18,
             icon = "❏",
-            action = "hyprctl dispatch fullscreen 1",
+            action = "hyprctl dispatch 'hl.dsp.window.fullscreen({mode=1})'",
         })
 
     end
