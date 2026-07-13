@@ -1,21 +1,19 @@
 #!/bin/bash
 
-ADDRS=$(hyprctl clients -j | jq -r '.[].address')
+HYPRBARS_PATH="/var/cache/hyprpm/${USER}/hyprland-plugins/hyprbars.so"
 
 if hyprctl plugin list | grep -q "hyprbars"; then
-    hyprpm disable hyprbars
-    
-    BATCH=$(echo "$ADDRS" | sed 's/.*/dispatch settiled address:&;/' | tr -d '\n')
-    hyprctl --batch "$BATCH"
+    hyprctl plugin unload "$HYPRBARS_PATH"
 
-    hyprctl keyword windowrule "match:class .*, float off"
-    hyprctl keyword general:resize_on_border false
+    hyprctl eval 'for _, w in pairs(hl.get_windows()) do hl.dispatch(hl.dsp.window.float({ action = "unset", window = "address:" .. w.address })) end'
+
+    hyprctl eval 'hl.window_rule({ match = { class = ".*" }, float = false })'
+    hyprctl eval 'hl.config({ general = { resize_on_border = false } })'
 else
-    hyprpm enable hyprbars
-    
-    BATCH=$(echo "$ADDRS" | sed 's/.*/dispatch setfloating address:&;/' | tr -d '\n')
-    hyprctl --batch "$BATCH"
+    hyprctl plugin load "$HYPRBARS_PATH"
 
-    hyprctl keyword windowrule "match:class .*, float on"
-    hyprctl keyword general:resize_on_border true
+    hyprctl eval 'for _, w in pairs(hl.get_windows()) do hl.dispatch(hl.dsp.window.float({ action = "set", window = "address:" .. w.address })) end'
+
+    hyprctl eval 'hl.window_rule({ match = { class = ".*" }, float = true })'
+    hyprctl eval 'hl.config({ general = { resize_on_border = true } })'
 fi
