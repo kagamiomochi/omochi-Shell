@@ -21,6 +21,7 @@ ollama
 playerctl
 quickshell
 video-trimmer
+celluloid
 vlc
 vlc-plugins-all
 catfish
