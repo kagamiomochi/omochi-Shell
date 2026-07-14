@@ -102,11 +102,9 @@ gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
 
 sudo pacman -S figlet --noconfirm
 clear
-echo
-echo
+printf '\n%.0s' {1..2}
 figlet -c -t -f slant "Welcome to omochi-Shell ! "
-echo
-echo
+printf '\n%.0s' {1..2}
 echo "Installation complete!"
 echo "The system will reboot in 10 seconds."
 echo "Press Ctrl+C to cancel."
