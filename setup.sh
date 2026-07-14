@@ -48,7 +48,7 @@ hyprland \
 echo "Install packages from $PACKAGES_FILE..."
 grep -Ev '^\s*($|#)' "$PACKAGES_FILE" | xargs -r paru -S --needed --noconfirm
 
-# Hyprland plugins
+# Install Hyprland plugins
 yes | hyprpm add https://github.com/hyprwm/hyprland-plugins
 
 echo "Linking dotfiles..."
@@ -96,6 +96,9 @@ sudo systemctl enable --now keyd
 sudo ufw allow 1714:1764/tcp
 sudo ufw allow 1714:1764/udp
 
+# Theme setting
+gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
 
 sudo pacman -S figlet --noconfirm
 clear
