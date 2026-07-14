@@ -87,7 +87,8 @@ link "$HOME_DIR/.local/share/applications"  "$HOME/.local/share/applications"
 # system
 sudo ln -sfn "$DOTFILES_DIR/system/etc/keyd/default.conf" /etc/keyd/default.conf
 
-echo "Register a Startup..."
+# sudo show asterisks
+echo "Defaults pwfeedback" | sudo tee /etc/sudoers.d/pwfeedback
 
 # startup
 sudo systemctl enable --now bluetooth
