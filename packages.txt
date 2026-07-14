@@ -119,6 +119,7 @@ steam
 sunshine
 yt-dlp
 rclone
+inkscape
 
 
 reflector
