@@ -25,8 +25,6 @@ sudo pacman -Syu --noconfirm
 
 # Check if Paru is installed.
 if ! command -v paru &> /dev/null; then
-    echo "paru not found. Starting installation..."
-    
     sudo pacman -S --needed --noconfirm base-devel git rust
     BUILD_DIR=$(mktemp -d)
 
@@ -35,8 +33,6 @@ if ! command -v paru &> /dev/null; then
         cd "$BUILD_DIR/paru"
         makepkg -si --noconfirm
     )
-
-    echo "The installation of paru is complete."
 fi
 
 # Install prerequisite packages
