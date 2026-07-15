@@ -95,15 +95,12 @@ sudo ufw allow 1714:1764/udp
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
 
-sudo pacman -S figlet --noconfirm
+
 clear
-printf '\n%.0s' {1..2}
-figlet -c -t -f slant "Welcome to omochi-Shell ! "
-printf '\n%.0s' {1..2}
+echo "Welcome to omochi-Shell!"
 echo "Installation complete!"
 echo "The system will reboot in 10 seconds."
 echo "Press Ctrl+C to cancel."
-sudo pacman -R figlet --noconfirm >/dev/null 2>&1
 
 for ((i=10; i>=1; i--))
 do
