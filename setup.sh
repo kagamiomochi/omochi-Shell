@@ -39,20 +39,18 @@ if ! command -v paru &> /dev/null; then
     echo "The installation of paru is complete."
 fi
 
-echo "Install prerequisite packages..."
+# Install prerequisite packages
 sudo pacman -S \
 hyprland \
 --needed --noconfirm
 
 # Load packages from package list and install them
-echo "Install packages from $PACKAGES_FILE..."
 grep -Ev '^\s*($|#)' "$PACKAGES_FILE" | xargs -r paru -S --needed --noconfirm
 
 # Install Hyprland plugins
 yes | hyprpm add https://github.com/hyprwm/hyprland-plugins
 
-echo "Linking dotfiles..."
- 
+# Linking dotfiles 
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 HOME_DIR="$DOTFILES_DIR/home"
  
