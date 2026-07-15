@@ -98,6 +98,7 @@ gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
 
 clear
 echo "Welcome to omochi-Shell!"
+echo -e "\e[1;36mWelcome to omochi-Shell!\e[0m"
 echo "Installation complete!"
 echo "The system will reboot in 10 seconds."
 echo "Press Ctrl+C to cancel."
