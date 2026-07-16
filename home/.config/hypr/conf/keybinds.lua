@@ -1,9 +1,9 @@
 -- https://wiki.hypr.land/Configuring/Basics/Binds/
 
-local mainMod  = "SUPER"
 local terminal = "kitty"
 local fileManager = "thunar"
 local browser = "zen-browser"
+local SystemMonitor = "missioncenter"
 
 -- pin window
 local function toggle_pin()
@@ -34,6 +34,9 @@ local function toggle_scratchpad()
     hl.dispatch(hl.dsp.window.move({ workspace = "special" }))
   end
 end
+
+
+local mainMod  = "SUPER"
 
 -- General
 hl.bind(mainMod .. " + C",  hl.dsp.window.close())
@@ -66,18 +69,18 @@ hl.bind(mainMod .. " + V",
         "cliphist list | rofi -dmenu | cliphist decode | wl-copy && wtype -M ctrl v -m ctrl"
     ))
 
--- color picker
+-- Color Picker
 hl.bind(mainMod .. " + SHIFT + P",
     hl.dsp.exec_cmd("hyprpicker"))
 
--- btop
+-- System Monitor
 hl.bind("CONTROL + SHIFT + Escape",
-    hl.dsp.exec_cmd("btop"))
+    hl.dsp.exec_cmd(SystemMonitor))
 
--- Reload Hyprland
+-- Reload Shell
 hl.bind(mainMod .. " + SHIFT + R", function()
-    hl.exec_cmd("hyprctl reload")
-    hl.notification.create({ text = "Hyprland has been reloaded.", timeout = 3000, icon = "ok" })
+    hl.exec_cmd("hyprctl reload && pkill quickshell; quickshell")
+    hl.notification.create({ text = "Reloaded Hyprland and QuickShell.", timeout = 3000, icon = "ok" })
 end)
 
 -- Move focus
