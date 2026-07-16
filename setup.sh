@@ -42,6 +42,7 @@ hyprland \
 
 # Load packages from package list and install them
 grep -Ev '^\s*($|#)' "$PACKAGES_FILE" | xargs -r paru -S --needed --noconfirm
+paru -S nocturne --mflags "--nocheck" --noconfirm
 
 # Install Hyprland plugins
 hyprpm update
