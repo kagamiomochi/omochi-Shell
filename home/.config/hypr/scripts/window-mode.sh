@@ -9,6 +9,7 @@ if hyprctl plugin list | grep -q "hyprbars"; then
 
     hyprctl eval 'hl.window_rule({ match = { class = ".*" }, float = false })'
     hyprctl eval 'hl.config({ general = { resize_on_border = false } })'
+    pkill xfdesktop
 else
     hyprctl plugin load "$HYPRBARS_PATH"
 
@@ -16,4 +17,5 @@ else
 
     hyprctl eval 'hl.window_rule({ match = { class = ".*" }, float = true })'
     hyprctl eval 'hl.config({ general = { resize_on_border = true } })'
+    xfdesktop
 fi

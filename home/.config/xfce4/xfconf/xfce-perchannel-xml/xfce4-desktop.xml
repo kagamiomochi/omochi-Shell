@@ -1,0 +1,34 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<channel name="xfce4-desktop" version="1.0">
+  <property name="last-settings-migration-version" type="uint" value="1"/>
+  <property name="backdrop" type="empty">
+    <property name="screen0" type="empty">
+      <property name="monitorVZ249" type="empty">
+        <property name="workspace0" type="empty">
+          <property name="image-style" type="int" value="0"/>
+          <property name="color-style" type="int" value="3"/>
+          <property name="rgba1" type="array">
+            <value type="double" value="0.10196078431372549"/>
+            <value type="double" value="0.37254901960784315"/>
+            <value type="double" value="0.70588235294117652"/>
+            <value type="double" value="1"/>
+          </property>
+          <property name="last-image" type="string" value="/usr/share/backgrounds/xfce/xfce-mouserace.svg"/>
+          <property name="backdrop-cycle-enable" type="bool" value="false"/>
+        </property>
+      </property>
+    </property>
+  </property>
+  <property name="desktop-icons" type="empty">
+    <property name="show-hidden-files" type="bool" value="true"/>
+    <property name="style" type="int" value="2"/>
+    <property name="file-icons" type="empty">
+      <property name="show-filesystem" type="bool" value="false"/>
+      <property name="show-removable" type="bool" value="false"/>
+    </property>
+  </property>
+  <property name="windowlist-menu" type="empty">
+    <property name="show" type="bool" value="true"/>
+  </property>
+</channel>

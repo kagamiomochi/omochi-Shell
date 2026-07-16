@@ -24,6 +24,7 @@ video-trimmer
 celluloid
 catfish
 gnome-disk-utility
+xfdesktop
 
 easyeffects
 calf
