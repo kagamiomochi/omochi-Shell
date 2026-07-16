@@ -30,6 +30,13 @@ hl.window_rule({
 })
 
 hl.window_rule({
+  name = "pin accent",
+  match = { pin = true },
+  border_color = "rgb(FFAA00) rgb(CC7700)",
+  border_size = 3,
+})
+
+hl.window_rule({
     name = "vesktop",
     match = {
         class = "vesktop"
