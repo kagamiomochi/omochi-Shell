@@ -32,11 +32,11 @@ configs:
     "/home/kagamimochi/Desktop/README.md":
       row: 8
       col: 0
-    "/home/kagamimochi/Desktop/system":
-      row: 2
-      col: 1
     "/home/kagamimochi/Desktop/packages.txt":
       row: 0
+      col: 1
+    "/home/kagamimochi/Desktop/system":
+      row: 2
       col: 1
     "/home/kagamimochi/Desktop/LICENSE":
       row: 1
