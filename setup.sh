@@ -75,6 +75,7 @@ link "$HOME_DIR/.config/gtk-4.0"                "$HOME/.config/gtk-4.0"
 link "$HOME_DIR/.config/gpu-screen-recorder"    "$HOME/.config/gpu-screen-recorder"
 link "$HOME_DIR/.config/yt-dlp"                 "$HOME/.config/yt-dlp"
 link "$HOME_DIR/.config/vesktop"                "$HOME/.config/vesktop"
+link "$HOME_DIR/.config/mimeapps.list"          "$HOME/.config/mimeapps.list"
  
 # .local
 link "$HOME_DIR/.local/share/applications"  "$HOME/.local/share/applications"

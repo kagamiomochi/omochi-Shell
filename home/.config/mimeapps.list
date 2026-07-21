@@ -1,0 +1,10 @@
+[Default Applications]
+x-scheme-handler/discord=vesktop.desktop
+
+[Added Associations]
+text/x-lua=code.desktop;
+text/x-shellscript=code.desktop;
+application/xml=code.desktop;
+application/yaml=code.desktop;
+text/plain=code.desktop;
+application/json=code.desktop;
