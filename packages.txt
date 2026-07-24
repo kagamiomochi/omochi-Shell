@@ -120,6 +120,7 @@ sunshine
 yt-dlp
 rclone
 inkscape
+mission-center
 
 
 reflector
@@ -141,3 +142,4 @@ git-credential-manager-bin
 python-terminaltexteffects
 zen-browser
 gapless
+proton-pass-bin
