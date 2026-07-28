@@ -12,3 +12,8 @@ home/.config/vesktop/sessionData/
 home/.config/vesktop/state.json
 home/.config/xfce4/xfconf/xfce-perchannel-xml/thunar-shares-plugin.xml
 home/.config/xfce4/desktop/icons.screen0.yaml
+home/.local/share/applications/wine-extension-chm.desktop
+home/.local/share/applications/wine-extension-crt.desktop
+home/.local/share/applications/wine-extension-hlp.desktop
+home/.local/share/applications/wine-extension-msp.desktop
+home/.local/share/applications/wine-extension-vbs.desktop

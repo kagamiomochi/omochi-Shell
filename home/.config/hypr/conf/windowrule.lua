@@ -45,6 +45,14 @@ hl.window_rule({
 })
 
 hl.window_rule({
+    name = "BedrockOnLinux",
+    match = {
+        class = "Bedrockonlinux"
+    },
+    float = true
+})
+
+hl.window_rule({
     name = "thunar",
     match = {
         class = "thunar",

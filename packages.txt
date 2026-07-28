@@ -143,3 +143,4 @@ python-terminaltexteffects
 zen-browser
 gapless
 proton-pass-bin
+bedrock-on-linux-bin
