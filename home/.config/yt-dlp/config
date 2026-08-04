@@ -1,1 +1,1 @@
--o "%(title)s.%(ext)s"
+-f "bestvideo+bestaudio/best" --merge-output-format mkv --embed-subs --sub-langs "all" --embed-thumbnail --embed-metadata --embed-chapters --output "%(title)s.%(ext)s"

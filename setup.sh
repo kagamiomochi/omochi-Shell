@@ -77,9 +77,6 @@ link "$HOME_DIR/.config/yt-dlp"                 "$HOME/.config/yt-dlp"
 link "$HOME_DIR/.config/vesktop"                "$HOME/.config/vesktop"
 link "$HOME_DIR/.config/mimeapps.list"          "$HOME/.config/mimeapps.list"
  
-# .local
-link "$HOME_DIR/.local/share/applications"  "$HOME/.local/share/applications"
- 
 # system
 sudo ln -sfn "$DOTFILES_DIR/system/etc/keyd/default.conf" /etc/keyd/default.conf
 
