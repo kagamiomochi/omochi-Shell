@@ -46,6 +46,7 @@ grep -Ev '^\s*($|#)' "$PACKAGES_FILE" | xargs -r paru -S --needed --noconfirm
 # Install Hyprland plugins
 #hyprpm update
 #yes | hyprpm add https://github.com/hyprwm/hyprland-plugins
+#yes | hyprpm add https://github.com/virtcode/hypr-dynamic-cursors
 
 # Linking dotfiles 
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"

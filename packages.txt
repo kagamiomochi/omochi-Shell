@@ -52,16 +52,6 @@ ffmpegthumbnailer
 kimageformats
 
 
-
-
-
-
-
-
-
-
-
-
 bluez
 bluez-obex
 bluez-utils
@@ -99,6 +89,7 @@ jq
 jdk-openjdk
 gnome-keyring
 cmake
+python-evdev
 
 
 
@@ -142,5 +133,4 @@ git-credential-manager-bin
 python-terminaltexteffects
 zen-browser
 gapless
-proton-pass-bin
 bedrock-on-linux-bin
