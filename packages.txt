@@ -134,3 +134,4 @@ python-terminaltexteffects
 zen-browser
 gapless
 bedrock-on-linux-bin
+millennium
