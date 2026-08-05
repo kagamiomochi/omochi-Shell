@@ -18,14 +18,19 @@ import time
 import evdev
 from evdev import ecodes
 
-DEBOUNCE_SEC = 0.05
+DEBOUNCE_SEC = 0.02
 RESCAN_INTERVAL_SEC = 10
 RECONNECT_WAIT_SEC = 5
 
-DISPATCH_CMD = [
+PRESS_CMD = [
     "hyprctl",
     "dispatch",
-    "hl.plugin.dynamic_cursors.dsp_magnify({ duration = 150, size = 0.6 })",
+    "hl.plugin.dynamic_cursors.dsp_magnify({ duration = 60000, size = 0.6 })",
+]
+RELEASE_CMD = [
+    "hyprctl",
+    "dispatch",
+    "hl.plugin.dynamic_cursors.dsp_magnify({ duration = 150, size = 1.0 })",
 ]
 
 
@@ -33,10 +38,10 @@ def log(msg: str) -> None:
     print(msg, file=sys.stderr, flush=True)
 
 
-def trigger_shrink() -> None:
+def run_dispatch(cmd: list[str]) -> None:
     try:
         subprocess.Popen(
-            DISPATCH_CMD,
+            cmd,
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
         )
@@ -69,7 +74,8 @@ def watch(debug: bool) -> None:
         sel.register(d, selectors.EVENT_READ)
         log(f"Add to monitored items: {d.path} ({d.name})")
 
-    last_trigger = 0.0
+    last_press = 0.0
+    last_release = 0.0
     last_rescan = time.monotonic()
 
     while True:
@@ -81,16 +87,21 @@ def watch(debug: bool) -> None:
                     if debug and event.type == ecodes.EV_KEY:
                         log(f"[debug] {dev.path}: {evdev.categorize(event)}")
 
-                    if (
-                        event.type == ecodes.EV_KEY
-                        and event.code == ecodes.BTN_LEFT
-                        and event.value == 1  # 1 = press, 0 = release, 2 = repeat
-                    ):
-                        now = time.monotonic()
-                        if now - last_trigger < DEBOUNCE_SEC:
+                    if event.type != ecodes.EV_KEY or event.code != ecodes.BTN_LEFT:
+                        continue
+
+                    now = time.monotonic()
+
+                    if event.value == 1:  # press
+                        if now - last_press < DEBOUNCE_SEC:
                             continue
-                        last_trigger = now
-                        trigger_shrink()
+                        last_press = now
+                        run_dispatch(PRESS_CMD)
+                    elif event.value == 0:  # release
+                        if now - last_release < DEBOUNCE_SEC:
+                            continue
+                        last_release = now
+                        run_dispatch(RELEASE_CMD)
             except OSError as e:
                 if e.errno == errno.ENODEV:
                     log(f"Device disconnection detected. Removing from monitoring: {dev.path}")
