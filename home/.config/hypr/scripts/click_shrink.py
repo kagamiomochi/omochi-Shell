@@ -1,10 +1,4 @@
 #!/usr/bin/env python3
-"""
-要件:
-    sudo pacman -S python-evdev
-    実行ユーザーが `input` グループに所属していること
-    (/dev/input/event* の読み取り権限のため)
-"""
 
 from __future__ import annotations
 
@@ -25,7 +19,7 @@ RECONNECT_WAIT_SEC = 5
 PRESS_CMD = [
     "hyprctl",
     "dispatch",
-    "hl.plugin.dynamic_cursors.dsp_magnify({ duration = 60000, size = 0.6 })",
+    "hl.plugin.dynamic_cursors.dsp_magnify({ duration = 600000, size = 0.6 })",
 ]
 RELEASE_CMD = [
     "hyprctl",
