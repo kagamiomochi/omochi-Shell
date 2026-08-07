@@ -53,6 +53,14 @@ hl.window_rule({
 })
 
 hl.window_rule({
+    name = "Zen Browser",
+    match = {
+        class = "zen"
+    },
+    fullscreen = true
+})
+
+hl.window_rule({
     name = "thunar",
     match = {
         class = "thunar",
