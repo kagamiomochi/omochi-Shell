@@ -16,7 +16,7 @@ Layout=
 # Name
 Name=mozc
 # Layout
-Layout=jp
+Layout=us
 
 [GroupOrder]
 0=デフォルト

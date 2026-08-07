@@ -71,6 +71,15 @@ hl.window_rule({
 })
 
 hl.window_rule({
+    name = "thunar",
+    match = {
+        class = "thunar",
+        title = ".*の名前を変更.*"
+    },
+    float = true
+})
+
+hl.window_rule({
     name = "btop",
     match = {
         class = "btop"

@@ -1,3 +1,4 @@
+home/.config/hypr/private.lua
 home/.config/fcitx5/conf/cached_layouts
 home/.config/mozc/.server.lock
 home/.config/mozc/.session.ipc
