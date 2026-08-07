@@ -89,6 +89,7 @@ echo "Defaults pwfeedback" | sudo tee /etc/sudoers.d/pwfeedback
 sudo systemctl enable --now bluetooth
 sudo systemctl enable --now keyd
 
+# firewall
 sudo ufw allow 1714:1764/tcp
 sudo ufw allow 1714:1764/udp
 
@@ -96,6 +97,8 @@ sudo ufw allow 1714:1764/udp
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
 
+# User groups
+sudo usermod -aG input "$USER"
 
 clear
 printf "\e[1;36mWelcome to omochi-Shell!\e[0m\n"
