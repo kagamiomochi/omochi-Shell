@@ -25,6 +25,7 @@ celluloid
 catfish
 gnome-disk-utility
 xfdesktop
+tmux
 
 easyeffects
 calf

@@ -245,7 +245,11 @@
             "enabled": false
         },
         "ImageZoom": {
-            "enabled": true
+            "enabled": false,
+            "size": 100,
+            "zoom": 2,
+            "nearestNeighbour": false,
+            "square": false
         },
         "ImplicitRelationships": {
             "enabled": true,
@@ -636,6 +640,15 @@
         },
         "MusicRichPresence": {
             "enabled": false
+        },
+        "TenorGifSearch": {
+            "enabled": false
+        },
+        "ContextMenuAPI": {
+            "enabled": true
+        },
+        "NoticesAPI": {
+            "enabled": true
         }
     },
     "uiElements": {
@@ -652,6 +665,6 @@
         "authenticated": false,
         "url": "https://api.vencord.dev/",
         "settingsSync": false,
-        "settingsSyncVersion": 1784553769737
+        "settingsSyncVersion": 1786071632866
     }
 }

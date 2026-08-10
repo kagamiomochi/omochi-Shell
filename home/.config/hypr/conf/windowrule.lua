@@ -96,14 +96,6 @@ hl.window_rule({
 })
 
 hl.window_rule({
-    name = "VirtualBox",
-    match = {
-        class = "VirtualBox Machine"
-    },
-    fullscreen = true
-})
-
-hl.window_rule({
     name = "gsr notify",
     match = {
         class = "gsr notify"
@@ -118,6 +110,20 @@ hl.window_rule({
         class = "UnrealEditor"
     },
     border_size = 0,
+    opacity = "1.0 override 1.0 override 1.0 override",
+    decorate = false,
+    no_blur = true,
+    no_dim = true,
+    no_shadow = true
+})
+
+hl.window_rule({
+    name = "Autodesk Fusion",
+    match = {
+        class = "fusion360.exe"
+    },
+    border_size = 0,
+    opacity = "1.0 override 1.0 override 1.0 override",
     decorate = false,
     no_blur = true,
     no_dim = true,
