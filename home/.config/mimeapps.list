@@ -11,3 +11,4 @@ application/yaml=code.desktop;
 text/plain=code.desktop;
 application/json=code.desktop;
 application/x-zerosize=code.desktop;
+text/html=code.desktop;
