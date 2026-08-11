@@ -5,6 +5,8 @@ hl.workspace_rule({ workspace = "s[true]", gaps_in = 5, gaps_out = 30 })
 hl.window_rule({ match = { fullscreen = true }, immediate = true })
 hl.window_rule({ match = { title = "^$" }, float = true })
 hl.window_rule({ match = { class = "fcitx5" }, no_initial_focus = true, no_focus = true })
+hl.window_rule({ match = { title = "ピクチャーインピクチャー" }, float = true, keep_aspect_ratio = true, })
+hl.window_rule({ match = { pin = true }, border_color = "rgba(FFAA00aa) rgba(CC7700aa)", border_size = 7 })
 
 hl.window_rule({
     -- Fix some dragging issues with XWayland
@@ -20,36 +22,30 @@ hl.window_rule({
     no_focus = true,
 })
 
-hl.window_rule({
-    name = "PiP",
-    match = {
-        title = "ピクチャーインピクチャー"
-    },
-    float = true,
-    keep_aspect_ratio = true,
-})
+local float_rules = {
+    { name = "Thunar file operation progress", class = "thunar", title = "ファイル操作の進捗" },
+    { name = "Thunar confirm replace file",    class = "thunar", title = "置換するファイルの確認" },
+    { name = "Thunar change filename",         class = "thunar", title = ".*の名前を変更.*" },
+    { name = "Prism Launcher Quick Setup",     class = "org.prismlauncher.PrismLauncher", title = "Prism Launcher Quick Setup.*" },
+    { name = "Prism Launcher Account",         class = "org.prismlauncher.PrismLauncher", title = "Microsoftアカウントを追加.*" },
+    { name = "BedrockOnLinux",                 class = "Bedrockonlinux" },
+}
+
+for _, rule in ipairs(float_rules) do
+    hl.window_rule({
+        name = rule.name,
+        match = { class = rule.class, title = rule.title },
+        float = true
+    })
+end
+
 
 hl.window_rule({
-  name = "pin accent",
-  match = { pin = true },
-  border_color = "rgb(FFAA00) rgb(CC7700)",
-  border_size = 3,
-})
-
-hl.window_rule({
-    name = "vesktop",
+    name = "Vesktop",
     match = {
         class = "vesktop"
     },
     workspace = "special"
-})
-
-hl.window_rule({
-    name = "BedrockOnLinux",
-    match = {
-        class = "Bedrockonlinux"
-    },
-    float = true
 })
 
 hl.window_rule({
@@ -58,41 +54,6 @@ hl.window_rule({
         class = "zen"
     },
     fullscreen = true
-})
-
-hl.window_rule({
-    name = "thunar",
-    match = {
-        class = "thunar",
-        title = "ファイル操作の進捗"
-    },
-    float = true
-})
-
-hl.window_rule({
-    name = "thunar",
-    match = {
-        class = "thunar",
-        title = "置換するファイルの確認"
-    },
-    float = true
-})
-
-hl.window_rule({
-    name = "thunar",
-    match = {
-        class = "thunar",
-        title = ".*の名前を変更.*"
-    },
-    float = true
-})
-
-hl.window_rule({
-    name = "btop",
-    match = {
-        class = "btop"
-    },
-    float = true
 })
 
 hl.window_rule({
