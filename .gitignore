@@ -1,10 +1,5 @@
 home/.config/hypr/private.lua
 home/.config/fcitx5/conf/cached_layouts
-home/.config/mozc/.server.lock
-home/.config/mozc/.session.ipc
-home/.config/mozc/cform.db
-home/.config/mozc/boundary.db
-home/.config/mozc/segment.db
 home/.config/vesktop/Crashpad/
 home/.config/vesktop/SingletonCookie
 home/.config/vesktop/SingletonLock
