@@ -9,7 +9,7 @@
             "cmd": "",
             "detached": [
                 "pkill -USR1 hyprlock",
-                "setsid steam steam://open/bigpicture"
+                "bash -c \"${HOME}/.config/sunshine/bigpicture-restart.sh\""
             ],
             "exclude-global-prep-cmd": false,
             "exit-timeout": 5,
@@ -18,7 +18,7 @@
             "prep-cmd": [
                 {
                     "do": "",
-                    "undo": "setsid steam steam://close/bigpicture"
+                    "undo": "steam -shutdown"
                 }
             ],
             "wait-all": true
