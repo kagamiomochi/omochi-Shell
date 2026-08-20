@@ -78,10 +78,16 @@ link "$HOME_DIR/.config/gtk-4.0"                "$HOME/.config/gtk-4.0"
 link "$HOME_DIR/.config/gpu-screen-recorder"    "$HOME/.config/gpu-screen-recorder"
 link "$HOME_DIR/.config/yt-dlp"                 "$HOME/.config/yt-dlp"
 link "$HOME_DIR/.config/vesktop"                "$HOME/.config/vesktop"
+link "$HOME_DIR/.config/sunshine"               "$HOME/.config/sunshine"
+link "$HOME_DIR/.config/environment.d"          "$HOME/.config/environment.d"
 link "$HOME_DIR/.config/mimeapps.list"          "$HOME/.config/mimeapps.list"
  
 # system
 sudo ln -sfn "$DOTFILES_DIR/system/etc/keyd/default.conf" /etc/keyd/default.conf
+
+# greetd autologin
+sudo mkdir -p /etc/greetd
+sed "s/__USERNAME__/${USER}/g" "$DOTFILES_DIR/system/etc/greetd/config.toml.template" | sudo tee /etc/greetd/config.toml > /dev/null
 
 # sudo show asterisks
 echo "Defaults pwfeedback" | sudo tee /etc/sudoers.d/pwfeedback
@@ -89,6 +95,7 @@ echo "Defaults pwfeedback" | sudo tee /etc/sudoers.d/pwfeedback
 # startup
 sudo systemctl enable --now bluetooth
 sudo systemctl enable --now keyd
+sudo systemctl enable greetd
 
 # firewall
 sudo ufw allow 1714:1764/tcp # KDE Connect
