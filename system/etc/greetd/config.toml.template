@@ -1,0 +1,10 @@
+[terminal]
+vt = 1
+
+[default_session]
+command = "agreety --cmd /bin/sh"
+user = "greeter"
+
+[initial_session]
+command = "start-hyprland"
+user = "__USERNAME__"
