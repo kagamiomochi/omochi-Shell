@@ -1,8 +1,10 @@
 -- https://wiki.hypr.land/Configuring/Basics/Autostart/
 
 hl.on("hyprland.start", function () 
+  hl.exec_cmd("hyprlock")
   hl.exec_cmd("dbus-update-activation-environment --systemd --all")
   hl.exec_cmd("gnome-keyring-daemon --start --components=secrets")
+  hl.exec_cmd("systemctl --user enable --now hypridle.service")
   hl.exec_cmd("quickshell")
   hl.exec_cmd("hyprpm reload")
   hl.exec_cmd("awww-daemon")
