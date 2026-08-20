@@ -16,7 +16,7 @@ kitty
 libnotify
 gnome-themes-extra
 loupe
-ly
+greetd
 ollama
 playerctl
 quickshell
@@ -135,4 +135,3 @@ python-terminaltexteffects
 zen-browser
 gapless
 bedrock-on-linux-bin
-millennium
