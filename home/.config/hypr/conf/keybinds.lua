@@ -40,7 +40,7 @@ local mainMod  = "SUPER"
 
 -- General
 hl.bind(mainMod .. " + C",  hl.dsp.window.close())
-hl.bind(mainMod .. " + L",  hl.dsp.exec_cmd("hyprlock"))
+hl.bind(mainMod .. " + L",  hl.dsp.exec_cmd("loginctl lock-session"))
 hl.bind(mainMod .. " + E",  hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + W",  hl.dsp.exec_cmd(browser))
 hl.bind(mainMod .. " + P",  toggle_pin)
