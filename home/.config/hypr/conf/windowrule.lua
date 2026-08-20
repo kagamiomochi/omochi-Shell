@@ -23,11 +23,12 @@ hl.window_rule({
 })
 
 local float_rules = {
-    { name = "Thunar file operation progress", class = "thunar", title = "ファイル操作の進捗" },
-    { name = "Thunar confirm replace file",    class = "thunar", title = "置換するファイルの確認" },
-    { name = "Thunar change filename",         class = "thunar", title = ".*の名前を変更.*" },
-    { name = "Prism Launcher Quick Setup",     class = "org.prismlauncher.PrismLauncher", title = "Prism Launcher Quick Setup.*" },
-    { name = "Prism Launcher Account",         class = "org.prismlauncher.PrismLauncher", title = "Microsoftアカウントを追加.*" },
+    { name = "Thunar file operation progress",      class = "thunar", title = "ファイル操作の進捗" },
+    { name = "Thunar confirm replace file",         class = "thunar", title = "置換するファイルの確認" },
+    { name = "Thunar change filename",              class = "thunar", title = ".*の名前を変更.*" },
+    { name = "Prism Launcher Quick Setup",          class = "org.prismlauncher.PrismLauncher", title = "Prism Launcher Quick Setup.*" },
+    { name = "Prism Launcher Account",              class = "org.prismlauncher.PrismLauncher", title = "Microsoftアカウントを追加.*" },
+    { name = "Prism Launcher Confirm activation",   class = "org.prismlauncher.PrismLauncher", title = "有効化の確認.*" },
     { name = "BedrockOnLinux",                 class = "Bedrockonlinux" },
 }
 
@@ -41,9 +42,9 @@ end
 
 
 hl.window_rule({
-    name = "Vesktop",
+    name = "Discord",
     match = {
-        class = "vesktop"
+        class = "^(discord|vesktop)$"
     },
     workspace = "special"
 })
@@ -83,10 +84,15 @@ hl.window_rule({
     match = {
         class = "fusion360.exe"
     },
+    float = true,
     border_size = 0,
+    rounding = 0,
+    rounding_power = 1,
     opacity = "1.0 override 1.0 override 1.0 override",
     decorate = false,
+    no_anim = true,
     no_blur = true,
     no_dim = true,
-    no_shadow = true
+    no_shadow = true,
+    render_unfocused = true
 })
