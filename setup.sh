@@ -65,7 +65,6 @@ link "$HOME_DIR/.zshrc"                         "$HOME/.zshrc"
 link "$HOME_DIR/.p10k.zsh"                      "$HOME/.p10k.zsh"
 link "$HOME_DIR/.tmux.conf"                     "$HOME/.tmux.conf"
 
-# .config
 link "$HOME_DIR/.config/hypr"                   "$HOME/.config/hypr"
 link "$HOME_DIR/.config/quickshell"             "$HOME/.config/quickshell"
 link "$HOME_DIR/.config/kitty"                  "$HOME/.config/kitty"
