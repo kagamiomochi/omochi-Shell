@@ -111,6 +111,9 @@ sudo ufw allow 4380/udp
 sudo ufw allow 3478/udp
 sudo ufw allow 4379/udp
 
+sudo ufw allow 47984,47989,47990,48010/tcp # Sunshine
+sudo ufw allow 47998,47999,48000,48002,48010,5353/udp
+
 # Theme setting
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'

@@ -92,6 +92,9 @@ gnome-keyring
 cmake
 python-evdev
 
+qt6ct
+adwaita-qt6
+
 
 
 blender

@@ -1,5 +1,9 @@
 home/.config/hypr/private.lua
+home/.config/hypr/monitors.conf
+home/.config/hypr/monitors.lua
+home/.config/hypr/workspaces.conf
 home/.config/fcitx5/conf/cached_layouts
+home/.config/vesktop/Code Cache/
 home/.config/vesktop/Crashpad/
 home/.config/vesktop/SingletonCookie
 home/.config/vesktop/SingletonLock
@@ -8,18 +12,8 @@ home/.config/vesktop/sessionData/
 home/.config/vesktop/state.json
 home/.config/xfce4/xfconf/xfce-perchannel-xml/thunar-shares-plugin.xml
 home/.config/xfce4/desktop/icons.screen0.yaml
-home/.local/share/applications/wine/
-home/.local/share/applications/wine-extension-chm.desktop
-home/.local/share/applications/wine-extension-crt.desktop
-home/.local/share/applications/wine-extension-hlp.desktop
-home/.local/share/applications/wine-extension-msp.desktop
-home/.local/share/applications/wine-extension-vbs.desktop
-home/.local/share/applications/wine-extension-application.desktop
-home/.local/share/applications/wine-extension-appref-ms.desktop
-home/.local/share/applications/wine-extension-reg.desktop
-home/.local/share/applications/wine-extension-xaml.desktop
-home/.local/share/applications/wine-extension-xbap.desktop
-home/.local/share/applications/mimeinfo.cache
-home/.local/share/applications/Unrailed!.desktop
-home/.local/share/applications/ARK Survival Ascended.desktop
-home/.local/share/applications/Shadowverse Worlds Beyond.desktop
+home/.config/sunshine/credentials/
+home/.config/sunshine/sunshine.conf
+home/.config/sunshine/sunshine.log
+home/.config/sunshine/sunshine_state.json
+home/.local/share/applications/
