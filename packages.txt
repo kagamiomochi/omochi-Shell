@@ -115,7 +115,7 @@ yt-dlp
 rclone
 inkscape
 mission-center
-
+claude-desktop
 
 reflector
 snap-pac
