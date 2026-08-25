@@ -125,8 +125,8 @@ hl.bind(mainMod .. " + mouse_up",   hl.dsp.focus({ workspace = "r-1" }))
 hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "r+1" }))
 
 -- Scrolling the layout with the mouse
-hl.bind(mainMod .. " + SHIFT + mouse_up",   hl.dsp.layout("move +col"))
-hl.bind(mainMod .. " + SHIFT + mouse_down", hl.dsp.layout("move -col"))
+hl.bind(mainMod .. " + SHIFT + mouse_up",   hl.dsp.layout("move -col"))
+hl.bind(mainMod .. " + SHIFT + mouse_down", hl.dsp.layout("move +col"))
 
 -- Move/resize windows
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(),   { mouse = true })

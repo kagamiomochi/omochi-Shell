@@ -4,7 +4,7 @@ Name=デフォルト
 # Layout
 Default Layout=us
 # Default Input Method
-DefaultIM=hazkey
+DefaultIM=karukan
 
 [Groups/0/Items/0]
 # Name
@@ -14,9 +14,9 @@ Layout=
 
 [Groups/0/Items/1]
 # Name
-Name=hazkey
+Name=karukan
 # Layout
-Layout=
+Layout=us
 
 [GroupOrder]
 0=デフォルト

@@ -1,6 +1,5 @@
 [Default Applications]
 x-scheme-handler/discord=vesktop.desktop
-x-scheme-handler/adskidmgr=adskidmgr-opener.desktop
 application/x-zerosize=code.desktop
 inode/directory=thunar.desktop
 
@@ -13,3 +12,4 @@ text/plain=code.desktop;
 application/json=code.desktop;
 application/x-zerosize=code.desktop;
 text/html=code.desktop;
+image/svg+xml=org.gnome.Loupe.desktop;org.inkscape.Inkscape.desktop;

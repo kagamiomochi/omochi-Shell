@@ -128,8 +128,7 @@ btrfs-assistant
 breezex-cursor-theme
 bt-dualboot
 fcitx5-im
-fcitx5-hazkey-bin
-hazkey-zenzai-model
+karukan
 minecraft-launcher
 tumbler-folder-thumbnailer
 visual-studio-code-bin
