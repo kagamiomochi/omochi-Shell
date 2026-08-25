@@ -1,7 +1,6 @@
-// PanelBar.qml - バー本体
-// 左: ワークスペース + アクティブウィンドウタイトル
-// 中: 時計
-// 右: メディア再生 + 音量 + ネットワーク + バッテリー + 輝度 + システムトレイ
+// PanelBar.qml - バー本体 (v0.3.0)
+// ネットワーク・Bluetooth はネイティブモジュールに移管したため、
+// ポーリング処理を削除。輝度 (brightnessctl) のみ Process で取得。
 
 import Quickshell
 import Quickshell.Io
@@ -12,21 +11,20 @@ import QtQuick.Layouts
 PanelWindow {
     id: root
 
-    // Wayland レイヤーシェル設定
     anchors.top: true
     anchors.left: true
     anchors.right: true
     implicitHeight: 36
 
-    // バー背景色 (Tokyo Night ベース)
     color: "#1a1b26"
 
-    // ウィンドウタイトル更新用: rawEvent を購読
+    // アクティブウィンドウタイトル
+    property string activeWindowTitle: ""
+
     Connections {
         target: Hyprland
         function onRawEvent(event) {
             if (event.name === "activewindow") {
-                // event.data = "class,title"
                 var parts = event.data.split(",")
                 root.activeWindowTitle = parts.length >= 2 ? parts.slice(1).join(",") : ""
             }
@@ -36,42 +34,10 @@ PanelWindow {
         }
     }
 
-    property string activeWindowTitle: ""
-
-    // ネットワーク情報をポーリング取得
-    property string networkText: "..."
-    property bool networkConnected: false
-    property string brightnessBuf: ""
+    // 輝度 (brightnessctl) - ラップトップのみ
     property int brightnessValue: -1
+    property string brightnessBuf: ""
 
-    Timer {
-        id: netTimer
-        interval: 5000
-        running: true
-        repeat: true
-        triggeredOnStart: true
-        onTriggered: netProc.running = true
-    }
-
-    Process {
-        id: netProc
-        command: ["sh", "-c", "nmcli -t -f DEVICE,TYPE,STATE,CONNECTION dev | grep -E ':(wifi|ethernet):connected' | head -1"]
-        stdout: SplitParser {
-            onRead: data => {
-                var parts = data.trim().split(":")
-                if (parts.length >= 4 && parts[2] === "connected") {
-                    root.networkConnected = true
-                    var conn = parts.slice(3).join(":")
-                    root.networkText = conn.length > 16 ? conn.substring(0, 14) + "…" : conn
-                } else {
-                    root.networkConnected = false
-                    root.networkText = "切断"
-                }
-            }
-        }
-    }
-
-    // 輝度取得 (ラップトップのみ)
     Timer {
         id: brightTimer
         interval: 3000
@@ -83,7 +49,9 @@ PanelWindow {
 
     Process {
         id: brightProc
-        command: ["sh", "-c", "brightnessctl get 2>/dev/null && echo '/' && brightnessctl max 2>/dev/null || echo '-1'"]
+        command: ["sh", "-c",
+            "brightnessctl get 2>/dev/null && echo '/' && brightnessctl max 2>/dev/null || echo '-1'"
+        ]
         stdout: SplitParser {
             onRead: data => root.brightnessBuf += data
         }
@@ -110,57 +78,56 @@ PanelWindow {
         anchors.rightMargin: 8
         spacing: 0
 
-        // ===== 左ゾーン =====
+        // ===== 左: ワークスペース + ウィンドウタイトル (縮小) =====
         RowLayout {
             spacing: 4
+            Layout.maximumWidth: 420
 
-            // ワークスペースボタン
             Repeater {
                 model: 10
                 delegate: WorkspaceButton {}
             }
 
-            // セパレータ
             BarSeparator {}
 
-            // アクティブウィンドウタイトル
             Text {
                 text: root.activeWindowTitle.length > 0
-                      ? (root.activeWindowTitle.length > 40
-                         ? root.activeWindowTitle.substring(0, 38) + "…"
+                      ? (root.activeWindowTitle.length > 20
+                         ? root.activeWindowTitle.substring(0, 18) + "..."
                          : root.activeWindowTitle)
-                      : "デスクトップ"
-                color: "#a9b1d6"
-                font { pixelSize: 13 }
+                      : "Desktop"
+                color: "#565f89"
+                font { pixelSize: 12 }
                 elide: Text.ElideRight
-                Layout.maximumWidth: 300
+                Layout.maximumWidth: 140
             }
         }
 
-        // 中央スペーサー
         Item { Layout.fillWidth: true }
 
-        // ===== 中央: 時計 =====
-        ClockWidget {}
+        // ===== 中央: 歌詞 (再生中のみ) + 時計 =====
+        RowLayout {
+            spacing: 8
 
-        // 中央スペーサー
+            LyricsWidget {}
+
+            ClockWidget {}
+        }
+
         Item { Layout.fillWidth: true }
 
-        // ===== 右ゾーン =====
+        // ===== 右: 各ウィジェット =====
         RowLayout {
             spacing: 2
 
-            // MPRIS メディアプレイヤー (再生中の場合のみ表示)
             MediaWidget {}
 
             BarSeparator {}
 
-            // 音量 (Pipewire)
             VolumeWidget {}
 
             BarSeparator {}
 
-            // 輝度 (ラップトップのみ)
             BrightnessWidget {
                 visible: root.brightnessValue >= 0
                 value: root.brightnessValue
@@ -170,20 +137,18 @@ PanelWindow {
                 visible: root.brightnessValue >= 0
             }
 
-            // ネットワーク
-            NetworkWidget {
-                connected: root.networkConnected
-                label: root.networkText
-            }
+            NetworkWidget {}
 
             BarSeparator {}
 
-            // バッテリー (UPower)
+            BluetoothWidget {}
+
+            BarSeparator {}
+
             BatteryWidget {}
 
             BarSeparator {}
 
-            // システムトレイ (barWindow でメニューアンカーを渡す)
             TrayWidget {
                 barWindow: root
             }

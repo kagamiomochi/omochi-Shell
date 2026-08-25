@@ -39,7 +39,7 @@ Item {
         Text {
             anchors.verticalCenter: parent.verticalCenter
             property string title: root.activePlayer?.trackTitle ?? ""
-            property string artist: root.activePlayer?.trackArtists?.join(", ") ?? ""
+            property string artist: root.activePlayer?.trackArtist ?? ""
             text: {
                 var full = artist.length > 0 ? artist + " - " + title : title
                 return full.length > 30 ? full.substring(0, 28) + "…" : full
