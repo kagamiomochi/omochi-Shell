@@ -1,7 +1,4 @@
 home/.config/hypr/private.lua
-home/.config/hypr/monitors.conf
-home/.config/hypr/monitors.lua
-home/.config/hypr/workspaces.conf
 home/.config/fcitx5/conf/cached_layouts
 home/.config/vesktop/Code Cache/
 home/.config/vesktop/Crashpad/
@@ -16,4 +13,3 @@ home/.config/sunshine/credentials/
 home/.config/sunshine/sunshine.conf
 home/.config/sunshine/sunshine.log
 home/.config/sunshine/sunshine_state.json
-home/.local/share/applications/

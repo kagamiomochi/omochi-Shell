@@ -42,6 +42,12 @@ hl.config({
         enabled = true,
         workspace_wraparound = false,
     },
+
+    misc = {
+        force_default_wallpaper = 0,
+        session_lock_xray = true,
+        session_lock_blur = true,
+    },
 })
 
 hl.curve("linear",         { type = "bezier", points = { {0, 0},       {1, 1}       } })

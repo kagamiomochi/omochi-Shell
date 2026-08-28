@@ -1,39 +1,22 @@
 hypridle
 hyprlock
 hyprpicker
-
-awww
-blueman
-pavucontrol
-btop
 fastfetch
+kitty
 wl-clipboard
 cliphist
-gpu-screen-recorder-ui
-kdeconnect
-keyd
-kitty
-libnotify
-gnome-themes-extra
-loupe
 greetd
-ollama
-playerctl
 quickshell
-video-trimmer
-celluloid
-catfish
-gnome-disk-utility
-xfdesktop
-tmux
-
+playerctl
+keyd
+libnotify
+ollama
 easyeffects
 calf
 mda.lv2
 lsp-plugins-lv2
 x42-plugins-lv2
 zam-plugins-lv2
-
 thunar
 thunar-archive-plugin
 thunar-media-tags-plugin
@@ -41,6 +24,7 @@ thunar-shares-plugin
 thunar-volman
 tumbler
 file-roller
+catfish
 gvfs
 gvfs-afc
 gvfs-dnssd
@@ -51,8 +35,20 @@ gvfs-smb
 gvfs-wsdd
 ffmpegthumbnailer
 kimageformats
+awww
 
 
+btop
+gpu-screen-recorder-ui
+kdeconnect
+loupe
+video-trimmer
+celluloid
+gnome-themes-extra
+gnome-disk-utility
+xfdesktop
+
+blueman
 bluez
 bluez-obex
 bluez-utils
@@ -62,16 +58,17 @@ noto-fonts-cjk
 noto-fonts-emoji
 otf-font-awesome
 
+pavucontrol
+pipewire
+pipewire-alsa
+pipewire-pulse
+wireplumber
+
 libva-nvidia-driver
 libva-utils
 nvidia-container-toolkit
 nvidia-settings
 nvidia-utils
-
-pipewire
-pipewire-alsa
-pipewire-pulse
-wireplumber
 
 xdg-desktop-portal
 xdg-desktop-portal-gtk
@@ -88,7 +85,6 @@ zip
 
 jq
 jdk-openjdk
-gnome-keyring
 cmake
 python-evdev
 
@@ -128,7 +124,7 @@ btrfs-assistant
 breezex-cursor-theme
 bt-dualboot
 fcitx5-im
-karukan
+karukan-git
 minecraft-launcher
 tumbler-folder-thumbnailer
 visual-studio-code-bin

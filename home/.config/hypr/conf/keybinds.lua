@@ -51,14 +51,7 @@ hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen())
 -- Terminal
 hl.bind(mainMod .. " + T",
     hl.dsp.exec_cmd(
-        terminal .. " -- sh -c '"
-            .. "tmux new-session -d \\; "
-            .. "split-window -v \\; "
-            .. "select-pane -t 0 \\; "
-            .. "send-keys \"fastfetch | tte --random-effect --no-restore-cursor\" Enter \\; "
-            .. "select-pane -t 1 \\; "
-            .. "attach-session"
-            .. "'"
+        terminal .. " -- sh -c 'fastfetch | tte --random-effect ; exec $SHELL'"
     ))
 
 -- Window Mode

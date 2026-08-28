@@ -1,6 +1,13 @@
 // LyricsWidget.qml - LRCLIB 歌詞ウィジェット (v0.3.0)
-// MPRISから再生中の曲情報を取得し、lrclib.net APIで歌詞を検索。
-// syncedLyrics (LRC形式) を再生位置に合わせてリアルタイム表示。
+//
+// 同期精度の改善:
+//   - タイマーは positionChanged() emit 専用、行の判定も同じタイミングで即実行
+//   - フェードアニメーションを廃止し、即時テキスト切り替えにすることで遅延をゼロに
+//   - フェード中の currentLine="" による消え問題を解消
+//
+// 消え問題の修正:
+//   - lrcLines が空でも displayLine を "" にしない
+//   - フェッチ完了まで前の曲の最後の行を保持する
 
 import Quickshell
 import Quickshell.Io
@@ -10,19 +17,14 @@ import QtQuick
 Item {
     id: root
     implicitHeight: 36
-    implicitWidth: lyricsText.width + 16
+    implicitWidth: lyricsText.implicitWidth + 16
 
-    visible: displayLine.length > 0
+    visible: lyricsText.text.length > 0
 
     // ===== 状態 =====
-    property string displayLine: ""   // 実際に表示する行
-    property string currentLine: ""   // 計算上の現在行
     property string currentTrackKey: ""
     property var lrcLines: []
     property string fetchBuf: ""
-
-    // displayLine は currentLine 変化時にフェードで更新
-    onCurrentLineChanged: fadeOut.start()
 
     // ===== プレイヤー =====
     property var player: {
@@ -34,7 +36,7 @@ Item {
         return players.length > 0 ? players[0] : null
     }
 
-    property string watchedTitle:  player?.trackTitle ?? ""
+    property string watchedTitle:  player?.trackTitle  ?? ""
     property string watchedArtist: player?.trackArtist ?? ""
 
     onWatchedTitleChanged:  Qt.callLater(checkAndFetch)
@@ -45,16 +47,13 @@ Item {
         if (key === "::" || key === currentTrackKey) return
         currentTrackKey = key
         root.lrcLines = []
-        root.currentLine = ""
-        root.displayLine = ""
+        // 消え防止: displayLine は fetchが完了してから更新する
         if (watchedTitle !== "") fetchLyrics()
     }
 
     // ===== 歌詞フェッチ =====
-    // curl の --get / --data-urlencode でシェル側にURLエンコードを任せる
     function fetchLyrics() {
-        var duration = player?.trackDuration
-            ? Math.round(player.trackDuration / 1000) : 0
+        var duration = player?.length ? Math.round(player.length) : 0
 
         var args = [
             "curl", "-s", "-m", "10",
@@ -87,14 +86,14 @@ Item {
                 var obj = JSON.parse(raw)
                 if (obj.syncedLyrics) {
                     root.lrcLines = parseLrc(obj.syncedLyrics)
+                    // フェッチ完了時に即座に現在位置の行を表示
+                    updateLine()
                 } else if (obj.plainLyrics) {
-                    root.currentLine  = obj.plainLyrics.split("\n")[0] ?? ""
-                    root.displayLine  = root.currentLine
                     root.lrcLines = []
+                    lyricsText.text = obj.plainLyrics.split("\n")[0] ?? ""
                 } else {
                     root.lrcLines = []
-                    root.currentLine = ""
-                    root.displayLine = ""
+                    lyricsText.text = ""
                 }
             } catch(e) {
                 root.lrcLines = []
@@ -120,43 +119,48 @@ Item {
         return result
     }
 
-    // ===== 再生位置に合わせて行を更新 =====
+    // ===== 行の更新 (タイマーから呼ぶ) =====
+    function updateLine() {
+        if (!player || root.lrcLines.length === 0) return
+        // positionChanged() emit 直後に読むと最新値が返る (ドキュメント通り)
+        var posSec = player.position
+        var line = ""
+        for (var i = 0; i < root.lrcLines.length; i++) {
+            if (root.lrcLines[i].time <= posSec) {
+                line = root.lrcLines[i].text
+            } else {
+                break
+            }
+        }
+        // テキストを即時更新 (アニメーションなし → 遅延ゼロ)
+        if (lyricsText.text !== line) lyricsText.text = line
+    }
+
+    // ===== position ポーリング =====
+    // ドキュメント推奨: Timer で positionChanged() を emit → 即 position を読む
     Timer {
         id: posTimer
-        interval: 350
-        running: root.lrcLines.length > 0 && root.player !== null
+        interval: 300
+        running: root.lrcLines.length > 0
+                 && root.player !== null
+                 && root.player.playbackState === MprisPlaybackState.Playing
         repeat: true
         onTriggered: {
-            if (!root.player || root.lrcLines.length === 0) return
-            var posSec = (root.player.position ?? 0) / 1000.0
-            var line = ""
-            for (var i = 0; i < root.lrcLines.length; i++) {
-                if (root.lrcLines[i].time <= posSec) {
-                    line = root.lrcLines[i].text
-                } else {
-                    break
-                }
-            }
-            if (line !== root.currentLine) root.currentLine = line
+            if (!root.player) return
+            root.player.positionChanged()  // position をリフレッシュ
+            root.updateLine()
         }
     }
 
-    // ===== 表示 + フェードアニメーション =====
+    // ===== 表示 =====
     Text {
         id: lyricsText
         anchors.centerIn: parent
-        text: root.displayLine
+        text: ""
         color: "#c0caf5"
         font { pixelSize: 13 }
         elide: Text.ElideRight
-        width: Math.min(implicitWidth, 480)
-    }
-
-    SequentialAnimation {
-        id: fadeOut
-        NumberAnimation { target: lyricsText; property: "opacity"; to: 0; duration: 100 }
-        ScriptAction    { script: { root.displayLine = root.currentLine } }
-        NumberAnimation { target: lyricsText; property: "opacity"; to: 1; duration: 180 }
+        width: Math.min(implicitWidth, 500)
     }
 
     Component.onCompleted: Qt.callLater(checkAndFetch)

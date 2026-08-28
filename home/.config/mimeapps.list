@@ -3,13 +3,13 @@ x-scheme-handler/discord=vesktop.desktop
 application/x-zerosize=code.desktop
 inode/directory=thunar.desktop
 x-scheme-handler/claude=com.anthropic.Claude.desktop
+text/plain=code.desktop
 
 [Added Associations]
 text/x-lua=code.desktop;
 text/x-shellscript=code.desktop;
 application/xml=code.desktop;
 application/yaml=code.desktop;
-text/plain=code.desktop;
 application/json=code.desktop;
 application/x-zerosize=code.desktop;
 text/html=code.desktop;
