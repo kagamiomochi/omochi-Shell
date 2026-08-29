@@ -29,7 +29,7 @@ local float_rules = {
     { name = "Prism Launcher Quick Setup",          class = "org.prismlauncher.PrismLauncher", title = "Prism Launcher Quick Setup.*" },
     { name = "Prism Launcher Account",              class = "org.prismlauncher.PrismLauncher", title = "Microsoftアカウントを追加.*" },
     { name = "Prism Launcher Confirm activation",   class = "org.prismlauncher.PrismLauncher", title = "有効化の確認.*" },
-    { name = "BedrockOnLinux",                 class = "Bedrockonlinux" },
+    { name = "BedrockOnLinux",                      class = "Bedrockonlinux" },
 }
 
 for _, rule in ipairs(float_rules) do
@@ -95,4 +95,16 @@ hl.window_rule({
     no_dim = true,
     no_shadow = true,
     render_unfocused = true
+})
+
+hl.window_rule({
+    name = "AIRI",
+    match = {
+        class = "ai-moeru-airi"
+    },
+    float = true,
+    pin = true,
+    border_size = 0,
+    opacity = "1.0 override 1.0 override 1.0 override",
+    no_blur = true,
 })
