@@ -90,6 +90,9 @@ sed "s/__USERNAME__/${USER}/g" "$DOTFILES_DIR/system/etc/greetd/config.toml.temp
 # sudo show asterisks
 echo "Defaults pwfeedback" | sudo tee /etc/sudoers.d/pwfeedback
 
+# git
+git update-index --skip-worktree ~/omochi-Shell/home/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml
+
 # startup
 sudo systemctl enable --now bluetooth
 sudo systemctl enable --now keyd
