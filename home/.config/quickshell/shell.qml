@@ -6,6 +6,7 @@ import QtQuick
 import qs.Modals
 import "PanelBar"
 import "Launcher"
+import "NotificationCenter"
 
 ShellRoot {
     id: root
@@ -37,4 +38,8 @@ ShellRoot {
     }
 
     PolkitDialog {}
+
+    NotificationCenter {
+        id: notifCenter
+    }
 }
