@@ -64,21 +64,12 @@ link() {
 link "$HOME_DIR/.zshrc"                         "$HOME/.zshrc"
 link "$HOME_DIR/.p10k.zsh"                      "$HOME/.p10k.zsh"
 
-link "$HOME_DIR/.config/hypr"                   "$HOME/.config/hypr"
-link "$HOME_DIR/.config/quickshell"             "$HOME/.config/quickshell"
-link "$HOME_DIR/.config/kitty"                  "$HOME/.config/kitty"
-link "$HOME_DIR/.config/fcitx5"                 "$HOME/.config/fcitx5"
-link "$HOME_DIR/.config/karukan-im"             "$HOME/.config/karukan-im"
-link "$HOME_DIR/.config/Thunar"                 "$HOME/.config/Thunar"
-link "$HOME_DIR/.config/xfce4"                  "$HOME/.config/xfce4"
-link "$HOME_DIR/.config/gtk-3.0"                "$HOME/.config/gtk-3.0"
-link "$HOME_DIR/.config/gtk-4.0"                "$HOME/.config/gtk-4.0"
-link "$HOME_DIR/.config/gpu-screen-recorder"    "$HOME/.config/gpu-screen-recorder"
-link "$HOME_DIR/.config/yt-dlp"                 "$HOME/.config/yt-dlp"
-link "$HOME_DIR/.config/vesktop"                "$HOME/.config/vesktop"
-link "$HOME_DIR/.config/sunshine"               "$HOME/.config/sunshine"
-link "$HOME_DIR/.config/environment.d"          "$HOME/.config/environment.d"
-link "$HOME_DIR/.config/mimeapps.list"          "$HOME/.config/mimeapps.list"
+shopt -s nullglob dotglob
+for item in "$HOME_DIR"/.config/*; do
+    name="$(basename "$item")"
+    link "$HOME_DIR/.config/$name" "$HOME/.config/$name"
+done
+shopt -u nullglob dotglob
  
 # system
 sudo ln -sfn "$DOTFILES_DIR/system/etc/keyd/default.conf" /etc/keyd/default.conf
