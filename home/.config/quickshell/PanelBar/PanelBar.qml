@@ -7,6 +7,7 @@ import Quickshell.Io
 import Quickshell.Hyprland
 import QtQuick
 import QtQuick.Layouts
+import "../NotificationCenter"
 
 PanelWindow {
     id: root
@@ -152,6 +153,8 @@ PanelWindow {
             TrayWidget {
                 barWindow: root
             }
+
+            NotificationBellButton { }
         }
     }
 }

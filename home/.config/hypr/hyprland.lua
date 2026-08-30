@@ -2,6 +2,7 @@
 
 
 ----- If you want to add your own configuration without overriding the shell configuration, please write your code above this line. -----
+hl.exec_cmd("hyprpm update")
 hl.on("hyprland.start", function ()
   hl.exec_cmd("chmod +x ~/.config/hypr/scripts/post-unlock.sh; ~/.config/hypr/scripts/post-unlock.sh")
 end)

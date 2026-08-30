@@ -61,8 +61,8 @@ link() {
 }
 
 # home
-link "$HOME_DIR/.zshrc"                         "$HOME/.zshrc"
-link "$HOME_DIR/.p10k.zsh"                      "$HOME/.p10k.zsh"
+link "$HOME_DIR/.zshrc"    "$HOME/.zshrc"
+link "$HOME_DIR/.p10k.zsh" "$HOME/.p10k.zsh"
 
 shopt -s nullglob dotglob
 for item in "$HOME_DIR"/.config/*; do

@@ -8,7 +8,6 @@ hyprlock
 
 systemctl --user enable --now hypridle.service
 quickshell &
-hyprpm reload
 wl-paste --type text --watch cliphist store &
 wl-paste --type image --watch cliphist store &
 fcitx5 -d &

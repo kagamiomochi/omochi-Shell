@@ -1,88 +1,22 @@
 import QtQuick
 import QtQuick.Layouts
-import QtQuick.Controls
 import Quickshell
 import Quickshell.Wayland
-import Quickshell.Services.Notifications
 
 // ============================================================
-// 通知センター本体
-// shell.qml から `NotificationCenter { }` として読み込む想定
+// 通知履歴パネル本体
+// 状態は全て NotificationService (シングルトン) を参照する
+// shell.qml に `NotificationCenter { }` を1つ置くだけでよい
 // ============================================================
 Item {
     id: root
 
-    // 外部から通知センターの表示/非表示を切り替えるためのプロパティ
-    property bool panelVisible: false
-    function toggle() { panelVisible = !panelVisible }
-    function open() { panelVisible = true }
-    function close() { panelVisible = false }
-
-    // ------------------------------------------------------
-    // 通知サーバー本体
-    // ------------------------------------------------------
-    NotificationServer {
-        id: notifServer
-
-        // 対応する機能を宣言 (対応していないと送信側がフォールバックする)
-        actionsSupported: true
-        bodyMarkupSupported: true
-        bodyHyperlinksSupported: true
-        bodyImagesSupported: true
-        imageSupported: true
-        persistenceSupported: true
-
-        onNotification: (notification) => {
-            notification.tracked = true
-            history.model.insert(0, {
-                notifObj: notification,
-                summary: notification.summary,
-                body: notification.body,
-                appName: notification.appName,
-                appIcon: notification.appIcon,
-                urgency: notification.urgency,
-                image: notification.image,
-                time: Date.now()
-            })
-
-            // ポップアップトーストを1件生成
-            toastLayer.createToast(notification)
-        }
-    }
-
-    // ------------------------------------------------------
-    // 通知履歴の保持用モデル
-    // ------------------------------------------------------
-    QtObject {
-        id: history
-        property ListModel model: ListModel {}
-    }
-
-    function clearAll() {
-        for (let i = 0; i < history.model.count; i++) {
-            const item = history.model.get(i)
-            if (item.notifObj && item.notifObj.tracked) {
-                item.notifObj.dismiss()
-            }
-        }
-        history.model.clear()
-    }
-
-    function removeAt(index) {
-        const item = history.model.get(index)
-        if (item.notifObj) item.notifObj.dismiss()
-        history.model.remove(index)
-    }
-
-    // ------------------------------------------------------
-    // 通知センターパネル本体 (右上等にドッキング)
-    // ------------------------------------------------------
     LazyLoader {
-        active: root.panelVisible
+        active: NotificationService.panelVisible
 
         PanelWindow {
             id: panel
-            visible: root.panelVisible
+            visible: NotificationService.panelVisible
 
             anchors {
                 top: true
@@ -101,11 +35,10 @@ Item {
             WlrLayershell.namespace: "notification-center"
             exclusiveZone: 0
 
-            // パネル外クリックで閉じる (フル画面の透明キャッチャーを使う簡易実装)
             MouseArea {
                 anchors.fill: parent
                 z: -1
-                onClicked: root.close()
+                onClicked: NotificationService.close()
             }
 
             Rectangle {
@@ -136,7 +69,7 @@ Item {
                             font.pixelSize: 12
                             MouseArea {
                                 anchors.fill: parent
-                                onClicked: root.clearAll()
+                                onClicked: NotificationService.clearAll()
                             }
                         }
                     }
@@ -147,7 +80,7 @@ Item {
                         Layout.fillHeight: true
                         clip: true
                         spacing: 6
-                        model: history.model
+                        model: NotificationService.historyModel
 
                         delegate: NotificationCard {
                             width: list.width
@@ -158,7 +91,7 @@ Item {
                             urgency: model.urgency
                             image: model.image
                             notifObj: model.notifObj
-                            onDismissRequested: root.removeAt(index)
+                            onDismissRequested: NotificationService.removeAt(index)
                         }
 
                         Text {
@@ -171,12 +104,5 @@ Item {
                 }
             }
         }
-    }
-
-    // ------------------------------------------------------
-    // ポップアップトースト表示レイヤー
-    // ------------------------------------------------------
-    ToastLayer {
-        id: toastLayer
     }
 }

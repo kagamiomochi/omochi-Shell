@@ -6,25 +6,27 @@ import Quickshell.Services.Notifications
 
 // ============================================================
 // 新着通知を画面右上にポップアップ表示するレイヤー
-// 一定時間(緊急度により変動)で自動的に消える
+// NotificationService.notified シグナルを購読して表示する
 // ============================================================
 Item {
     id: root
 
-    function createToast(notification) {
-        toastModel.append({
-            notifObj: notification,
-            summary: notification.summary,
-            body: notification.body,
-            appName: notification.appName,
-            appIcon: notification.appIcon,
-            urgency: notification.urgency,
-            image: notification.image,
-            uid: Date.now() + Math.random()
-        })
-    }
-
     ListModel { id: toastModel }
+
+    Connections {
+        target: NotificationService
+        function onNotified(notification) {
+            toastModel.append({
+                notifObj: notification,
+                summary: notification.summary,
+                body: notification.body,
+                appName: notification.appName,
+                appIcon: notification.appIcon,
+                urgency: notification.urgency,
+                image: notification.image
+            })
+        }
+    }
 
     PanelWindow {
         id: toastWindow
@@ -46,7 +48,6 @@ Item {
         WlrLayershell.layer: WlrLayer.Overlay
         WlrLayershell.namespace: "notification-toast"
         exclusiveZone: 0
-        // マウス操作を透過させ、カード部分だけ受け取る
         mask: Region { item: toastCol }
 
         ColumnLayout {
@@ -68,13 +69,11 @@ Item {
 
                     onDismissRequested: toastModel.remove(index)
 
-                    // 表示アニメーション
                     opacity: 0
                     Component.onCompleted: opacity = 1
                     Behavior on opacity { NumberAnimation { duration: 180 } }
 
                     Timer {
-                        // 緊急度に応じた自動消去時間 (critical は自動で消さない)
                         interval: urgency === NotificationUrgency.Critical
                             ? -1
                             : (urgency === NotificationUrgency.Low ? 3000 : 5000)

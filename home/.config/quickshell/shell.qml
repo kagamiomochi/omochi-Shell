@@ -42,4 +42,6 @@ ShellRoot {
     NotificationCenter {
         id: notifCenter
     }
+
+    ToastLayer { }
 }
