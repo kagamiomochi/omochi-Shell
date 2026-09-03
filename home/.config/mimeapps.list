@@ -4,6 +4,7 @@ application/x-zerosize=code.desktop
 inode/directory=thunar.desktop
 x-scheme-handler/claude=com.anthropic.Claude.desktop
 text/plain=code.desktop
+x-scheme-handler/unityhub=unityhub.desktop
 
 [Added Associations]
 text/x-lua=code.desktop;
@@ -14,3 +15,4 @@ application/json=code.desktop;
 application/x-zerosize=code.desktop;
 text/html=code.desktop;
 image/svg+xml=org.gnome.Loupe.desktop;org.inkscape.Inkscape.desktop;
+x-scheme-handler/unityhub=unityhub.desktop;

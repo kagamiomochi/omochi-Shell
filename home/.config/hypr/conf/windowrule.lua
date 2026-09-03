@@ -29,7 +29,7 @@ local float_rules = {
     { name = "Prism Launcher Quick Setup",          class = "org.prismlauncher.PrismLauncher", title = "Prism Launcher Quick Setup.*" },
     { name = "Prism Launcher Account",              class = "org.prismlauncher.PrismLauncher", title = "Microsoftアカウントを追加.*" },
     { name = "Prism Launcher Confirm activation",   class = "org.prismlauncher.PrismLauncher", title = "有効化の確認.*" },
-    { name = "BedrockOnLinux",                      class = "Bedrockonlinux" },
+    { name = "Bitwarden",                           class = "zen", title = "拡張機能: (Bitwarden パスワードマネージャー) - Bitwarden — Zen Browser"},
 }
 
 for _, rule in ipairs(float_rules) do

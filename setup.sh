@@ -73,6 +73,7 @@ shopt -u nullglob dotglob
  
 # system
 sudo ln -sfn "$DOTFILES_DIR/system/etc/keyd/default.conf" /etc/keyd/default.conf
+sudo ln -sfn "$DOTFILES_DIR/system/etc/pam.d/hyprlock" /etc/pam.d/hyprlock
 
 # greetd autologin
 sudo mkdir -p /etc/greetd

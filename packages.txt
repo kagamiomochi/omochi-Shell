@@ -36,6 +36,8 @@ gvfs-wsdd
 ffmpegthumbnailer
 kimageformats
 awww
+gnome-keyring
+libsecret
 
 
 btop

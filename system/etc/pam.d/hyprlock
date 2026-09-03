@@ -1,0 +1,7 @@
+# PAM configuration file for hyprlock
+# the 'login' configuration file (see /etc/pam.d/login)
+
+auth        include     login
+auth        optional    pam_gnome_keyring.so
+
+session     optional    pam_gnome_keyring.so auto_start
