@@ -38,6 +38,7 @@ kimageformats
 awww
 gnome-keyring
 libsecret
+kvantum
 
 
 btop

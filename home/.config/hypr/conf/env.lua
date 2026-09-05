@@ -25,3 +25,5 @@ hl.env("XCURSOR_SIZE", "24")
 hl.env("QT_IM_MODULE", "fcitx")
 hl.env("XMODIFIERS", "@im=fcitx")
 hl.env("SDL_IM_MODULE", "fcitx")
+
+hl.env("__GL_SHADER_DISK_CACHE_SIZE", "12000000000")
