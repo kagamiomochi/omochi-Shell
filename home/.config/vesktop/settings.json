@@ -9,8 +9,8 @@
     "customTitleBar": false,
     "enableMenu": false,
     "staticTitle": false,
-    "splashColor": "rgb(163, 173, 194)",
-    "splashBackground": "rgba(22, 24, 29, 0.6)",
+    "splashColor": "rgb(133, 146, 173)",
+    "splashBackground": "rgba(22, 24, 29, 0.5)",
     "spellCheckLanguages": [
         "ja",
         "ja-JP"

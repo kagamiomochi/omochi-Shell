@@ -1,5 +1,5 @@
 /**
- * @name midnight (background)
+ * @name midnight
  * @description a dark, customizable discord theme.
  * @author refact0r
  * @version 2.1.1
@@ -22,7 +22,7 @@ body {
     /* sizes */
     --gap: 12px; /* spacing between panels */
     --divider-thickness: 4px; /* thickness of unread messages divider and highlighted message borders */
-    --border-thickness: 1px; /* thickness of borders around main panels. DOES NOT AFFECT OTHER BORDERS */
+    --border-thickness: 0px; /* thickness of borders around main panels. DOES NOT AFFECT OTHER BORDERS */
 
     /* animation/transition options */
     --animations: on; /* off: disable animations/transitions, on: enable animations/transitions */
@@ -53,7 +53,7 @@ body {
 
     /* background image options */
     --background-image: on; /* off: no background image, on: enable background image (must set url variable below) */
-    --background-image-url: url('https://refact0r.github.io/midnight-discord/assets/iceland.jpg'); /* url of the background image */
+    --background-image-url: url(''); /* url of the background image */
 
     /* transparency/blur options */
     /* NOTE: TO USE TRANSPARENCY/BLUR, YOU MUST HAVE TRANSPARENT BG COLORS. FOR EXAMPLE: --bg-4: hsla(220, 15%, 10%, 0.7); */
@@ -61,14 +61,14 @@ body {
     --remove-bg-layer: off; /* off: no changes, on: remove the base --bg-3 layer for use with window transparency (WILL OVERRIDE BACKGROUND IMAGE) */
     --panel-blur: on; /* off: no changes, on: blur the background of panels */
     --blur-amount: 12px; /* amount of blur */
-    --bg-floating: hsla(220, 15%, 13%, 0.9); /* set this to a more opaque color if floating panels look too transparent. only applies if panel blur is on  */
+    --bg-floating: var(--bg-3); /* set this to a more opaque color if floating panels look too transparent. only applies if panel blur is on  */
 
     /* chatbar options */
-    --custom-chatbar: separated; /* off: default chatbar, separated: chatbar separated from chat */
+    --custom-chatbar: off; /* off: default chatbar, separated: chatbar separated from chat */
     --chatbar-height: 56px; /* height of the chatbar (56px by default, 47px to align with user panel, 56px recommended for separated) */
 
     /* other options */
-    --small-user-panel: on; /* off: default user panel, on: smaller user panel like in old discord */
+    --small-user-panel: off; /* off: default user panel, on: smaller user panel like in old discord */
 }
 
 /* color options */
@@ -76,18 +76,18 @@ body {
     --colors: on; /* off: discord default colors, on: midnight custom colors */
 
     /* text colors */
-    --text-0: hsla(220, 15%, 10%, 1); /* text on colored elements */
+    --text-0: var(--bg-4); /* text on colored elements */
     --text-1: hsl(220, 45%, 95%); /* other normally white text */
-    --text-2: hsl(220, 25%, 85%); /* headings and important text */
-    --text-3: hsl(220, 20%, 70%); /* normal text */
-    --text-4: hsl(220, 15%, 50%); /* icon buttons and channels */
-    --text-5: hsl(220, 15%, 35%); /* muted channels/chats and timestamps */
+    --text-2: hsl(220, 25%, 70%); /* headings and important text */
+    --text-3: hsl(220, 20%, 60%); /* normal text */
+    --text-4: hsl(220, 15%, 40%); /* icon buttons and channels */
+    --text-5: hsl(220, 15%, 25%); /* muted channels/chats and timestamps */
 
     /* background and dark colors */
-    --bg-1: hsla(220, 15%, 20%, 0.6); /* dark buttons when clicked */
-    --bg-2: hsla(220, 15%, 16%, 0.6); /* dark buttons */
-    --bg-3: hsla(220, 15%, 13%, 0.6); /* spacing, secondary elements */
-    --bg-4: hsla(220, 15%, 10%, 0.6); /* main background color */
+    --bg-1: hsla(220, 15%, 20%, 1); /* dark buttons when clicked */
+    --bg-2: hsla(220, 15%, 16%, 1); /* dark buttons */
+    --bg-3: hsla(220, 15%, 13%, 1); /* spacing, secondary elements */
+    --bg-4: rgba(22, 24, 29, 0.50); /* main background color */
     --hover: hsla(221, 19%, 40%, 0.1); /* channels and buttons when hovered */
     --active: hsla(220, 19%, 40%, 0.2); /* channels and buttons when clicked or selected */
     --active-2: hsla(220, 19%, 40%, 0.3); /* extra state for transparent buttons */

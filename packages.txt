@@ -39,6 +39,7 @@ awww
 gnome-keyring
 libsecret
 kvantum
+vimix-cursors
 
 
 btop
@@ -124,7 +125,6 @@ wget
 btrfs-assistant
 
 
-breezex-cursor-theme
 bt-dualboot
 fcitx5-im
 karukan-git

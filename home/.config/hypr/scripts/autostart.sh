@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 dbus-update-activation-environment --systemd --all
-hyprctl setcursor BreezeX-Dark 24
+hyprctl setcursor "Vimix Cursors" 24
 awww-daemon &
 
 hyprlock
