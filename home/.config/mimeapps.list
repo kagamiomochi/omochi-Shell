@@ -5,6 +5,7 @@ inode/directory=thunar.desktop
 x-scheme-handler/claude=com.anthropic.Claude.desktop
 text/plain=code.desktop
 x-scheme-handler/unityhub=unityhub.desktop
+application/octet-stream=code.desktop
 
 [Added Associations]
 text/x-lua=code.desktop;
@@ -14,5 +15,7 @@ application/yaml=code.desktop;
 application/json=code.desktop;
 application/x-zerosize=code.desktop;
 text/html=code.desktop;
-image/svg+xml=org.gnome.Loupe.desktop;org.inkscape.Inkscape.desktop;
+image/svg+xml=org.inkscape.Inkscape.desktop;org.gnome.Loupe.desktop;
 x-scheme-handler/unityhub=unityhub.desktop;
+video/mp4=io.github.celluloid_player.Celluloid.desktop;org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop;
+application/octet-stream=code.desktop;
