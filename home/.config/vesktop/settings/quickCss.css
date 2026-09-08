@@ -15,7 +15,7 @@
 
 body {
     /* font options */
-    --font: 'figtree'; /* change to '' for default discord font */
+    --font: ''; /* change to '' for default discord font */
     --code-font: ''; /* change to '' for default discord font */
     font-weight: 400; /* normal text font weight. DOES NOT AFFECT BOLD TEXT */
 
@@ -64,7 +64,7 @@ body {
     --bg-floating: var(--bg-3); /* set this to a more opaque color if floating panels look too transparent. only applies if panel blur is on  */
 
     /* chatbar options */
-    --custom-chatbar: off; /* off: default chatbar, separated: chatbar separated from chat */
+    --custom-chatbar: separated; /* off: default chatbar, separated: chatbar separated from chat */
     --chatbar-height: 56px; /* height of the chatbar (56px by default, 47px to align with user panel, 56px recommended for separated) */
 
     /* other options */
@@ -84,10 +84,10 @@ body {
     --text-5: hsl(220, 15%, 25%); /* muted channels/chats and timestamps */
 
     /* background and dark colors */
-    --bg-1: hsla(220, 15%, 20%, 1); /* dark buttons when clicked */
-    --bg-2: hsla(220, 15%, 16%, 1); /* dark buttons */
-    --bg-3: hsla(220, 15%, 13%, 1); /* spacing, secondary elements */
-    --bg-4: rgba(22, 24, 29, 0.50); /* main background color */
+    --bg-1: hsla(220, 15%, 20%, 0.4); /* dark buttons when clicked */
+    --bg-2: hsla(220, 15%, 16%, 0.4); /* dark buttons */
+    --bg-3: hsla(220, 15%, 13%, 0.4); /* spacing, secondary elements */
+    --bg-4: rgba(22, 24, 29, 0.4); /* main background color */
     --hover: hsla(221, 19%, 40%, 0.1); /* channels and buttons when hovered */
     --active: hsla(220, 19%, 40%, 0.2); /* channels and buttons when clicked or selected */
     --active-2: hsla(220, 19%, 40%, 0.3); /* extra state for transparent buttons */
