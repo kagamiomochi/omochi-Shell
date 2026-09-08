@@ -29,7 +29,6 @@ local float_rules = {
     { name = "Prism Launcher Quick Setup",          class = "org.prismlauncher.PrismLauncher", title = "Prism Launcher Quick Setup.*" },
     { name = "Prism Launcher Account",              class = "org.prismlauncher.PrismLauncher", title = "Microsoftアカウントを追加.*" },
     { name = "Prism Launcher Confirm activation",   class = "org.prismlauncher.PrismLauncher", title = "有効化の確認.*" },
-    { name = "Bitwarden",                           class = "zen", title = "拡張機能: (Bitwarden パスワードマネージャー) - Bitwarden — Zen Browser"},
     { name = "FileRoller",                          class = "org.gnome.FileRoller"}
 }
 
@@ -41,6 +40,15 @@ for _, rule in ipairs(float_rules) do
     })
 end
 
+
+hl.on("window.title", function(w)
+    if w ~= nil
+        and w.class == "zen"
+        and w.title:match("^拡張機能: %(Bitwarden パスワードマネージャー%)")
+    then
+        hl.dispatch(hl.dsp.window.float({ action = "set" }))
+    end
+end)
 
 hl.window_rule({
     name = "Discord",
