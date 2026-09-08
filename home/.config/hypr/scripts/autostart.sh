@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 dbus-update-activation-environment --systemd --all
+gnome-keyring-daemon --start --components=secrets,pkcs11,ssh
 hyprctl setcursor "Bibata-Modern-Classic" 24
 awww-daemon &
 
