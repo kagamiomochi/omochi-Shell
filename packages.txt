@@ -39,7 +39,7 @@ awww
 gnome-keyring
 libsecret
 kvantum
-vimix-cursors
+fcitx5-im
 
 
 btop
@@ -126,7 +126,7 @@ btrfs-assistant
 
 
 bt-dualboot
-fcitx5-im
+bibata-cursor-theme
 karukan-git
 minecraft-launcher
 tumbler-folder-thumbnailer
