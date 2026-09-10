@@ -6,7 +6,7 @@ hl.window_rule({ match = { fullscreen = true }, immediate = true })
 hl.window_rule({ match = { title = "^$" }, float = true })
 hl.window_rule({ match = { class = "fcitx5" }, no_initial_focus = true, no_focus = true })
 hl.window_rule({ match = { title = "ピクチャーインピクチャー" }, float = true, keep_aspect_ratio = true, })
-hl.window_rule({ match = { pin = true }, border_color = "rgba(FFAA00aa) rgba(CC7700aa)", border_size = 7 })
+hl.window_rule({ match = { pin = true }, border_color = "rgba(FFAA00aa) rgba(CC7700aa)", border_size = 5 })
 
 hl.window_rule({
     -- Fix some dragging issues with XWayland
@@ -54,6 +54,14 @@ hl.window_rule({
     name = "Discord",
     match = {
         class = "^(discord|vesktop)$"
+    },
+    workspace = "special"
+})
+
+hl.window_rule({
+    name = "Pear Desktop",
+    match = {
+        class = "com.github.th-ch.youtube-music"
     },
     workspace = "special"
 })
