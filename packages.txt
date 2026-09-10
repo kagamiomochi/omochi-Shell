@@ -95,6 +95,12 @@ python-evdev
 qt6ct
 adwaita-qt6
 
+reflector
+snap-pac
+snapper
+sudo
+wget
+btrfs-assistant
 
 
 blender
@@ -118,12 +124,6 @@ mission-center
 claude-desktop
 pear-desktop
 
-reflector
-snap-pac
-snapper
-sudo
-wget
-btrfs-assistant
 
 
 bt-dualboot
