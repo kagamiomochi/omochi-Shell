@@ -134,7 +134,6 @@ visual-studio-code-bin
 git-credential-manager-bin
 python-terminaltexteffects
 zen-browser
-gapless
 bedrock-on-linux-bin
 unityhub
 pear-desktop
