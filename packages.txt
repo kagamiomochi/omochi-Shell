@@ -116,6 +116,7 @@ rclone
 inkscape
 mission-center
 claude-desktop
+pear-desktop
 
 reflector
 snap-pac
@@ -136,4 +137,3 @@ python-terminaltexteffects
 zen-browser
 bedrock-on-linux-bin
 unityhub
-pear-desktop
