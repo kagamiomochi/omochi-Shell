@@ -7,6 +7,7 @@ import qs.Modals
 import "PanelBar"
 import "Launcher"
 import "NotificationCenter"
+import "ClipboardPopup"
 
 ShellRoot {
     id: root
@@ -44,4 +45,8 @@ ShellRoot {
     }
 
     ToastLayer { }
+
+    // ====== クリップボード ======
+    ClipboardPopup { id: clipPopup }
+    ClipboardWatcher { popup: clipPopup }
 }
