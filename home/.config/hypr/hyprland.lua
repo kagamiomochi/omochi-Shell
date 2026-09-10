@@ -19,6 +19,7 @@ require("conf/keybinds")
 require("conf/windowrule")
 require("conf/variables")
 require("conf/plugin")
+require("private")
 ----- If you want to override the shell configuration, please write your code below this line. -----
 
-require("private")
+

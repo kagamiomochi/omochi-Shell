@@ -94,9 +94,7 @@ sudo systemctl enable greetd
 sudo ufw allow 1714:1764/tcp # KDE Connect
 sudo ufw allow 1714:1764/udp
 
-sudo ufw allow 80/tcp # Steam
-sudo ufw allow 443/tcp
-sudo ufw allow 27015:27050/tcp
+sudo ufw allow 27015:27050/tcp # Steam
 sudo ufw allow 27000:27250/udp
 sudo ufw allow 27031:27036/udp
 sudo ufw allow 27036/tcp
