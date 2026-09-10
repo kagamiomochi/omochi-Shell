@@ -137,3 +137,4 @@ zen-browser
 gapless
 bedrock-on-linux-bin
 unityhub
+pear-desktop
