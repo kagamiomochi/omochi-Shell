@@ -1860,7 +1860,7 @@ ytmusic-player-page:not([is-mweb-modernization-enabled]):not([video-mode]):not(
 }
 @media (min-width: 935px) {
   #side-panel {
-    width: 50%;
+    width: 40%;
     max-width: unset;
   }
 }
