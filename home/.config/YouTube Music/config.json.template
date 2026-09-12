@@ -40,7 +40,8 @@
 			"globalShortcuts": {}
 		},
 		"discord": {
-			"listenAlong": true
+			"listenAlong": true,
+			"enabled": true
 		},
 		"do-not-track": {
 			"enabled": true
@@ -59,19 +60,6 @@
 			"size": 100,
 			"opacity": 1,
 			"fullscreen": true
-		},
-		"scrobbler": {
-			"enabled": true,
-			"scrobbleOtherMedia": true,
-			"alternativeTitles": true,
-			"alternativeArtist": true,
-			"scrobblers": {
-				"listenbrainz": {
-					"enabled": true,
-					"token": "",
-					"apiRoot": "https://api.listenbrainz.org/1/"
-				}
-			}
 		},
 		"blur-nav-bar": {
 			"enabled": true
