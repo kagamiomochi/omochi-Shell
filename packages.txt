@@ -104,7 +104,7 @@ btrfs-assistant
 
 
 blender
-vesktop
+vesktop-bin
 discord
 docker
 docker-compose
