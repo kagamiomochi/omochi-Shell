@@ -24,7 +24,11 @@ fi
 sudo pacman -Syu --noconfirm
 
 # Check if Paru is installed.
-if ! command -v paru &> /dev/null; then
+if command -v paru &> /dev/null; then
+    echo "paru is already installed."
+elif pacman -Si paru &>/dev/null; then
+    sudo pacman -S --needed paru
+else
     sudo pacman -S --needed --noconfirm base-devel git rust
     BUILD_DIR=$(mktemp -d)
 
@@ -45,7 +49,6 @@ grep -Ev '^\s*($|#)' "$PACKAGES_FILE" | xargs -r paru -S --needed --noconfirm
 
 # Linking dotfiles 
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
-HOME_DIR="$DOTFILES_DIR/home"
  
 link() {
     local src="$1"
@@ -55,15 +58,19 @@ link() {
 }
 
 # home
-link "$HOME_DIR/.zshrc"    "$HOME/.zshrc"
-link "$HOME_DIR/.p10k.zsh" "$HOME/.p10k.zsh"
+link "$DOTFILES_DIR/home/.zshrc"    "$HOME/.zshrc"
+link "$DOTFILES_DIR/home/.p10k.zsh" "$HOME/.p10k.zsh"
 
 shopt -s nullglob dotglob
-for item in "$HOME_DIR"/.config/*; do
+for item in "$DOTFILES_DIR/home"/.config/*; do
     name="$(basename "$item")"
-    link "$HOME_DIR/.config/$name" "$HOME/.config/$name"
+    link "$DOTFILES_DIR/home/.config/$name" "$HOME/.config/$name"
 done
 shopt -u nullglob dotglob
+
+# Pear Desktop
+mkdir -p "$HOME/.config/YouTube Music"
+sed "s|\$HOME|$HOME|g" "$HOME/omochi-Shell/home/.config/YouTube Music/config.json.template" > "$HOME/.config/YouTube Music/config.json"
  
 # system
 sudo ln -sfn "$DOTFILES_DIR/system/etc/keyd/default.conf" /etc/keyd/default.conf
@@ -77,7 +84,7 @@ sed "s/__USERNAME__/${USER}/g" "$DOTFILES_DIR/system/etc/greetd/config.toml.temp
 echo "Defaults pwfeedback" | sudo tee /etc/sudoers.d/pwfeedback
 
 # git
-git update-index --skip-worktree ~/omochi-Shell/home/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml
+git update-index --skip-worktree "$DOTFILES_DIR/home/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml"
 
 # startup
 sudo systemctl enable --now bluetooth

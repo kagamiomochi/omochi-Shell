@@ -1,0 +1,101 @@
+{
+	"window-size": {
+		"width": 1920,
+		"height": 1080
+	},
+	"window-maximized": true,
+	"window-position": {
+		"x": -1,
+		"y": -1
+	},
+	"url": "https://music.youtube.com",
+	"options": {
+		"tray": true,
+		"appVisible": true,
+		"autoUpdates": true,
+		"alwaysOnTop": false,
+		"hideMenu": true,
+		"hideMenuWarned": true,
+		"startAtLogin": false,
+		"disableHardwareAcceleration": false,
+		"removeUpgradeButton": false,
+		"restartOnConfigChanges": false,
+		"trayClickPlayPause": false,
+		"autoResetAppCache": false,
+		"resumeOnStart": true,
+		"likeButtons": "",
+		"swapLikeButtonsOrder": false,
+		"proxy": "",
+		"startingPage": "",
+		"overrideUserAgent": false,
+		"usePodcastParticipantAsArtist": false,
+		"themes": [
+			"$HOME/omochi-Shell/home/.config/YouTube Music/pear-ytm.css"
+		],
+		"language": "ja",
+		"customWindowTitle": ""
+	},
+	"plugins": {
+		"precise-volume": {
+			"globalShortcuts": {}
+		},
+		"discord": {
+			"listenAlong": true
+		},
+		"do-not-track": {
+			"enabled": true
+		},
+		"album-color-theme": {
+			"enabled": true,
+			"ratio": 0.5,
+			"enableSeekbar": true
+		},
+		"ambient-mode": {
+			"enabled": true,
+			"quality": 50,
+			"buffer": 30,
+			"interpolationTime": 1500,
+			"blur": 100,
+			"size": 100,
+			"opacity": 1,
+			"fullscreen": true
+		},
+		"scrobbler": {
+			"enabled": true,
+			"scrobbleOtherMedia": true,
+			"alternativeTitles": true,
+			"alternativeArtist": true,
+			"scrobblers": {
+				"listenbrainz": {
+					"enabled": true,
+					"token": "",
+					"apiRoot": "https://api.listenbrainz.org/1/"
+				}
+			}
+		},
+		"blur-nav-bar": {
+			"enabled": true
+		},
+		"synced-lyrics": {
+			"enabled": true,
+			"preciseTiming": true,
+			"showLyricsEvenIfInexact": true,
+			"showTimeCodes": false,
+			"defaultTextString": "♪",
+			"lineEffect": "fancy",
+			"romanization": false,
+			"preferredProvider": "LRCLib"
+		},
+		"navigation": {
+			"enabled": false
+		},
+		"unobtrusive-player": {
+			"enabled": true
+		}
+	},
+	"__internal__": {
+		"migrations": {
+			"version": "3.12.0"
+		}
+	}
+}
