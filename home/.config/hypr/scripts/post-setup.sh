@@ -2,6 +2,11 @@
 
 touch ~/.config/hypr/private.lua
 
+cleanup() {
+    sudo rm -f /etc/sudoers.d/hyprpm-tmp
+}
+trap cleanup EXIT
+
 # Install Hyprland plugins
 hyprpm update
 yes | hyprpm add https://github.com/hyprwm/hyprland-plugins

@@ -91,6 +91,16 @@ sudo systemctl enable --now bluetooth
 sudo systemctl enable --now keyd
 sudo systemctl enable greetd
 
+# hyprpm nopassword
+HYPRPM_BIN="$(command -v hyprpm)"
+SUDOERS_FILE="/etc/sudoers.d/hyprpm-tmp"
+
+sudo tee "$SUDOERS_FILE" > /dev/null <<EOF
+$USER ALL=(ALL) NOPASSWD: $HYPRPM_BIN, /usr/bin/rm -f $SUDOERS_FILE
+EOF
+sudo chmod 0440 "$SUDOERS_FILE"
+sudo visudo -c -f "$SUDOERS_FILE"
+
 # firewall
 sudo ufw allow 1714:1764/tcp # KDE Connect
 sudo ufw allow 1714:1764/udp
