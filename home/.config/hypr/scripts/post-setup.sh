@@ -14,3 +14,6 @@ yes | hyprpm add https://github.com/virtcode/hypr-dynamic-cursors
 hyprpm enable dynamic-cursors
 
 hyprpm reload
+
+mkdir -p "$(dirname "$HOME/.local/state/omochi-shell/.setup_done")"
+touch "$HOME/.local/state/omochi-shell/.setup_done"
