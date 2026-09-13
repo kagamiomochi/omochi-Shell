@@ -1,7 +1,5 @@
 #!/bin/bash
 
-touch ~/.config/hypr/private.lua
-
 cleanup() {
     sudo rm -f /etc/sudoers.d/post-setup-tmp
 }
