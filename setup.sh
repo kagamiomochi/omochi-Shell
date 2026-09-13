@@ -101,6 +101,8 @@ EOF
 sudo chmod 0440 "$SUDOERS_FILE"
 sudo visudo -c -f "$SUDOERS_FILE"
 
+touch ~/.config/hypr/private.lua
+
 # firewall
 sudo ufw allow 1714:1764/tcp # KDE Connect
 sudo ufw allow 1714:1764/udp
