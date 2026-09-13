@@ -3,7 +3,7 @@
 touch ~/.config/hypr/private.lua
 
 cleanup() {
-    sudo rm -f /etc/sudoers.d/hyprpm-tmp
+    sudo rm -f /etc/sudoers.d/post-setup-tmp
 }
 trap cleanup EXIT
 
