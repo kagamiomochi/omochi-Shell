@@ -91,12 +91,12 @@ sudo systemctl enable --now bluetooth
 sudo systemctl enable --now keyd
 sudo systemctl enable greetd
 
-# hyprpm nopassword
-HYPRPM_BIN="$(command -v hyprpm)"
-SUDOERS_FILE="/etc/sudoers.d/hyprpm-tmp"
+# post-setup nopassword
+POSTSETUP_PATH="$DOTFILES_DIR/home/.config/hypr/scripts/post-setup.sh"
+SUDOERS_FILE="/etc/sudoers.d/post-setup-tmp"
 
 sudo tee "$SUDOERS_FILE" > /dev/null <<EOF
-$USER ALL=(ALL) NOPASSWD: $HYPRPM_BIN, /usr/bin/rm -f $SUDOERS_FILE
+$USER ALL=(ALL) NOPASSWD: $POSTSETUP_PATH, /usr/bin/rm -f $SUDOERS_FILE
 EOF
 sudo chmod 0440 "$SUDOERS_FILE"
 sudo visudo -c -f "$SUDOERS_FILE"
