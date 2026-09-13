@@ -17,7 +17,7 @@ Item {
     id: root
     implicitHeight: 36
     implicitWidth: lyricsText.implicitWidth + 16
-    visible: lyricsText.text.length > 0
+    visible: lyricsText.text.length > 0 || isInterlude
 
     // ===== 状態 =====
     property string currentTrackKey: ""
@@ -196,6 +196,9 @@ Item {
     }
 
     // ===== 行の更新 =====
+    // 空行 (間奏マーカー) のとき isInterlude = true にして音符アニメーションを表示
+    property bool isInterlude: false
+
     function updateLine() {
         if (!player || root.lrcLines.length === 0) return
         var posSec = player.position
@@ -207,7 +210,9 @@ Item {
                 break
             }
         }
-        if (lyricsText.text !== line) lyricsText.text = line
+        var interlude = (line === "")
+        if (root.isInterlude !== interlude) root.isInterlude = interlude
+        if (!interlude && lyricsText.text !== line) lyricsText.text = line
     }
 
     // ===== position ポーリング =====
@@ -226,6 +231,7 @@ Item {
     }
 
     // ===== 表示 =====
+    // 歌詞テキスト (間奏中は非表示)
     Text {
         id: lyricsText
         anchors.centerIn: parent
@@ -234,6 +240,36 @@ Item {
         font { pixelSize: 13 }
         elide: Text.ElideRight
         width: Math.min(implicitWidth, 500)
+        visible: !root.isInterlude
+    }
+
+    // 間奏中の音符アニメーション
+    Row {
+        anchors.centerIn: parent
+        spacing: 6
+        visible: root.isInterlude
+
+        Repeater {
+            model: 3
+            delegate: Text {
+                required property int index
+                text: "♪"
+                color: "#565f89"
+                font { pixelSize: 14 }
+
+                SequentialAnimation on opacity {
+                    loops: Animation.Infinite
+                    running: root.isInterlude
+                    // 各音符を index * 400ms ずつずらしてウェーブ効果
+                    PauseAnimation   { duration: index * 400 }
+                    NumberAnimation  { to: 1.0; duration: 300; easing.type: Easing.InOutSine }
+                    NumberAnimation  { to: 0.2; duration: 300; easing.type: Easing.InOutSine }
+                    PauseAnimation   { duration: (2 - index) * 400 }
+                }
+
+                Component.onCompleted: opacity = 0.2
+            }
+        }
     }
 
     Component.onCompleted: Qt.callLater(checkAndFetch)
