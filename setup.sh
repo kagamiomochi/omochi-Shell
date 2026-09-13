@@ -27,7 +27,7 @@ sudo pacman -Syu --noconfirm
 if command -v paru &> /dev/null; then
     echo "paru is already installed."
 elif pacman -Si paru &>/dev/null; then
-    sudo pacman -S --needed paru
+    sudo pacman -S --needed --noconfirm paru
 else
     sudo pacman -S --needed --noconfirm base-devel git rust
     BUILD_DIR=$(mktemp -d)
