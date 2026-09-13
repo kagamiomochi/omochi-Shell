@@ -15,5 +15,5 @@ hyprpm enable dynamic-cursors
 
 hyprpm reload
 
-mkdir -p "$(dirname "$HOME/.local/state/omochi-shell/.setup_done")"
+mkdir -p ""$HOME/.local/state/omochi-shell/.setup_done"
 touch "$HOME/.local/state/omochi-shell/.setup_done"
