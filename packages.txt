@@ -1,6 +1,7 @@
 hypridle
 hyprlock
 hyprpicker
+hyprpm
 fastfetch
 kitty
 wl-clipboard
