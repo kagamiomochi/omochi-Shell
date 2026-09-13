@@ -92,7 +92,7 @@ sudo systemctl enable --now keyd
 sudo systemctl enable greetd
 
 # post-setup nopassword
-POSTSETUP_PATH="$DOTFILES_DIR/home/.config/hypr/scripts/post-setup.sh"
+POSTSETUP_PATH="$DOTFILES_DIR/post-setup.sh"
 SUDOERS_FILE="/etc/sudoers.d/post-setup-tmp"
 
 sudo tee "$SUDOERS_FILE" > /dev/null <<EOF
