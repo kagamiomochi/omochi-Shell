@@ -70,7 +70,7 @@ shopt -u nullglob dotglob
 
 # Pear Desktop
 mkdir -p "$HOME/.config/YouTube Music"
-sed "s|\$HOME|$HOME|g" "$HOME/omochi-Shell/home/.config/YouTube Music/config.json.template" > "$HOME/.config/YouTube Music/config.json"
+sed "s|\$HOME|$HOME|g" "$DOTFILES_DIR/home/.config/YouTube Music/config.json.template" > "$HOME/.config/YouTube Music/config.json"
  
 # system
 sudo ln -sfn "$DOTFILES_DIR/system/etc/keyd/default.conf" /etc/keyd/default.conf
