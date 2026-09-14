@@ -14,3 +14,34 @@ home/.config/sunshine/credentials/
 home/.config/sunshine/sunshine.conf
 home/.config/sunshine/sunshine.log
 home/.config/sunshine/sunshine_state.json
+home/.config/YouTube Music/Cache/
+home/.config/YouTube Music/Code Cache/
+home/.config/YouTube Music/Cookies
+home/.config/YouTube Music/Cookies-journal
+home/.config/YouTube Music/Crashpad/
+home/.config/YouTube Music/DIPS
+home/.config/YouTube Music/DIPS-wal
+home/.config/YouTube Music/DawnGraphiteCache/
+home/.config/YouTube Music/DawnWebGPUCache/
+home/.config/YouTube Music/Dictionaries/
+home/.config/YouTube Music/GPUCache/
+home/.config/YouTube Music/IndexedDB/
+home/.config/YouTube Music/Local State
+home/.config/YouTube Music/Local Storage/
+home/.config/YouTube Music/Network Persistent State
+home/.config/YouTube Music/Preferences
+home/.config/YouTube Music/Service Worker/
+home/.config/YouTube Music/Session Storage/
+home/.config/YouTube Music/Shared Dictionary/
+home/.config/YouTube Music/SharedStorage
+home/.config/YouTube Music/SharedStorage-wal
+home/.config/YouTube Music/SingletonCookie
+home/.config/YouTube Music/SingletonLock
+home/.config/YouTube Music/SingletonSocket
+home/.config/YouTube Music/TransportSecurity
+home/.config/YouTube Music/Trust Tokens
+home/.config/YouTube Music/Trust Tokens-journal
+home/.config/YouTube Music/VideoDecodeStats/
+home/.config/YouTube Music/WebStorage/
+home/.config/YouTube Music/config.json
+home/.config/YouTube Music/shared_proto_db/
