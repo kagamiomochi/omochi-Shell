@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -euo pipefail
 
 sudo -v
 (while true; do sudo -n true; sleep 60; kill -0 "$$" 2>/dev/null || exit; done) &

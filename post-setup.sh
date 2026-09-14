@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 cleanup() {
     sudo rm -f /etc/sudoers.d/post-setup-tmp
 }
