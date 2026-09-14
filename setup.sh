@@ -100,6 +100,7 @@ EOF
 sudo chmod 0440 "$SUDOERS_FILE"
 sudo visudo -c -f "$SUDOERS_FILE"
 
+# Creating necessary files
 touch ~/.config/hypr/private.lua
 
 # firewall
