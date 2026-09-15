@@ -161,11 +161,11 @@ step_install_paru() {
     fi
 }
 
-step_install_hyprland() {
+step_install_required_packages() {
     sudo pacman -S hyprland --needed --noconfirm
 }
 
-step_install_packages() {
+step_install_other_packages() {
     grep -Ev '^\s*($|#)' "$PACKAGES_FILE" | xargs -r paru -S --needed --noconfirm
 }
 
@@ -188,12 +188,11 @@ step_link_dotfiles() {
         link "$DOTFILES_DIR/home/.config/$name" "$HOME/.config/$name"
     done
     shopt -u nullglob dotglob
-}
 
-step_pear_desktop() {
-    local DOTFILES_DIR="$1"
     mkdir -p "$HOME/.config/YouTube Music"
     sed "s|\$HOME|$HOME|g" "$DOTFILES_DIR/home/.config/YouTube Music/config.json.template" > "$HOME/.config/YouTube Music/config.json"
+    
+    touch ~/.config/hypr/private.lua
 }
 
 step_system_symlinks() {
@@ -230,9 +229,9 @@ $USER ALL=(ALL) NOPASSWD: ALL
 EOF
     sudo chmod 0440 "$SUDOERS_FILE"
     sudo visudo -c -f "$SUDOERS_FILE"
+}
 
-    touch ~/.config/hypr/private.lua
-
+step_firewall_setup() {
     sudo ufw allow 1714:1764/tcp
     sudo ufw allow 1714:1764/udp
 
@@ -261,25 +260,25 @@ step_env_var() {
 }
 
 # ============================================================
-# Execute
+# Run
 # ============================================================
 
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 
-run_step "システムを更新中"                 step_system_update
-run_step "paruをインストール中"             step_install_paru
-run_step "Hyprlandをインストール中"         step_install_hyprland
-run_step "パッケージを一括インストール中"   step_install_packages
-run_step "dotfilesをリンク中"               step_link_dotfiles "$DOTFILES_DIR"
-run_step "Pear Desktopを設定中"             step_pear_desktop "$DOTFILES_DIR"
-run_step "システム設定ファイルをリンク中"   step_system_symlinks "$DOTFILES_DIR"
-run_step "greetdの自動ログインを設定中"     step_greetd_config "$DOTFILES_DIR"
-run_step "sudoのフィードバック表示を設定中" step_sudo_feedback
-run_step "gitのスキップ設定を適用中"        step_git_skip_worktree "$DOTFILES_DIR"
-run_step "各種サービスを有効化中"           step_enable_services
-run_step "初期セットアップ準備を実行中"     step_post_setup_nopasswd
-run_step "テーマとユーザーグループを設定中" step_theme_and_groups
-run_step "環境変数を設定中"                 step_env_var "$DOTFILES_DIR"
+run_step "Updating the system"                   step_system_update
+run_step "Installing paru"                       step_install_paru
+run_step "Installing required packages"          step_install_required_packages
+run_step "Installing other packages"             step_install_other_packages
+run_step "Linking dotfiles"                      step_link_dotfiles "$DOTFILES_DIR"
+run_step "Linking the system configuration file" step_system_symlinks "$DOTFILES_DIR"
+run_step "Setting up automatic login for greetd" step_greetd_config "$DOTFILES_DIR"
+run_step "Configuring sudo feedback display"     step_sudo_feedback
+run_step "Applying Git skip settings"            step_git_skip_worktree "$DOTFILES_DIR"
+run_step "Enabling various services"             step_enable_services
+run_step "Initial setup is in progress"          step_post_setup_nopasswd
+run_step "Setting up the firewall"               step_firewall_setup
+run_step "Setting up the theme and user group"   step_theme_and_groups
+run_step "Setting environment variables"         step_env_var "$DOTFILES_DIR"
 
 echo "The log is stored in $LOG_FILE."
 echo "Installation complete!"
