@@ -30,7 +30,7 @@
 		"overrideUserAgent": false,
 		"usePodcastParticipantAsArtist": false,
 		"themes": [
-			"$HOME/omochi-Shell/home/.config/YouTube Music/pear-ytm.css"
+			"$DOTFILES_DIR/home/.config/YouTube Music/pear-ytm.css"
 		],
 		"language": "ja",
 		"customWindowTitle": ""
