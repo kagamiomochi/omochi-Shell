@@ -125,6 +125,10 @@ gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
 # User groups
 sudo usermod -aG input "$USER"
 
+# Environment variable
+sudo sed -i '/^DOTFILES_DIR=/d' /etc/environment
+echo "DOTFILES_DIR=$DOTFILES_DIR" | sudo tee -a /etc/environment > /dev/null
+
 clear
 echo "Installation complete!"
 printf "Welcome to \e[1;33momochi-Shell!\e[0m\n"
