@@ -84,6 +84,10 @@ PanelWindow {
             spacing: 4
             Layout.maximumWidth: 420
 
+            LauncherButton {}
+
+            BarSeparator {}
+
             Repeater {
                 model: 10
                 delegate: WorkspaceButton {}
