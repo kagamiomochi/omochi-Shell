@@ -29,6 +29,8 @@ fi
 TOTAL_STEPS=14
 CURRENT_STEP=0
 BAR_WIDTH=20
+TAIL_LINES=3          # Number of output lines to display below the progress bar
+LINE_MAX_CHARS=100    # Maximum number of characters displayed per line
 SPIN='⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏'
 
 # Construct a bar string (argument: percent)
@@ -39,8 +41,41 @@ render_bar() {
     printf '%s%s' "$(printf '#%.0s' $(seq 1 "$filled") 2>/dev/null)" "$(printf -- '-%.0s' $(seq 1 "$empty") 2>/dev/null)"
 }
 
-# Execute one step and display a progress bar with a spinner until completion
-# Usage: run_step "Display Message" command...
+# Remove ANSI escape sequences and carriage returns to format the text for display
+sanitize_line() {
+    printf '%s' "$1" | tr '\r' '\n' | sed 's/\x1b\[[0-9;]*[a-zA-Z]//g' | tail -n 1
+}
+
+# Draw the progress line and the TAIL_LINES lines at the end of the output
+# Arguments: symbol (spinner text or ✔/✘) tmpfile
+draw_block() {
+    local symbol="$1"
+    local tmpfile="$2"
+
+    printf "\r\033[K[%d/%d] [%s] %3d%% %s %s\n" \
+        "$CURRENT_STEP" "$TOTAL_STEPS" "$bar" "$percent" "$symbol" "$msg"
+
+    local lines=()
+    if [ -s "$tmpfile" ]; then
+        mapfile -t lines < <(tail -n "$TAIL_LINES" "$tmpfile" 2>/dev/null)
+    fi
+
+    local shown=0
+    local raw
+    for raw in "${lines[@]}"; do
+        local clean
+        clean=$(sanitize_line "$raw")
+        printf "\033[K  %s\n" "${clean:0:LINE_MAX_CHARS}"
+        shown=$((shown + 1))
+    done
+    while [ "$shown" -lt "$TAIL_LINES" ]; do
+        printf "\033[K\n"
+        shown=$((shown + 1))
+    done
+}
+
+# Execute one step and display the spinner and the most recent output until completion.
+# Usage: run_step “Display Message” command...
 run_step() {
     local msg="$1"
     shift
@@ -54,26 +89,44 @@ run_step() {
         echo "===== [$CURRENT_STEP/$TOTAL_STEPS] $msg ====="
     } >> "$LOG_FILE"
 
-    ( "$@" >> "$LOG_FILE" 2>&1 ) &
+    local STEP_TMP
+    STEP_TMP=$(mktemp)
+
+    # Redirect standard output and standard error to both a log file and a temporary file
+    ( "$@" ) > >(tee -a "$LOG_FILE" >> "$STEP_TMP") 2>&1 &
     local pid=$!
     local i=0
+    local drawn=0
 
-    while kill -0 "$pid" 2>/dev/null; do
+    while true; do
+        if [ "$drawn" -gt 0 ]; then
+            printf "\033[%dA" "$drawn"
+        fi
+
+        draw_block "${SPIN:$i:1}" "$STEP_TMP"
+        drawn=$((TAIL_LINES + 1))
+
+        if ! kill -0 "$pid" 2>/dev/null; then
+            break
+        fi
+
         i=$(( (i + 1) % ${#SPIN} ))
-        printf "\r\033[K[%d/%d] [%s] %3d%% %s %s" \
-            "$CURRENT_STEP" "$TOTAL_STEPS" "$bar" "$percent" "${SPIN:$i:1}" "$msg"
         sleep 0.1
     done
 
     wait "$pid"
     local status=$?
 
+    printf "\033[%dA" "$drawn"
     if [ $status -eq 0 ]; then
-        printf "\r\033[K[%d/%d] [%s] %3d%% %s %s\n" \
-            "$CURRENT_STEP" "$TOTAL_STEPS" "$bar" "$percent" "✔" "$msg"
+        draw_block "✔" "$STEP_TMP"
     else
-        printf "\r\033[K[%d/%d] [%s] %3d%% %s %s\n" \
-            "$CURRENT_STEP" "$TOTAL_STEPS" "$bar" "$percent" "✘" "$msg"
+        draw_block "✘" "$STEP_TMP"
+    fi
+
+    rm -f "$STEP_TMP"
+
+    if [ $status -ne 0 ]; then
         echo ""
         echo "An error has occurred. Please check the log below for details:"
         echo "  $LOG_FILE"
