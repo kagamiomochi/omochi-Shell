@@ -29,9 +29,9 @@ fi
 TOTAL_STEPS=14
 CURRENT_STEP=0
 BAR_WIDTH=20
-TAIL_LINES=3          # Number of output lines to display below the progress bar
-LINE_MAX_CHARS=100    # Maximum number of characters displayed per line
 SPIN='⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏'
+LOG_TAIL_LINES=10
+COMPLETED_STEPS=()
 
 # Construct a bar string (argument: percent)
 render_bar() {
@@ -41,41 +41,43 @@ render_bar() {
     printf '%s%s' "$(printf '#%.0s' $(seq 1 "$filled") 2>/dev/null)" "$(printf -- '-%.0s' $(seq 1 "$empty") 2>/dev/null)"
 }
 
-# Remove ANSI escape sequences and carriage returns to format the text for display
-sanitize_line() {
-    printf '%s' "$1" | tr '\r' '\n' | sed 's/\x1b\[[0-9;]*[a-zA-Z]//g' | tail -n 1
-}
+# Redraw the whole screen: recent log lines, a boxed current step, completed steps below
+draw_screen() {
+    local msg="$1"
+    local spin_char="$2"
+    local percent="$3"
+    local bar="$4"
 
-# Draw the progress line and the TAIL_LINES lines at the end of the output
-# Arguments: symbol (spinner text or ✔/✘) tmpfile
-draw_block() {
-    local symbol="$1"
-    local tmpfile="$2"
+    # Clear screen and move cursor to top-left
+    printf '\033[2J\033[H'
 
-    printf "\r\033[K[%d/%d] [%s] %3d%% %s %s\n" \
-        "$CURRENT_STEP" "$TOTAL_STEPS" "$bar" "$percent" "$symbol" "$msg"
+    echo "----- Log -----"
+    tail -n "$LOG_TAIL_LINES" "$LOG_FILE" 2>/dev/null
+    echo ""
 
-    local lines=()
-    if [ -s "$tmpfile" ]; then
-        mapfile -t lines < <(tail -n "$TAIL_LINES" "$tmpfile" 2>/dev/null)
+    # Box around the current step
+    local box_text=" [$CURRENT_STEP/$TOTAL_STEPS] [$bar] ${percent}% $spin_char $msg "
+    local box_len=${#box_text}
+    local border
+    border=$(printf '─%.0s' $(seq 1 "$box_len"))
+    printf '┌%s┐\n' "$border"
+    printf '│%s│\n' "$box_text"
+    printf '└%s┘\n' "$border"
+    echo ""
+
+    echo "----- Completed -----"
+    if [ ${#COMPLETED_STEPS[@]} -eq 0 ]; then
+        echo "(none yet)"
+    else
+        local line
+        for line in "${COMPLETED_STEPS[@]}"; do
+            echo "$line"
+        done
     fi
-
-    local shown=0
-    local raw
-    for raw in "${lines[@]}"; do
-        local clean
-        clean=$(sanitize_line "$raw")
-        printf "\033[K  %s\n" "${clean:0:LINE_MAX_CHARS}"
-        shown=$((shown + 1))
-    done
-    while [ "$shown" -lt "$TAIL_LINES" ]; do
-        printf "\033[K\n"
-        shown=$((shown + 1))
-    done
 }
 
-# Execute one step and display the spinner and the most recent output until completion.
-# Usage: run_step “Display Message” command...
+# Execute one step and keep the progress screen updated until completion
+# Usage: run_step "Display Message" command...
 run_step() {
     local msg="$1"
     shift
@@ -89,44 +91,25 @@ run_step() {
         echo "===== [$CURRENT_STEP/$TOTAL_STEPS] $msg ====="
     } >> "$LOG_FILE"
 
-    local STEP_TMP
-    STEP_TMP=$(mktemp)
-
-    # Redirect standard output and standard error to both a log file and a temporary file
-    ( "$@" ) > >(tee -a "$LOG_FILE" >> "$STEP_TMP") 2>&1 &
+    ( "$@" >> "$LOG_FILE" 2>&1 ) &
     local pid=$!
     local i=0
-    local drawn=0
 
-    while true; do
-        if [ "$drawn" -gt 0 ]; then
-            printf "\033[%dA" "$drawn"
-        fi
-
-        draw_block "${SPIN:$i:1}" "$STEP_TMP"
-        drawn=$((TAIL_LINES + 1))
-
-        if ! kill -0 "$pid" 2>/dev/null; then
-            break
-        fi
-
+    while kill -0 "$pid" 2>/dev/null; do
         i=$(( (i + 1) % ${#SPIN} ))
+        draw_screen "$msg" "${SPIN:$i:1}" "$percent" "$bar"
         sleep 0.1
     done
 
     wait "$pid"
     local status=$?
 
-    printf "\033[%dA" "$drawn"
     if [ $status -eq 0 ]; then
-        draw_block "✔" "$STEP_TMP"
+        COMPLETED_STEPS+=("✔ [$CURRENT_STEP/$TOTAL_STEPS] $msg")
+        draw_screen "$msg" "✔" "$percent" "$bar"
     else
-        draw_block "✘" "$STEP_TMP"
-    fi
-
-    rm -f "$STEP_TMP"
-
-    if [ $status -ne 0 ]; then
+        COMPLETED_STEPS+=("✘ [$CURRENT_STEP/$TOTAL_STEPS] $msg")
+        draw_screen "$msg" "✘" "$percent" "$bar"
         echo ""
         echo "An error has occurred. Please check the log below for details:"
         echo "  $LOG_FILE"
