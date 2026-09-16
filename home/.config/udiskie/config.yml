@@ -1,0 +1,7 @@
+program_options:
+  automount: true
+
+device_config:
+  - is_internal: true
+    ignore: false
+    automount: true

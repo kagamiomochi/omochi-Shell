@@ -173,15 +173,16 @@ step_link_dotfiles() {
     shopt -u nullglob dotglob
 
     mkdir -p "$HOME/.config/YouTube Music"
-    sed "s|\$HOME|$HOME|g" "$DOTFILES_DIR/home/.config/YouTube Music/config.json.template" > "$HOME/.config/YouTube Music/config.json"
+    sed "s|\$DOTFILES_DIR|$DOTFILES_DIR|g" "$DOTFILES_DIR/home/.config/YouTube Music/config.json.template" > "$HOME/.config/YouTube Music/config.json"
     
     touch ~/.config/hypr/private.lua
 }
 
 step_system_symlinks() {
     local DOTFILES_DIR="$1"
-    sudo ln -sfn "$DOTFILES_DIR/system/etc/keyd/default.conf" /etc/keyd/default.conf
-    sudo ln -sfn "$DOTFILES_DIR/system/etc/pam.d/hyprlock" /etc/pam.d/hyprlock
+    sudo ln -sfn "$DOTFILES_DIR/system/etc/keyd/default.conf"                 /etc/keyd/default.conf
+    sudo ln -sfn "$DOTFILES_DIR/system/etc/pam.d/hyprlock"                    /etc/pam.d/hyprlock
+    sudo ln -sfn "$DOTFILES_DIR/system/etc/polkit-1/rules.d/10-udisks2.rules" /etc/polkit-1/rules.d/10-udisks2.rules
 }
 
 step_greetd_config() {
