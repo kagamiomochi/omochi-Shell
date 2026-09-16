@@ -13,6 +13,7 @@ LOG_FILE="/tmp/omochi-Shell-setup_$(date +%s).log"
 cleanup() {
     kill "$SUDO_KEEPALIVE_PID" 2>/dev/null || true
     [ -n "$BUILD_DIR" ] && rm -rf "$BUILD_DIR"
+    reset_screen 2>/dev/null || true
 }
 trap cleanup EXIT
 
@@ -30,8 +31,8 @@ TOTAL_STEPS=14
 CURRENT_STEP=0
 BAR_WIDTH=20
 SPIN='⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏'
-LOG_TAIL_LINES=10
-COMPLETED_STEPS=()
+LOG_LAST_LINE=0
+SCREEN_INITIALIZED=false
 
 # Construct a bar string (argument: percent)
 render_bar() {
@@ -41,42 +42,65 @@ render_bar() {
     printf '%s%s' "$(printf '#%.0s' $(seq 1 "$filled") 2>/dev/null)" "$(printf -- '-%.0s' $(seq 1 "$empty") 2>/dev/null)"
 }
 
-# Redraw the whole screen: recent log lines, a boxed current step, completed steps below
-draw_screen() {
-    local msg="$1"
-    local spin_char="$2"
-    local percent="$3"
-    local bar="$4"
+# Set up the terminal: reserve the bottom lines for a fixed box,
+# and make everything above it a scrolling region.
+init_screen() {
+    TERM_LINES=$(tput lines 2>/dev/null || echo 24)
+    BOX_HEIGHT=3                                  # top border / content / bottom border
+    REGION_BOTTOM=$((TERM_LINES - BOX_HEIGHT - 1))  # -1 leaves a blank separator line
+    BOX_TOP=$((REGION_BOTTOM + 2))
 
-    # Clear screen and move cursor to top-left
-    printf '\033[2J\033[H'
+    clear
+    printf '\033[1;%dr' "$REGION_BOTTOM"   # set scroll region to rows 1..REGION_BOTTOM
+    tput cup 0 0
+    SCREEN_INITIALIZED=true
+}
 
-    echo "----- Log -----"
-    tail -n "$LOG_TAIL_LINES" "$LOG_FILE" 2>/dev/null
+# Restore normal terminal behavior (full-screen scrolling again).
+reset_screen() {
+    $SCREEN_INITIALIZED || return 0
+    printf '\033[r'   # reset scroll region to the whole screen
+    tput cup $((TERM_LINES - 1)) 0
     echo ""
+    SCREEN_INITIALIZED=false
+}
 
-    # Box around the current step
+# Append one line to the scrolling history area (log + completed steps).
+# Printing a newline while the cursor sits on the region's bottom row
+# scrolls only that region, leaving the fixed box untouched.
+append_history() {
+    tput cup $((REGION_BOTTOM - 1)) 0
+    printf '%s\033[K\n' "$1"
+}
+
+# Read any new lines appended to LOG_FILE since the last check and
+# push them into the scrolling history area.
+flush_new_log_lines() {
+    local total_lines
+    total_lines=$(wc -l < "$LOG_FILE" 2>/dev/null || echo 0)
+    if [ "$total_lines" -gt "$LOG_LAST_LINE" ]; then
+        while IFS= read -r line; do
+            append_history "$line"
+        done < <(sed -n "$((LOG_LAST_LINE + 1)),${total_lines}p" "$LOG_FILE")
+        LOG_LAST_LINE=$total_lines
+    fi
+}
+
+# Redraw the fixed box at the bottom of the screen (outside the scroll region).
+draw_box() {
+    local msg="$1" spin_char="$2" percent="$3" bar="$4"
     local box_text=" [$CURRENT_STEP/$TOTAL_STEPS] [$bar] ${percent}% $spin_char $msg "
     local box_len=${#box_text}
     local border
     border=$(printf '─%.0s' $(seq 1 "$box_len"))
-    printf '┌%s┐\n' "$border"
-    printf '│%s│\n' "$box_text"
-    printf '└%s┘\n' "$border"
-    echo ""
 
-    echo "----- Completed -----"
-    if [ ${#COMPLETED_STEPS[@]} -eq 0 ]; then
-        echo "(none yet)"
-    else
-        local line
-        for line in "${COMPLETED_STEPS[@]}"; do
-            echo "$line"
-        done
-    fi
+    tput cup $((BOX_TOP - 1)) 0; printf '┌%s┐\033[K' "$border"
+    tput cup $((BOX_TOP))     0; printf '│%s│\033[K' "$box_text"
+    tput cup $((BOX_TOP + 1)) 0; printf '└%s┘\033[K' "$border"
 }
 
-# Execute one step and keep the progress screen updated until completion
+# Execute one step, keep the fixed box updated, and stream log output
+# into the scrolling area above it.
 # Usage: run_step "Display Message" command...
 run_step() {
     local msg="$1"
@@ -97,19 +121,22 @@ run_step() {
 
     while kill -0 "$pid" 2>/dev/null; do
         i=$(( (i + 1) % ${#SPIN} ))
-        draw_screen "$msg" "${SPIN:$i:1}" "$percent" "$bar"
+        flush_new_log_lines
+        draw_box "$msg" "${SPIN:$i:1}" "$percent" "$bar"
         sleep 0.1
     done
 
     wait "$pid"
     local status=$?
+    flush_new_log_lines
 
     if [ $status -eq 0 ]; then
-        COMPLETED_STEPS+=("✔ [$CURRENT_STEP/$TOTAL_STEPS] $msg")
-        draw_screen "$msg" "✔" "$percent" "$bar"
+        append_history "✔ [$CURRENT_STEP/$TOTAL_STEPS] $msg"
+        draw_box "$msg" "✔" "$percent" "$bar"
     else
-        COMPLETED_STEPS+=("✘ [$CURRENT_STEP/$TOTAL_STEPS] $msg")
-        draw_screen "$msg" "✘" "$percent" "$bar"
+        append_history "✘ [$CURRENT_STEP/$TOTAL_STEPS] $msg"
+        draw_box "$msg" "✘" "$percent" "$bar"
+        reset_screen
         echo ""
         echo "An error has occurred. Please check the log below for details:"
         echo "  $LOG_FILE"
@@ -249,6 +276,8 @@ step_env_var() {
 
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 
+init_screen
+
 run_step "Updating the system"                   step_system_update
 run_step "Installing paru"                       step_install_paru
 run_step "Installing required packages"          step_install_required_packages
@@ -263,6 +292,8 @@ run_step "Initial setup is in progress"          step_post_setup_nopasswd
 run_step "Setting up the firewall"               step_firewall_setup
 run_step "Setting up the theme and user group"   step_theme_and_groups
 run_step "Setting environment variables"         step_env_var "$DOTFILES_DIR"
+
+reset_screen
 
 echo "The log is stored in $LOG_FILE."
 echo "Installation complete!"
