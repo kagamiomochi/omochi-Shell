@@ -110,13 +110,11 @@ PanelWindow {
 
         Item { Layout.fillWidth: true }
 
-        // ===== 中央: 歌詞 (再生中のみ) + 時計 =====
+        // ===== 中央: 歌詞 (再生中のみ) =====
         RowLayout {
             spacing: 8
 
             LyricsWidget {}
-
-            ClockWidget {}
         }
 
         Item { Layout.fillWidth: true }
@@ -129,9 +127,13 @@ PanelWindow {
 
             BarSeparator {}
 
-            VolumeWidget {}
+            TrayWidget {
+                barWindow: root
+            }
 
             BarSeparator {}
+
+            VolumeWidget {}
 
             BrightnessWidget {
                 visible: root.brightnessValue >= 0
@@ -148,15 +150,13 @@ PanelWindow {
 
             BluetoothWidget {}
 
-            BarSeparator {}
-
             BatteryWidget {}
 
             BarSeparator {}
 
-            TrayWidget {
-                barWindow: root
-            }
+            ClockWidget {}
+
+            BarSeparator {}
 
             NotificationBellButton { }
         }
