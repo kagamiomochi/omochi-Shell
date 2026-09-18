@@ -1,7 +1,9 @@
 import Quickshell
 
-import "Bar"
+import "StatusBar"
+import "SettingsPanel"
 
 ShellRoot {
-    Bar {}
+    //Bar {}
+    SettingsPanel {}
 }
