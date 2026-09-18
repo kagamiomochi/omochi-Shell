@@ -171,11 +171,7 @@ step_install_paru() {
     fi
 }
 
-step_install_required_packages() {
-    sudo pacman -S hyprland --needed --noconfirm
-}
-
-step_install_other_packages() {
+step_install_packages() {
     grep -Ev '^\s*($|#)' "$PACKAGES_FILE" | xargs -r paru -S --needed --noconfirm
 }
 
@@ -280,8 +276,7 @@ init_screen
 
 run_step "Updating the system"                   step_system_update
 run_step "Installing paru"                       step_install_paru
-run_step "Installing required packages"          step_install_required_packages
-run_step "Installing other packages"             step_install_other_packages
+run_step "Installing packages"                   step_install_packages
 run_step "Linking dotfiles"                      step_link_dotfiles "$DOTFILES_DIR"
 run_step "Linking the system configuration file" step_system_symlinks "$DOTFILES_DIR"
 run_step "Setting up automatic login for greetd" step_greetd_config "$DOTFILES_DIR"
