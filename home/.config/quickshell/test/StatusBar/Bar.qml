@@ -5,7 +5,7 @@ import QtQuick.Shapes
 PanelWindow {
     implicitWidth: 500
     implicitHeight: 500
-    color: "transparent"
+    color: "red"
     anchors {
         top: false
         bottom: true

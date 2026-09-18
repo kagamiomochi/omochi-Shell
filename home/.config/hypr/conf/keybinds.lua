@@ -36,7 +36,7 @@ local mainMod  = "SUPER"
 local terminal = "kitty"
 local fileManager = "thunar"
 local browser = "zen-browser"
-local SystemMonitor = "missioncenter"
+local SystemMonitor = "btop"
 local musicplayer = "pear-desktop"
 
 
@@ -58,7 +58,7 @@ hl.bind(mainMod .. " + Space", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen())
 
 -- Terminal
-hl.bind(mainMod .. " + T", hl.dsp.exec_cmd(terminal .. " -- sh -c 'fastfetch | tte --random-effect ; exec $SHELL'"))
+hl.bind(mainMod .. " + T", hl.dsp.exec_cmd(terminal .. " -- sh -c 'fastfetch | tte --random-effect & exec $SHELL'"))
 
 -- Window Mode
 hl.bind(mainMod .. " + SHIFT + Space", hl.dsp.exec_cmd("~/.config/hypr/scripts/window-mode.sh"))
