@@ -1,3 +1,4 @@
+hyprland
 hypridle
 hyprlock
 hyprpicker
@@ -58,11 +59,14 @@ blueman
 bluez
 bluez-obex
 bluez-utils
+bluez-libs
+bluez-hid2hci
 
 noto-fonts
 noto-fonts-cjk
 noto-fonts-emoji
 otf-font-awesome
+cantarell-fonts
 
 pavucontrol
 pipewire
@@ -105,37 +109,13 @@ wget
 btrfs-assistant
 
 
-blender
-vesktop-bin
-discord
-docker
-docker-compose
-gamescope
-jellyfin-server
-jellyfin-web
-obs-studio
-v4l2loopback-dkms
-prismlauncher
-proton-cachyos-slr
-steam
-sunshine
-yt-dlp
-rclone
-inkscape
-mission-center
-claude-desktop
-pear-desktop
-
-
-
+# AUR
 bt-dualboot
 bibata-cursor-theme
 karukan-git
 minecraft-launcher
 tumbler-folder-thumbnailer
 visual-studio-code-bin
-git-credential-manager-bin
 python-terminaltexteffects
-zen-browser
 bedrock-on-linux-bin
 unityhub
