@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# Terminal intro: play the animation, but let any keypress skip it instantly.
+
+fastfetch | tte --reuse-canvas --no-eol --random-effect &
+anim_pid=$!
+
+# Poll in short bursts: keep checking for a keypress until either
+# the user presses something or the animation finishes on its own.
+while kill -0 "$anim_pid" 2>/dev/null; do
+    if read -n 1 -s -r -t 0.05; then
+        kill "$anim_pid" 2>/dev/null
+        break
+    fi
+done
+
+# Reap the animation process and wipe any half-drawn frame.
+wait "$anim_pid" 2>/dev/null
+clear
+exec "$SHELL"
