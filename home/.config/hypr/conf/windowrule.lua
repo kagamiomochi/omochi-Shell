@@ -47,6 +47,7 @@ hl.on("window.title", function(w)
         and w.title:match("^拡張機能: %(Bitwarden パスワードマネージャー%)")
     then
         hl.dispatch(hl.dsp.window.float({ action = "set" }))
+        hl.dispatch(hl.dsp.window.resize({ x = 480, y = 630 }))
     end
 end)
 
