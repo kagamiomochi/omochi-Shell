@@ -13,6 +13,7 @@ playerctl
 keyd
 libnotify
 ollama
+ollama-cuda
 easyeffects
 calf
 mda.lv2
