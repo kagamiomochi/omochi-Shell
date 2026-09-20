@@ -203,8 +203,9 @@ step_link_dotfiles() {
 
 step_system_symlinks() {
     local DOTFILES_DIR="$1"
-    sudo ln -sfn "$DOTFILES_DIR/system/etc/keyd/default.conf"                 /etc/keyd/default.conf
-    sudo ln -sfn "$DOTFILES_DIR/system/etc/pam.d/hyprlock"                    /etc/pam.d/hyprlock
+    sudo ln -sfn "$DOTFILES_DIR/system/etc/keyd/default.conf"                    /etc/keyd/default.conf
+    sudo ln -sfn "$DOTFILES_DIR/system/etc/pam.d/hyprlock"                       /etc/pam.d/hyprlock
+    sudo ln -sfn "$DOTFILES_DIR/system/etc/systemd/system/automount-all.service" /etc/systemd/system/automount-all.service
     
     sudo mkdir -p /usr/local/bin
     sed "s/__USERNAME__/${USER}/g" "$DOTFILES_DIR/system/usr/local/bin/automount-all.sh.template" | sudo tee /usr/local/bin/automount-all.sh > /dev/null
@@ -227,7 +228,6 @@ step_enable_services() {
     sudo systemctl enable bluetooth
     sudo systemctl enable keyd
     sudo systemctl enable greetd
-    sudo systemctl enable automount-all
 }
 
 step_post_setup_nopasswd() {
