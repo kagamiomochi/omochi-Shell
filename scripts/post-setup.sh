@@ -15,5 +15,6 @@ hyprpm enable dynamic-cursors
 
 hyprpm reload
 
-mkdir -p "$HOME/.local/state/omochi-shell/"
-touch "$HOME/.local/state/omochi-shell/.setup_done"
+sudo rm -f /etc/sudoers.d/post-setup-tmp
+suod mkdir -p "$HOME/.local/state/omochi-shell/"
+sudo touch "$HOME/.local/state/omochi-shell/.setup_done"
