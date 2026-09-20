@@ -109,6 +109,28 @@ sudo
 wget
 btrfs-assistant
 
+blender
+vesktop-bin
+discord
+docker
+docker-compose
+gamescope
+jellyfin-server
+jellyfin-web
+obs-studio
+v4l2loopback-dkms
+prismlauncher
+proton-cachyos-slr
+steam
+sunshine
+yt-dlp
+rclone
+inkscape
+mission-center
+claude-desktop
+pear-desktop
+zen-browser-bin
+
 
 # AUR
 bt-dualboot
