@@ -228,6 +228,7 @@ step_enable_services() {
     sudo systemctl enable bluetooth
     sudo systemctl enable keyd
     sudo systemctl enable greetd
+    sudo systemctl enable automount-all
 }
 
 step_post_setup_nopasswd() {
