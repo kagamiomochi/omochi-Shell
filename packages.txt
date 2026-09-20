@@ -129,6 +129,7 @@ inkscape
 mission-center
 claude-desktop
 pear-desktop
+git-credential-oauth
 zen-browser-bin
 
 
