@@ -43,7 +43,7 @@ gnome-keyring
 libsecret
 kvantum
 fcitx5-im
-udiskie
+udisks2
 
 
 btop

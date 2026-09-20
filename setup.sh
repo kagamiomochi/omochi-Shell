@@ -27,7 +27,7 @@ fi
 # ============================================================
 # Progress Indicator
 # ============================================================
-TOTAL_STEPS=14
+TOTAL_STEPS=12
 CURRENT_STEP=0
 BAR_WIDTH=20
 SPIN='⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏'
@@ -205,10 +205,11 @@ step_system_symlinks() {
     local DOTFILES_DIR="$1"
     sudo ln -sfn "$DOTFILES_DIR/system/etc/keyd/default.conf"                 /etc/keyd/default.conf
     sudo ln -sfn "$DOTFILES_DIR/system/etc/pam.d/hyprlock"                    /etc/pam.d/hyprlock
-}
+    
+    sudo mkdir -p /usr/local/bin
+    sed "s/__USERNAME__/${USER}/g" "$DOTFILES_DIR/system/usr/local/bin/automount-all.sh.template" | sudo tee /usr/local/bin/automount-all.sh > /dev/null
+    sudo chmod +x /usr/local/bin/automount-all.sh
 
-step_greetd_config() {
-    local DOTFILES_DIR="$1"
     sudo mkdir -p /etc/greetd
     sed "s/__USERNAME__/${USER}/g" "$DOTFILES_DIR/system/etc/greetd/config.toml.template" | sudo tee /etc/greetd/config.toml > /dev/null
 }
@@ -223,9 +224,10 @@ step_git_skip_worktree() {
 }
 
 step_enable_services() {
-    sudo systemctl enable --now bluetooth
-    sudo systemctl enable --now keyd
+    sudo systemctl enable bluetooth
+    sudo systemctl enable keyd
     sudo systemctl enable greetd
+    sudo systemctl enable automount-all
 }
 
 step_post_setup_nopasswd() {
@@ -278,7 +280,6 @@ run_step "Installing paru"                       step_install_paru
 run_step "Installing packages"                   step_install_packages
 run_step "Linking dotfiles"                      step_link_dotfiles "$DOTFILES_DIR"
 run_step "Linking the system configuration file" step_system_symlinks "$DOTFILES_DIR"
-run_step "Setting up automatic login for greetd" step_greetd_config "$DOTFILES_DIR"
 run_step "Configuring sudo feedback display"     step_sudo_feedback
 run_step "Applying Git skip settings"            step_git_skip_worktree "$DOTFILES_DIR"
 run_step "Enabling various services"             step_enable_services

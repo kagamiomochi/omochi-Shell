@@ -1,14 +1,17 @@
 #!/bin/bash
 set -euo pipefail
 
-TARGET_USER="kagamimochi"
+# Wait for udev to finish populating device info (labels, fstype, etc.)
+udevadm settle --timeout=30
+
+TARGET_USER="__USERNAME__"
 USER_UID=$(id -u "$TARGET_USER")
 USER_GID=$(id -g "$TARGET_USER")
 
 MOUNT_BASE="/run/media/$TARGET_USER"
 mkdir -p "$MOUNT_BASE"
 
-# 除外したいパーティション種別名・ラベル(小文字で判定)
+# The partition type name/label to exclude (lowercase is used for judgment)
 EXCLUDE_PATTERNS="microsoft reserved|windows recovery environment|efi system"
 
 while IFS= read -r line; do
@@ -19,7 +22,7 @@ while IFS= read -r line; do
     [ "$FSTYPE" = "swap" ] && continue
     [ -n "$MOUNTPOINT" ] && continue
 
-    # パーティション種別名やラベルで除外判定(大文字小文字無視)
+    # Exclusion criteria are determined by partition type name or label (case-insensitive).
     check_str=$(echo "${PARTTYPENAME:-} ${PARTLABEL:-} ${LABEL:-}" | tr '[:upper:]' '[:lower:]')
     if echo "$check_str" | grep -qE "$EXCLUDE_PATTERNS"; then
         echo "Skipping $NAME (excluded: $check_str)"
