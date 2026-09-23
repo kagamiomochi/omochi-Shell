@@ -4,7 +4,7 @@
 /* 
 
 Theme: Dynamic Background 
-Version: 3.2.4 
+Version: 3.3.0
 GitHub: https://github.com/chengggit/YouTube-Music-Dynamic-Theme 
 
 */
@@ -70,7 +70,7 @@ For proper functionality, the variable below should be the default value:
   --cfg-bg-blur: 0;               /* Background blur */
   --cfg-bg-saturate: 1.5;         /* Background saturation */
   --cfg-bg-scale: 1.1;            /* Background zoom level */
-  --cfg-player-page-opacity: 0.8; /* Player page transparency */
+  --cfg-player-page-opacity: 1.0; /* Player page transparency */
 
 /* --- Typography & Colors --- */
   --cfg-font: 'Inter', 'PingFangSC-Regular', 'Apple SD Gothic Neo'; /* Main font for all text */
@@ -154,10 +154,10 @@ For proper functionality, the variable below should be the default value:
 /* ytmusic-player-bar yt-icon-button[hidden],
 yt-icon-button.rewind-button {
   display: inline-flex !important;
-}
- */
+}*/
 /* Centered Control : Play and skip buttons in the middle similar to spotify */
-/* @media (min-width: 615px) {
+/*
+@media (min-width: 615px) {
   ytmusic-player-bar.ytmusic-app {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -182,7 +182,7 @@ yt-icon-button.rewind-button {
     position: absolute;
     left: 0;
   }
-} */
+}*/
 /* ============================================================ 
 * DO NOT EDIT BELOW THIS LINE
  ============================================================== */
@@ -253,6 +253,7 @@ yt-icon-button.rewind-button {
   --ytmusic-text-primary: var(--cfg-text-primary);
   --ytmusic-text-secondary: var(--text-secondary);
   --ytmusic-overlay-text-secondary: var(--cfg-text-secondary);
+  --yt-sys-color-baseline--text-secondary: var(--cfg-text-secondary) !important; 
 }
 /* ========================== TEXT & ICONS ========================== */
 yt-formatted-string.title {
@@ -677,7 +678,7 @@ yt-card-item-container-renderer {
 /* ========================== PLAYER BAR ========================== */
 ytmusic-player-bar {
   background: var(--ui-color);
-  backdrop-filter: blur(var(--ui-blur));
+  backdrop-filter: none;
 }
 #player-bar-background {
   backdrop-filter: none;
@@ -697,7 +698,7 @@ ytmusic-player-bar:hover #progress-bar {
   --paper-slider-knob-start-border-color: var(--accent) !important;
 }
 #progress-bar.ytmusic-player-bar {
-  top: -16px !important;
+  top: 55px !important;
   transform: unset !important;
   --paper-slider-knob-start-color: var(--accent) !important;
   --paper-slider-knob-start-border-color: var(--accent) !important;
@@ -787,6 +788,9 @@ ytmusic-player-bar:has(ytmusic-player-expanding-menu[aria-hidden='false']) {
   }
 }
 /* ========================== SEARCH BOX ========================== */
+ytmusic-search-box {
+  margin-left: 48px;
+}
 ytmusic-search-box .search-box {
   border-radius: var(--radius-panel) !important;
   background: var(--ui-contrast) !important;
@@ -1438,8 +1442,7 @@ ytmusic-subscribe-button-renderer[is-subscribed] {
 }
 /* Unsub Confirm */
 yt-confirm-dialog-renderer[dialog][dialog][dialog] {
-  --ytd-user-comment-color: white !important;
-  background: transparent !important;
+background: transparent !important;
 }
 ytmusic-popup-container
   tp-yt-paper-dialog.ytmusic-popup-container:has(
@@ -1631,7 +1634,7 @@ ytmusic-app-layout > [slot='player-bar'] {
 #nav-bar-background.ytmusic-app-layout,
 ytmusic-app-layout.content-scrolled #nav-bar-divider {
   opacity: 1 !important;
-  backdrop-filter: blur(var(--ui-blur));
+  backdrop-filter: none;
   background: var(--ui-color) !important;
   border-bottom: var(--ui-border) !important;
   border-top: 0 !important;
@@ -1673,9 +1676,6 @@ ytmusic-guide-entry-renderer #play-button.ytmusic-guide-entry-renderer {
 }
 ytmusic-guide-entry-renderer .content-wrapper.ytmusic-play-button-renderer {
   background: transparent;
-}
-ytmusic-guide-entry-renderer[is-primary] {
-  display: none !important;
 }
 /* New Playlist Button */
 button.ytSpecButtonShapeNextMono.ytSpecButtonShapeNextTonal {
@@ -1952,11 +1952,19 @@ yt-icon-button.ytmusic-player {
 .ytd-tri-state-button-view-model {
   font-weight: var(--font-weight) !important;
 }
+#simplebox-placeholder.ytd-comment-simplebox-renderer, 	
+.yt-simple-endpoint.ytd-comment-view-model { 	
+color: var(--text-secondary) !important; 	
+}
 .ytSpecButtonShapeNextDisabled {
   opacity: 0.7 !important;
 }
 .ytSpecButtonShapeNextDisabled.ytSpecButtonShapeNextFilled {
   color: var(--text-secondary) !important;
+}
+tp-yt-paper-tab.ytmusic-player-page[disabled] { 	
+opacity: 0.25; 	
+pointer-events: unset !important; 	
 }
 /* ========================== PODCAST ========================== */
 ytmusic-player-page[player-fullscreened] ytmusic-description-shelf-renderer {
@@ -2091,6 +2099,7 @@ ytmusic-multi-select-menu-bar {
 #tooltip {
   background: var(--ui-contrast);
   border-radius: var(--radius-panel);
+  backdrop-filter: blur(var(--ui-blur)); 
 }
 /* Playlist Visibility Dialog */
 .yt-spec-dialog-layout {
@@ -2198,4 +2207,9 @@ ytmusic-player-page[player-ui-state='FULLSCREEN'] .content.ytmusic-player-page {
 #player.ytmusic-player-page[player-ui-state='MINIPLAYER'] {
   margin-left: unset !important;
   margin-right: unset !important;
+}
+
+
+ytmusic-guide-entry-renderer[is-primary] {
+  display: none !important;
 }
