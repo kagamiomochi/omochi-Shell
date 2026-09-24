@@ -37,8 +37,13 @@ Scope {
     property int marginTop: 40
     property int marginLeft: 20
 
-    // 定期的に ~/Desktop を再スキャンする間隔(ミリ秒)。0以下で無効化。
-    property int rescanIntervalMs: 5000
+    // inotifywait (inotify-tools) が使えない場合だけ使うポーリング間隔(ミリ秒)。
+    // 0以下でポーリング自体を無効化(その場合、inotifywaitが無いと変化が反映されない)。
+    property int fallbackPollIntervalMs: 5000
+
+    // inotifywait がまともに起動できなかったときに true になる
+    property bool _watchUnavailable: false
+    property double _watchStartedAt: 0
 
     ListModel { id: iconModel }
 
@@ -95,9 +100,68 @@ Scope {
 
     Component.onCompleted: refresh()
 
+    // ~/Desktop をinotifyで直接監視して、変化があったら即座に再スキャンする。
+    // inotify-tools パッケージの inotifywait コマンドが必要
+    // (未インストールなら `sudo pacman -S inotify-tools`)。
+    Process {
+        id: watchProcess
+        command: [
+            "inotifywait", "-m", "-q",
+            "-e", "create,delete,moved_to,moved_from,close_write",
+            "--format", "%f",
+            root.desktopPath
+        ]
+        running: true
+
+        onRunningChanged: {
+            if (running) root._watchStartedAt = Date.now()
+        }
+
+        stdout: SplitParser {
+            // イベントが連発しても1回にまとめて反映する
+            onRead: (line) => watchDebounce.restart()
+        }
+
+        onExited: (exitCode, exitStatus) => {
+            const ranMs = Date.now() - root._watchStartedAt
+            if (ranMs < 1000) {
+                // 起動直後に終了 = inotifywait が無い等、致命的な失敗とみなす
+                if (!root._watchUnavailable) {
+                    console.warn(
+                        "DesktopIcons: inotifywait を起動できませんでした。" +
+                        "inotify-tools パッケージ (sudo pacman -S inotify-tools) を" +
+                        "入れると即時反映されます。当面はポーリングで代用します。"
+                    )
+                }
+                root._watchUnavailable = true
+                return
+            }
+            // ディレクトリが一時的に消えた等、通常でない終了なら少し待って再起動
+            watchRestartTimer.restart()
+        }
+    }
+
     Timer {
-        interval: root.rescanIntervalMs
-        running: root.rescanIntervalMs > 0
+        id: watchDebounce
+        interval: 300
+        repeat: false
+        onTriggered: root.refresh()
+    }
+
+    Timer {
+        id: watchRestartTimer
+        interval: 2000
+        repeat: false
+        onTriggered: {
+            watchProcess.running = false
+            watchProcess.running = true
+        }
+    }
+
+    // inotifywait が使えないときだけ動くフォールバック(ポーリング)
+    Timer {
+        interval: root.fallbackPollIntervalMs
+        running: root._watchUnavailable && root.fallbackPollIntervalMs > 0
         repeat: true
         onTriggered: root.refresh()
     }

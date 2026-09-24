@@ -17,6 +17,8 @@ application/x-extension-shtml=zen.desktop
 application/xhtml+xml=zen.desktop
 application/x-extension-xhtml=zen.desktop
 application/x-extension-xht=zen.desktop
+x-scheme-handler/lunarclient=lunarclient.desktop
+x-scheme-handler/discord-671636579701358592=lunarclient.desktop
 
 [Added Associations]
 text/x-lua=code.desktop;
@@ -27,7 +29,6 @@ application/json=code.desktop;
 application/x-zerosize=code.desktop;
 text/html=code.desktop;zen.desktop;
 image/svg+xml=org.inkscape.Inkscape.desktop;org.gnome.Loupe.desktop;
-x-scheme-handler/unityhub=unityhub.desktop;
 video/mp4=io.github.celluloid_player.Celluloid.desktop;org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop;
 application/octet-stream=code.desktop;
 x-scheme-handler/http=zen.desktop;
