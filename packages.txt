@@ -55,7 +55,6 @@ video-trimmer
 celluloid
 gnome-themes-extra
 gnome-disk-utility
-xfdesktop
 
 nano
 nano-syntax-highlighting

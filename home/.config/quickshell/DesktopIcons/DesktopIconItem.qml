@@ -16,6 +16,13 @@ Item {
     property real gridX: 0
     property real gridY: 0
 
+    // スナップ設定。DesktopIcons.qml から一括で渡される
+    property bool snapEnabled: false
+    property real snapCellWidth: 90
+    property real snapCellHeight: 100
+    property real snapOriginX: 0
+    property real snapOriginY: 0
+
     signal positionChanged(real x, real y)
     signal launchRequested()
 
@@ -24,7 +31,16 @@ Item {
     x: gridX
     y: gridY
 
+    // ドラッグ中はアニメーションさせない(追従が遅れて見えるため)。
+    // ドラッグを離した瞬間のスナップ移動だけふわっと動かす。
+    Behavior on x { enabled: !mouseArea.drag.active; NumberAnimation { duration: 120; easing.type: Easing.OutQuad } }
+    Behavior on y { enabled: !mouseArea.drag.active; NumberAnimation { duration: 120; easing.type: Easing.OutQuad } }
+
     property bool dragging: mouseArea.drag.active
+
+    function _snap(value, origin, cell) {
+        return origin + Math.round((value - origin) / cell) * cell
+    }
 
     Rectangle {
         anchors.fill: parent
@@ -79,6 +95,10 @@ Item {
         drag.minimumY: 0
 
         onReleased: () => {
+            if (root.snapEnabled) {
+                root.x = root._snap(root.x, root.snapOriginX, root.snapCellWidth)
+                root.y = root._snap(root.y, root.snapOriginY, root.snapCellHeight)
+            }
             root.positionChanged(root.x, root.y)
         }
 

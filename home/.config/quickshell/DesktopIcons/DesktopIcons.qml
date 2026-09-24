@@ -37,6 +37,10 @@ Scope {
     property int marginTop: 40
     property int marginLeft: 20
 
+    // true: ドラッグ後に cellWidth/cellHeight のグリッドへスナップする
+    // false: 自由配置(ドロップした場所そのまま)
+    property bool snapToGrid: true
+
     // 表示ON/OFF。IpcHandler経由でコマンドから切り替えられる
     property bool enabled: true
 
@@ -212,6 +216,12 @@ Scope {
                     execCommand: model.exec
                     filePath: root.desktopPath + "/" + model.file
                     isDesktopEntry: model.isDesktop
+
+                    snapEnabled: root.snapToGrid
+                    snapCellWidth: root.cellWidth
+                    snapCellHeight: root.cellHeight
+                    snapOriginX: root.marginLeft
+                    snapOriginY: root.marginTop
 
                     gridX: {
                         const saved = positionsData.icons[model.file]
