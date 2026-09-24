@@ -174,7 +174,7 @@ Scope {
     IpcHandler {
         target: "desktopicons"
 
-        function show(): void { root.enabled = true }
+        function open(): void { root.enabled = true }
         function hide(): void { root.enabled = false }
         function toggle(): void { root.enabled = !root.enabled }
     }

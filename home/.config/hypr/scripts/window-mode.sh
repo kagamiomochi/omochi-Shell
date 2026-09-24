@@ -17,5 +17,5 @@ else
 
     hyprctl eval 'hl.window_rule({ match = { class = ".*" }, float = true })'
     hyprctl eval 'hl.config({ general = { resize_on_border = true } })'
-    qs ipc call desktopicons show
+    qs ipc call desktopicons open
 fi
