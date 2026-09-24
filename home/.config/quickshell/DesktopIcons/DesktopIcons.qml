@@ -42,7 +42,7 @@ Scope {
     property bool snapToGrid: true
 
     // 表示ON/OFF。IpcHandler経由でコマンドから切り替えられる
-    property bool enabled: true
+    property bool enabled: false
 
     // inotifywait (inotify-tools) が使えない場合だけ使うポーリング間隔(ミリ秒)。
     // 0以下でポーリング自体を無効化(その場合、inotifywaitが無いと変化が反映されない)。
