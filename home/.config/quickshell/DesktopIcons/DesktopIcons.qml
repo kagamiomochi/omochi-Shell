@@ -37,6 +37,9 @@ Scope {
     property int marginTop: 40
     property int marginLeft: 20
 
+    // 表示ON/OFF。IpcHandler経由でコマンドから切り替えられる
+    property bool enabled: true
+
     // inotifywait (inotify-tools) が使えない場合だけ使うポーリング間隔(ミリ秒)。
     // 0以下でポーリング自体を無効化(その場合、inotifywaitが無いと変化が反映されない)。
     property int fallbackPollIntervalMs: 5000
@@ -166,6 +169,16 @@ Scope {
         onTriggered: root.refresh()
     }
 
+    // `qs ipc call desktopicons show|hide|toggle` で表示を切り替えられる。
+    // (shell.qml の launcher の IpcHandler と同じやり方)
+    IpcHandler {
+        target: "desktopicons"
+
+        function show(): void { root.enabled = true }
+        function hide(): void { root.enabled = false }
+        function toggle(): void { root.enabled = !root.enabled }
+    }
+
     Variants {
         model: root.targetScreens
 
@@ -173,6 +186,8 @@ Scope {
             id: bgWindow
             required property var modelData
             screen: modelData
+
+            visible: root.enabled
 
             WlrLayershell.layer: WlrLayer.Bottom
             WlrLayershell.keyboardFocus: WlrKeyboardFocus.None
