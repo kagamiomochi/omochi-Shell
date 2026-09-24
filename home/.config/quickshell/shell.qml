@@ -8,6 +8,7 @@ import "PanelBar"
 import "Launcher"
 import "NotificationCenter"
 import "ClipboardPopup"
+import "DesktopIcons"
 
 ShellRoot {
     id: root
@@ -49,4 +50,6 @@ ShellRoot {
     // ====== クリップボード ======
     ClipboardPopup { id: clipPopup }
     ClipboardWatcher { popup: clipPopup }
+
+    DesktopIcons {}
 }

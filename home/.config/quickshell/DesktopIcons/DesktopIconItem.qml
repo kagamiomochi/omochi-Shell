@@ -24,11 +24,7 @@ Item {
     x: gridX
     y: gridY
 
-    property bool dragging: false
-    property real _dragStartMouseX: 0
-    property real _dragStartMouseY: 0
-    property real _dragStartX: 0
-    property real _dragStartY: 0
+    property bool dragging: mouseArea.drag.active
 
     Rectangle {
         anchors.fill: parent
@@ -66,29 +62,23 @@ Item {
         }
     }
 
+    // 動かしている本人(root)を drag.target に渡すのが QtQuick の作法。
+    // mouse.x/mouse.y を自前で足し引きすると、アイテムが動くたびに
+    // 基準座標までズレていくのでガクガク・カーソルとのズレが起きる。
+    // drag.target 経由ならその計算をQt側がシーン座標で正しくやってくれる。
     MouseArea {
         id: mouseArea
         anchors.fill: parent
         hoverEnabled: true
         acceptedButtons: Qt.LeftButton
 
-        onPressed: (mouse) => {
-            root.dragging = true
-            root._dragStartMouseX = mouse.x
-            root._dragStartMouseY = mouse.y
-            root._dragStartX = root.x
-            root._dragStartY = root.y
-        }
-
-        onPositionChanged: (mouse) => {
-            if (!root.dragging) return
-            root.x = root._dragStartX + (mouse.x - root._dragStartMouseX)
-            root.y = root._dragStartY + (mouse.y - root._dragStartMouseY)
-        }
+        drag.target: root
+        drag.axis: Drag.XAndYAxis
+        // 画面外にはみ出さないように軽く制限(不要ならこの2行は削除可)
+        drag.minimumX: 0
+        drag.minimumY: 0
 
         onReleased: () => {
-            if (!root.dragging) return
-            root.dragging = false
             root.positionChanged(root.x, root.y)
         }
 
