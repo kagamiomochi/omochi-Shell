@@ -14,5 +14,6 @@
     "spellCheckLanguages": [
         "ja",
         "ja-JP"
-    ]
+    ],
+    "autoStartMinimized": true
 }
