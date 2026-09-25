@@ -11,20 +11,15 @@ Item {
     property string execCommand: ""
     property string filePath: ""
     property bool isDesktopEntry: false
+    property bool selected: false
 
     // グリッド上の初期(または保存済みの)位置
     property real gridX: 0
     property real gridY: 0
 
-    // スナップ設定。DesktopIcons.qml から一括で渡される
-    property bool snapEnabled: false
-    property real snapCellWidth: 90
-    property real snapCellHeight: 100
-    property real snapOriginX: 0
-    property real snapOriginY: 0
-
     signal positionChanged(real x, real y)
     signal launchRequested()
+    signal selectRequested(bool additive)
 
     width: 88
     height: 96
@@ -38,18 +33,14 @@ Item {
 
     property bool dragging: mouseArea.drag.active
 
-    function _snap(value, origin, cell) {
-        return origin + Math.round((value - origin) / cell) * cell
-    }
-
     Rectangle {
         anchors.fill: parent
         radius: 6
-        color: mouseArea.containsMouse || root.dragging
-            ? Qt.rgba(1, 1, 1, 0.15)
-            : "transparent"
-        border.width: root.dragging ? 1 : 0
-        border.color: Qt.rgba(1, 1, 1, 0.4)
+        color: root.selected
+            ? Qt.rgba(0.478, 0.635, 0.969, 0.28)
+            : (mouseArea.containsMouse || root.dragging ? Qt.rgba(1, 1, 1, 0.15) : "transparent")
+        border.width: (root.selected || root.dragging) ? 1 : 0
+        border.color: root.selected ? "#7aa2f7" : Qt.rgba(1, 1, 1, 0.4)
     }
 
     Column {
@@ -95,11 +86,13 @@ Item {
         drag.minimumY: 0
 
         onReleased: () => {
-            if (root.snapEnabled) {
-                root.x = root._snap(root.x, root.snapOriginX, root.snapCellWidth)
-                root.y = root._snap(root.y, root.snapOriginY, root.snapCellHeight)
-            }
+            // スナップ・衝突回避は親(DesktopIcons.qml)側でまとめて判断するので、
+            // ここではドロップした生の座標をそのまま伝える。
             root.positionChanged(root.x, root.y)
+        }
+
+        onClicked: (mouse) => {
+            root.selectRequested((mouse.modifiers & Qt.ControlModifier) !== 0)
         }
 
         onDoubleClicked: (mouse) => {

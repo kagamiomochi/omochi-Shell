@@ -36,6 +36,8 @@ Scope {
     property int columns: 6
     property int marginTop: 40
     property int marginLeft: 20
+    property int iconWidth: 88
+    property int iconHeight: 96
 
     // true: ドラッグ後に cellWidth/cellHeight のグリッドへスナップする
     // false: 自由配置(ドロップした場所そのまま)
@@ -67,6 +69,103 @@ Scope {
 
     function savePositions() {
         positionsView.writeAdapter()
+    }
+
+    // model上のindexとfile名から、そのアイコンが今いる(べき)グリッドセルを返す
+    function cellOf(file, idx) {
+        const saved = positionsData.icons[file]
+        if (saved) {
+            return {
+                col: Math.round((saved.x - root.marginLeft) / root.cellWidth),
+                row: Math.round((saved.y - root.marginTop) / root.cellHeight)
+            }
+        }
+        return { col: idx % root.columns, row: Math.floor(idx / root.columns) }
+    }
+
+    // 指定セルを excludeFile 以外の誰かが占有していないか
+    function isCellTaken(col, row, excludeFile) {
+        for (let i = 0; i < iconModel.count; i++) {
+            const file = iconModel.get(i).file
+            if (file === excludeFile) continue
+            const c = root.cellOf(file, i)
+            if (c.col === col && c.row === row) return true
+        }
+        return false
+    }
+
+    // candidateCol/candidateRow から一番近い空きセルを螺旋状に探して返す
+    function findFreeCell(candidateCol, candidateRow, excludeFile) {
+        const col0 = Math.max(0, candidateCol)
+        const row0 = Math.max(0, candidateRow)
+        if (!root.isCellTaken(col0, row0, excludeFile)) return { col: col0, row: row0 }
+
+        for (let radius = 1; radius <= 64; radius++) {
+            for (let dy = -radius; dy <= radius; dy++) {
+                for (let dx = -radius; dx <= radius; dx++) {
+                    if (Math.max(Math.abs(dx), Math.abs(dy)) !== radius) continue
+                    const col = col0 + dx
+                    const row = row0 + dy
+                    if (col < 0 || row < 0) continue
+                    if (!root.isCellTaken(col, row, excludeFile)) return { col: col, row: row }
+                }
+            }
+        }
+        return { col: col0, row: row0 } // 空きが見つからなければ諦めて重ねる
+    }
+
+    // 選択中のアイコン(fileをキーにしたセット)。矩形選択・クリック選択で更新する
+    property var selectedFiles: ({})
+
+    function selectOnly(file) {
+        var sel = {}
+        sel[file] = true
+        root.selectedFiles = sel
+    }
+
+    function toggleSelect(file) {
+        var sel = {}
+        for (var key in root.selectedFiles) sel[key] = true
+        if (sel[file]) delete sel[file]
+        else sel[file] = true
+        root.selectedFiles = sel
+    }
+
+    function clearSelection() {
+        root.selectedFiles = {}
+    }
+
+    // model上のindexとfile名から、そのアイコンの現在の画面上矩形(x,y,幅,高さ)を返す
+    function iconRect(file, idx) {
+        const saved = positionsData.icons[file]
+        let px, py
+        if (saved) {
+            px = saved.x
+            py = saved.y
+        } else {
+            const col = idx % root.columns
+            const row = Math.floor(idx / root.columns)
+            px = root.marginLeft + col * root.cellWidth
+            py = root.marginTop + row * root.cellHeight
+        }
+        return { x: px, y: py, width: root.iconWidth, height: root.iconHeight }
+    }
+
+    function _rectsIntersect(ax, ay, aw, ah, bx, by, bw, bh) {
+        return ax < bx + bw && ax + aw > bx && ay < by + bh && ay + ah > by
+    }
+
+    // 矩形選択の範囲(親アイテム基準の座標)に入っているアイコンを選択状態にする
+    function updateMarqueeSelection(rx, ry, rw, rh) {
+        const sel = {}
+        for (let i = 0; i < iconModel.count; i++) {
+            const file = iconModel.get(i).file
+            const r = root.iconRect(file, i)
+            if (root._rectsIntersect(rx, ry, rw, rh, r.x, r.y, r.width, r.height)) {
+                sel[file] = true
+            }
+        }
+        root.selectedFiles = sel
     }
 
     function refresh() {
@@ -207,47 +306,134 @@ Scope {
 
             color: "transparent"
 
-            Repeater {
-                model: iconModel
+            Item {
+                id: iconArea
+                anchors.fill: parent
 
-                DesktopIconItem {
-                    entryName: model.name
-                    iconSource: Quickshell.iconPath(model.icon, "text-x-generic")
-                    execCommand: model.exec
-                    filePath: root.desktopPath + "/" + model.file
-                    isDesktopEntry: model.isDesktop
+                // 矩形選択(マーキー)用の背景。アイコンより下に配置し、
+                // アイコン以外の余白をドラッグすると選択矩形が出る。
+                MouseArea {
+                    id: marqueeArea
+                    anchors.fill: parent
+                    acceptedButtons: Qt.LeftButton
+                    preventStealing: true
 
-                    snapEnabled: root.snapToGrid
-                    snapCellWidth: root.cellWidth
-                    snapCellHeight: root.cellHeight
-                    snapOriginX: root.marginLeft
-                    snapOriginY: root.marginTop
+                    property real startX: 0
+                    property real startY: 0
+                    property bool dragActive: false
 
-                    gridX: {
-                        const saved = positionsData.icons[model.file]
-                        if (saved) return saved.x
-                        const col = index % root.columns
-                        return root.marginLeft + col * root.cellWidth
-                    }
-                    gridY: {
-                        const saved = positionsData.icons[model.file]
-                        if (saved) return saved.y
-                        const row = Math.floor(index / root.columns)
-                        return root.marginTop + row * root.cellHeight
+                    onPressed: (mouse) => {
+                        marqueeArea.startX = mouse.x
+                        marqueeArea.startY = mouse.y
+                        marqueeArea.dragActive = false
+                        marqueeRect.x = mouse.x
+                        marqueeRect.y = mouse.y
+                        marqueeRect.width = 0
+                        marqueeRect.height = 0
                     }
 
-                    onPositionChanged: (px, py) => {
-                        const icons = positionsData.icons
-                        icons[model.file] = { x: px, y: py }
-                        positionsData.icons = icons
-                        root.savePositions()
+                    onPositionChanged: (mouse) => {
+                        const dx = mouse.x - marqueeArea.startX
+                        const dy = mouse.y - marqueeArea.startY
+
+                        if (!marqueeArea.dragActive) {
+                            // 少し動くまではただのクリックとして扱う(誤反応防止)
+                            if (Math.abs(dx) < 4 && Math.abs(dy) < 4) return
+                            marqueeArea.dragActive = true
+                            marqueeRect.visible = true
+                        }
+
+                        marqueeRect.x = Math.min(mouse.x, marqueeArea.startX)
+                        marqueeRect.y = Math.min(mouse.y, marqueeArea.startY)
+                        marqueeRect.width = Math.abs(dx)
+                        marqueeRect.height = Math.abs(dy)
+
+                        root.updateMarqueeSelection(
+                            marqueeRect.x, marqueeRect.y,
+                            marqueeRect.width, marqueeRect.height
+                        )
                     }
 
-                    onLaunchRequested: {
-                        if (isDesktopEntry && execCommand.length > 0) {
-                            Quickshell.execDetached(["sh", "-c", execCommand])
-                        } else {
-                            Quickshell.execDetached(["xdg-open", filePath])
+                    onReleased: () => {
+                        if (!marqueeArea.dragActive) {
+                            // ドラッグせず余白をクリックしただけ → 選択解除
+                            root.clearSelection()
+                        }
+                        marqueeArea.dragActive = false
+                        marqueeRect.visible = false
+                    }
+                }
+
+                Rectangle {
+                    id: marqueeRect
+                    visible: false
+                    color: Qt.rgba(0.478, 0.635, 0.969, 0.18)
+                    border.color: "#7aa2f7"
+                    border.width: 1
+                }
+
+                Repeater {
+                    model: iconModel
+
+                    DesktopIconItem {
+                        id: iconDelegate
+                        entryName: model.name
+                        iconSource: Quickshell.iconPath(model.icon, "text-x-generic")
+                        execCommand: model.exec
+                        filePath: root.desktopPath + "/" + model.file
+                        isDesktopEntry: model.isDesktop
+
+                        width: root.iconWidth
+                        height: root.iconHeight
+
+                        selected: !!root.selectedFiles[model.file]
+
+                        gridX: {
+                            const saved = positionsData.icons[model.file]
+                            if (saved) return saved.x
+                            const col = index % root.columns
+                            return root.marginLeft + col * root.cellWidth
+                        }
+                        gridY: {
+                            const saved = positionsData.icons[model.file]
+                            if (saved) return saved.y
+                            const row = Math.floor(index / root.columns)
+                            return root.marginTop + row * root.cellHeight
+                        }
+
+                        onPositionChanged: (px, py) => {
+                            let finalX = px
+                            let finalY = py
+
+                            if (root.snapToGrid) {
+                                // ドロップ位置に一番近いグリッドセルへ、
+                                // 既に埋まっていれば周囲の空きセルへずらす
+                                const rawCol = Math.round((px - root.marginLeft) / root.cellWidth)
+                                const rawRow = Math.round((py - root.marginTop) / root.cellHeight)
+                                const free = root.findFreeCell(rawCol, rawRow, model.file)
+                                finalX = root.marginLeft + free.col * root.cellWidth
+                                finalY = root.marginTop + free.row * root.cellHeight
+                                iconDelegate.x = finalX
+                                iconDelegate.y = finalY
+                            }
+
+                            const icons = positionsData.icons
+                            icons[model.file] = { x: finalX, y: finalY }
+                            positionsData.icons = icons
+                            root.savePositions()
+                        }
+
+                        onSelectRequested: (additive) => {
+                            if (additive) root.toggleSelect(model.file)
+                            else root.selectOnly(model.file)
+                        }
+
+                        onLaunchRequested: {
+                            if (isDesktopEntry && execCommand.length > 0) {
+                                Quickshell.execDetached(["sh", "-c", execCommand])
+                            } else {
+                                Quickshell.execDetached(["xdg-open", filePath])
+                            }
                         }
                     }
                 }
