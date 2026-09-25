@@ -62,7 +62,7 @@
 			"fullscreen": true
 		},
 		"blur-nav-bar": {
-			"enabled": true
+			"enabled": false
 		},
 		"synced-lyrics": {
 			"enabled": true,
