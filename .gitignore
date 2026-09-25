@@ -12,10 +12,9 @@ home/.config/xfce4/xfconf/xfce-perchannel-xml/thunar-shares-plugin.xml
 home/.config/xfce4/desktop/icons.screen0.yaml
 home/.config/sunshine/credentials/
 home/.config/sunshine/sunshine.conf
-home/.config/sunshine/sunshine.log
+home/.config/sunshine/sunshine.log*
 home/.config/sunshine/sunshine_state.json
 home/.config/sunshine/portal_token
-home/.config/sunshine/sunshine.log.1
 home/.config/YouTube Music/Cache/
 home/.config/YouTube Music/Code Cache/
 home/.config/YouTube Music/Cookies
