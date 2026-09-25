@@ -28,4 +28,4 @@ hl.env("XMODIFIERS", "@im=fcitx")
 hl.env("SDL_IM_MODULE", "fcitx")
 
 hl.env("__GL_SHADER_DISK_CACHE_SIZE", "12000000000")
-hl.env("XDG_DATA_DIRS", "$HOME/.local/share:/usr/local/share:/usr/share")
+hl.env("XDG_DATA_DIRS", os.getenv("HOME") .. "/.local/share:/usr/local/share:/usr/share")
