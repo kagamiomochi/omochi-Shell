@@ -1,15 +1,9 @@
 #!/usr/bin/env bash
 # Terminal intro: play the animation, but let any keypress skip it instantly.
 
-fastfetch | tte --reuse-canvas --no-eol --random-effect &
+fastfetch --disable-linewrap | tte --reuse-canvas --no-eol --random-effect &
 anim_pid=$!
 
-# fastfetch/tte query the terminal (e.g. background color) on startup, and the
-# terminal's replies land on the same stdin we're polling for a skip keypress.
-# Without this, those reply bytes get misread as "user pressed a key" and the
-# animation gets killed mid-init, before it installs its own cleanup handlers
-# -- leaving the terminal stuck (hidden cursor / no echo). Give those replies
-# time to arrive, then discard them before we start listening for real input.
 sleep 0.15
 while read -t 0 -n 1 -s -r _discard; do :; done
 
@@ -28,4 +22,8 @@ clear
 # Safety net: reset terminal modes in case the killed process didn't restore
 # them (hidden cursor, echo off, etc.) before it died.
 stty sane 2>/dev/null
+
+# Show the plain fastfetch result as the final, static output before the shell starts.
+fastfetch --disable-linewrap
+
 exec "$SHELL"
