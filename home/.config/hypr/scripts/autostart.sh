@@ -24,5 +24,5 @@ kdeconnectd &
 kdeconnect-indicator &
 thunar --daemon &
 sunshine &
-vesktop --start-minimized &
+discord --start-minimized &
 steam -silent &

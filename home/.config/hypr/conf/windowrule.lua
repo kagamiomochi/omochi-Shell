@@ -26,10 +26,11 @@ local float_rules = {
     { name = "Thunar file operation progress",      class = "thunar", title = "ファイル操作の進捗" },
     { name = "Thunar confirm replace file",         class = "thunar", title = "置換するファイルの確認" },
     { name = "Thunar change filename",              class = "thunar", title = ".*の名前を変更.*" },
+    { name = "btop",                                class = "btop",   title = "btop" },
     { name = "Prism Launcher Quick Setup",          class = "org.prismlauncher.PrismLauncher", title = "Prism Launcher Quick Setup.*" },
     { name = "Prism Launcher Account",              class = "org.prismlauncher.PrismLauncher", title = "Microsoftアカウントを追加.*" },
     { name = "Prism Launcher Confirm activation",   class = "org.prismlauncher.PrismLauncher", title = "有効化の確認.*" },
-    { name = "FileRoller",                          class = "org.gnome.FileRoller"}
+    { name = "FileRoller",                          class = "org.gnome.FileRoller"},
 }
 
 for _, rule in ipairs(float_rules) do
@@ -54,7 +55,7 @@ end)
 hl.window_rule({
     name = "Discord",
     match = {
-        class = "^(discord|vesktop)$"
+        class = "discord"
     },
     workspace = "special"
 })
