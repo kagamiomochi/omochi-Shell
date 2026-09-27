@@ -293,7 +293,7 @@ reset_screen
 
 echo "The log is stored in $LOG_FILE."
 echo "Installation complete!"
-printf "Welcome to \e[1;33momochi-Shell!\e[0m\n"
+printf "Welcome to \e[1;33momochi-Shell\e[0m!\n"
 echo "The system will reboot in 10 seconds."
 echo "Press Ctrl+C to cancel."
 

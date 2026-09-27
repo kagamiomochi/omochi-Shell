@@ -39,25 +39,14 @@ gvfs-wsdd
 ffmpegthumbnailer
 kimageformats
 awww
-gnome-keyring
-libsecret
 kvantum
 fcitx5-im
 udisks2
 inotify-tools
-
-
-btop
-gpu-screen-recorder-ui
-kdeconnect
-loupe
-video-trimmer
-celluloid
+sunshine
 gnome-themes-extra
-gnome-disk-utility
+jq
 
-nano
-nano-syntax-highlighting
 
 blueman
 bluez
@@ -88,32 +77,35 @@ xdg-desktop-portal
 xdg-desktop-portal-gtk
 xdg-desktop-portal-hyprland
 
-qt5-wayland
-qt6-wayland
-
 exfatprogs
 unrar
 unzip
 zip
 7zip
 
-jq
-jdk-openjdk
 cmake
 python-evdev
 
 qt6ct
 adwaita-qt6
+qt6-wayland
 
 reflector
 snap-pac
 snapper
 sudo
 wget
-btrfs-assistant
 
+gnome-keyring
+libsecret
+
+
+gpu-screen-recorder-ui
+kdeconnect
+
+# Selection
+code
 blender
-vesktop-bin
 discord
 docker
 docker-compose
@@ -123,18 +115,28 @@ jellyfin-web
 obs-studio
 v4l2loopback-dkms
 prismlauncher
-proton-cachyos-slr
 steam
-sunshine
+proton-cachyos-slr
 yt-dlp
 rclone
 inkscape
-mission-center
 claude-desktop
 chatgpt-desktop-bin
 pear-desktop
 git-credential-oauth
 zen-browser-bin
+btrfs-assistant
+loupe
+video-trimmer
+celluloid
+gnome-disk-utility
+btop
+jdk-openjdk
+nano
+nano-syntax-highlighting
+uv
+npm
+
 
 
 # AUR
@@ -143,7 +145,6 @@ bibata-cursor-theme
 karukan-git
 minecraft-launcher
 tumbler-folder-thumbnailer
-visual-studio-code-bin
 python-terminaltexteffects
 bedrock-on-linux-bin
 unityhub
