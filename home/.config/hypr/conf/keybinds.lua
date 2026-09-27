@@ -1,4 +1,12 @@
 -- https://wiki.hypr.land/Configuring/Basics/Binds/
+local mainMod  = "SUPER"
+
+local fileManager = "thunar"
+local browser = "zen-browser"
+local terminal = "kitty"
+local SystemMonitor = "btop"
+local musicplayer = "pear-desktop"
+
 
 -- pin window
 local function toggle_pin()
@@ -30,32 +38,53 @@ local function toggle_scratchpad()
   end
 end
 
+-- Identifying Terminal Emulators
+local terminals = {
+    kitty = {
+        args = "--class " .. SystemMonitor .. " --title " .. SystemMonitor,
+        exec = "-e",
+    },
+    foot = {
+        args = "--app-id " .. SystemMonitor .. " --title " .. SystemMonitor,
+        exec = "--",
+    },
+    alacritty = {
+        args = "--class " .. SystemMonitor .. " --title " .. SystemMonitor,
+        exec = "-e",
+    },
+}
 
-local mainMod  = "SUPER"
+assert(
+    terminals[terminal],
+    "Unsupported terminal: " .. terminal
+)
 
-local terminal = "kitty"
-local fileManager = "thunar"
-local browser = "zen-browser"
-local SystemMonitor = "btop"
-local musicplayer = "pear-desktop"
+local t = terminals[terminal]
 
 
 -- General
-hl.bind(mainMod .. " + C",  hl.dsp.window.close())
 hl.bind(mainMod .. " + L",  hl.dsp.exec_cmd("loginctl lock-session"))
 hl.bind(mainMod .. " + E",  hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + W",  hl.dsp.exec_cmd(browser))
-hl.bind(mainMod .. " + P",  toggle_pin)
 hl.bind(mainMod .. " + SHIFT + P", hl.dsp.exec_cmd("hyprpicker"))
 hl.bind(mainMod .. " + SUPER_L", hl.dsp.exec_cmd("qs ipc call launcher toggle"), { release = true })
-hl.bind("CONTROL + SHIFT + Escape", hl.dsp.exec_cmd(SystemMonitor))
+hl.bind(
+    "CONTROL + SHIFT + ESCAPE",
+    hl.dsp.exec_cmd(
+        terminal .. " " .. t.args .. " " .. t.exec .. " " .. SystemMonitor
+    )
+)
 
+-- musicplayer
 hl.bind(mainMod .. " + M", function()
     hl.exec_cmd("~/.config/hypr/scripts/focus_or_exec.sh " .. musicplayer)
 end)
 
+-- Window Operations
+hl.bind(mainMod .. " + C",     hl.dsp.window.close())
+hl.bind(mainMod .. " + F",     hl.dsp.window.fullscreen())
 hl.bind(mainMod .. " + Space", hl.dsp.window.float({ action = "toggle" }))
-hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen())
+hl.bind(mainMod .. " + P",     toggle_pin)
 
 -- Terminal
 hl.bind(mainMod .. " + T", hl.dsp.exec_cmd(terminal .. " -- ~/.config/hypr/scripts/term-intro.sh"))
