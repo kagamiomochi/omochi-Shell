@@ -141,7 +141,7 @@ npm
 
 # AUR
 bt-dualboot
-bibata-cursor-theme
+bibata-cursor-theme-bin
 karukan-git
 minecraft-launcher
 tumbler-folder-thumbnailer
