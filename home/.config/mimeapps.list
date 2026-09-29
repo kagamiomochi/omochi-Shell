@@ -1,6 +1,6 @@
 [Default Applications]
 x-scheme-handler/discord=vesktop.desktop
-application/x-zerosize=code.desktop
+application/x-zerosize=code-oss.desktop
 inode/directory=thunar.desktop
 x-scheme-handler/claude=com.anthropic.Claude.desktop
 text/plain=com.microsoft.VSCode.desktop
@@ -28,7 +28,7 @@ text/x-shellscript=code-oss.desktop;code.desktop;com.microsoft.VSCode.desktop;
 application/xml=code.desktop;
 application/yaml=code.desktop;
 application/json=code-oss.desktop;com.microsoft.VSCode.desktop;code.desktop;
-application/x-zerosize=code.desktop;
+application/x-zerosize=code.desktop;code-oss.desktop;
 text/html=code.desktop;
 image/svg+xml=org.inkscape.Inkscape.desktop;org.gnome.Loupe.desktop;
 video/mp4=org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop;io.github.celluloid_player.Celluloid.desktop;
@@ -37,4 +37,3 @@ x-scheme-handler/http=zen.desktop;
 x-scheme-handler/https=zen.desktop;
 x-scheme-handler/chrome=zen.desktop;
 text/plain=code-oss.desktop;com.microsoft.VSCode.desktop;
-x-scheme-handler/opencode=ai.opencode.desktop.desktop;

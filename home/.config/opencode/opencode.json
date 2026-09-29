@@ -1,0 +1,26 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "llama.cpp": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "llama-server",
+      "options": {
+        "baseURL": "http://127.0.0.1:8080/v1"
+      },
+      "models": {
+        "Ternary-Bonsai-2-27B-PTQ1_0": {
+          "name": "Bonsai-2"
+        }
+      }
+    }
+  },
+
+  "agent": {
+    "build": {
+      "temperature": 0.3
+    },
+    "plan": {
+      "temperature": 0.2
+    }
+  }
+}

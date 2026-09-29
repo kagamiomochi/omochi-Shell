@@ -136,7 +136,9 @@ nano
 nano-syntax-highlighting
 uv
 npm
-
+opencode
+opencode-desktop-bin
+go
 
 
 # AUR
