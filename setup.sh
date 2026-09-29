@@ -195,6 +195,9 @@ step_link_dotfiles() {
     done
     shopt -u nullglob dotglob
 
+    mkdir -p "$HOME/.config/qt6ct"
+    sed "s|\$HOME|$HOME|g" "$DOTFILES_DIR/home/.config/qt6ct/qt6ct.conf.template" > "$HOME/.config/qt6ct/qt6ct.conf"
+
     mkdir -p "$HOME/.config/YouTube Music"
     sed "s|\$DOTFILES_DIR|$DOTFILES_DIR|g" "$DOTFILES_DIR/home/.config/YouTube Music/config.json.template" > "$HOME/.config/YouTube Music/config.json"
     
