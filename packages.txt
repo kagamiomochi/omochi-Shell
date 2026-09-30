@@ -145,6 +145,7 @@ python-terminaltexteffects
 karukan-git
 bt-dualboot
 bibata-cursor-theme-bin
+vencord-hook
 minecraft-launcher
 bedrock-on-linux-bin
 unityhub
