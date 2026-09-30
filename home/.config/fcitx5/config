@@ -1,18 +1,20 @@
 [Hotkey]
 # トグルキーの修飾キーを押し続けたときは列挙
-EnumerateWithTriggerKeys=True
+# EnumerateWithTriggerKeys=True
 # 入力メソッドを有効にする
 ActivateKeys=
 # 入力メソッドをオフにする
 DeactivateKeys=
+# Consume redundant Activate/Deactivate key
+# ConsumeRedundantActivateKeys=False
 # 一時的な入力メソッドの切り替え
 AltTriggerKeys=
 # 次の入力メソッドに切り替える
-EnumerateForwardKeys=
+# EnumerateForwardKeys=
 # 前の入力メソッドに切り替える
-EnumerateBackwardKeys=
+# EnumerateBackwardKeys=
 # 切り替え時は第1入力メソッドをスキップする
-EnumerateSkipFirst=False
+# EnumerateSkipFirst=False
 # 次の入力メソッドグループに切り替える
 EnumerateGroupForwardKeys=
 # 前の入力メソッドグループに切り替える
@@ -24,51 +26,52 @@ NextCandidate=
 # 埋め込みプリエディットの切り替え
 TogglePreedit=
 # 修飾キーのショートカットをトリガーするための時間制限（ミリ秒）
-ModifierOnlyKeyTimeout=250
+# ModifierOnlyKeyTimeout=250
 
 [Hotkey/TriggerKeys]
 0=Zenkaku_Hankaku
 1=Alt+grave
+2=F24
 
-[Hotkey/PrevPage]
-0=Up
+# [Hotkey/PrevPage]
+# 0=Up
 
-[Hotkey/NextPage]
-0=Down
+# [Hotkey/NextPage]
+# 0=Down
 
-[Behavior]
+# [Behavior]
 # 入力メソッドをデフォルトで有効にする
-ActiveByDefault=False
+# ActiveByDefault=False
 # フォーカス時に状態をリセット
-resetStateWhenFocusIn=No
+# resetStateWhenFocusIn=No
 # 入力状態を共有する
-ShareInputState=No
+# ShareInputState=No
 # アプリケーションにプリエディットを表示する
-PreeditEnabledByDefault=True
+# PreeditEnabledByDefault=True
 # 入力メソッドを切り替える際に入力メソッドの情報を表示する
-ShowInputMethodInformation=True
+# ShowInputMethodInformation=True
 # フォーカスを変更する際に入力メソッドの情報を表示する
-showInputMethodInformationWhenFocusIn=False
+# showInputMethodInformationWhenFocusIn=False
 # 入力メソッドの情報をコンパクトに表示する
-CompactInputMethodInformation=True
+# CompactInputMethodInformation=True
 # 第1入力メソッドの情報を表示する
-ShowFirstInputMethodInformation=True
+# ShowFirstInputMethodInformation=True
 # ページあたりのデフォルトの候補数
-DefaultPageSize=5
+# DefaultPageSize=5
 # XKB オプションの上書き
-OverrideXkbOption=False
+# OverrideXkbOption=False
 # カスタム XKB オプション
-CustomXkbOption=
+# CustomXkbOption=
 # Force Enabled Addons
-EnabledAddons=
+# EnabledAddons=
 # Force Disabled Addons
-DisabledAddons=
+# DisabledAddons=
 # Preload input method to be used by default
-PreloadInputMethod=True
+# PreloadInputMethod=True
 # パスワード欄に入力メソッドを許可する
-AllowInputMethodForPassword=False
+# AllowInputMethodForPassword=False
 # パスワード入力時にプリエディットテキストを表示する
-ShowPreeditForPassword=False
+# ShowPreeditForPassword=False
 # ユーザーデータを保存する間隔（分）
-AutoSavePeriod=30
+# AutoSavePeriod=30
 
