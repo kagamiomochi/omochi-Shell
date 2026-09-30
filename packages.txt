@@ -99,6 +99,7 @@ wget
 gnome-keyring
 libsecret
 
+llama-cpp
 
 gpu-screen-recorder-ui
 kdeconnect
