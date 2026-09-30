@@ -46,6 +46,7 @@ inotify-tools
 sunshine
 gnome-themes-extra
 jq
+sudo
 
 
 blueman
@@ -93,8 +94,6 @@ qt6-wayland
 reflector
 snap-pac
 snapper
-sudo
-wget
 
 gnome-keyring
 libsecret
@@ -139,6 +138,7 @@ uv
 npm
 opencode
 go
+wget
 
 
 # AUR
