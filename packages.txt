@@ -137,7 +137,6 @@ nano-syntax-highlighting
 uv
 npm
 opencode
-opencode-desktop-bin
 go
 
 
@@ -150,3 +149,4 @@ tumbler-folder-thumbnailer
 python-terminaltexteffects
 bedrock-on-linux-bin
 unityhub
+opencode-desktop-bin
