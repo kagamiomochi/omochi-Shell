@@ -141,12 +141,11 @@ go
 
 
 # AUR
+python-terminaltexteffects
+karukan-git
 bt-dualboot
 bibata-cursor-theme-bin
-karukan-git
 minecraft-launcher
-tumbler-folder-thumbnailer
-python-terminaltexteffects
 bedrock-on-linux-bin
 unityhub
 opencode-desktop-bin
