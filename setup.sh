@@ -202,6 +202,8 @@ step_link_dotfiles() {
     sed "s|\$DOTFILES_DIR|$DOTFILES_DIR|g" "$DOTFILES_DIR/home/.config/YouTube Music/config.json.template" > "$HOME/.config/YouTube Music/config.json"
     
     touch ~/.config/hypr/private.lua
+
+    vencordinstallercli -install -location ~/.config/discord
 }
 
 step_system_symlinks() {
