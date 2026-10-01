@@ -1,13 +1,8 @@
 home/.config/hypr/wallpapers/
 home/.config/hypr/private.lua
 home/.config/fcitx5/conf/cached_layouts
-home/.config/vesktop/Code Cache/
-home/.config/vesktop/Crashpad/
-home/.config/vesktop/SingletonCookie
-home/.config/vesktop/SingletonLock
-home/.config/vesktop/SingletonSocket
-home/.config/vesktop/sessionData/
-home/.config/vesktop/state.json
+home/.config/Vencord/dist/
+home/.config/qt6ct/qt6ct.conf
 home/.config/xfce4/xfconf/xfce-perchannel-xml/thunar-shares-plugin.xml
 home/.config/xfce4/desktop/icons.screen0.yaml
 home/.config/sunshine/credentials/
@@ -46,3 +41,4 @@ home/.config/YouTube Music/VideoDecodeStats/
 home/.config/YouTube Music/WebStorage/
 home/.config/YouTube Music/config.json
 home/.config/YouTube Music/shared_proto_db/
+home/.config/opencode/service.json
