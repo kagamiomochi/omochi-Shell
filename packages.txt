@@ -91,6 +91,8 @@ snapper
 gnome-keyring
 libsecret
 
+libva-nvidia-driver
+
 
 gpu-screen-recorder-ui
 kdeconnect
