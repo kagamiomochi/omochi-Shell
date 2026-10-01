@@ -12,8 +12,6 @@ quickshell
 playerctl
 keyd
 libnotify
-ollama
-ollama-cuda
 easyeffects
 calf
 mda.lv2
@@ -67,12 +65,6 @@ pipewire
 pipewire-alsa
 pipewire-pulse
 wireplumber
-
-libva-nvidia-driver
-libva-utils
-nvidia-container-toolkit
-nvidia-settings
-nvidia-utils
 
 xdg-desktop-portal
 xdg-desktop-portal-gtk
