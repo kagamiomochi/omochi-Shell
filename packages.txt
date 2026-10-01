@@ -45,6 +45,7 @@ sunshine
 gnome-themes-extra
 jq
 sudo
+llama-cpp
 
 
 blueman
@@ -90,7 +91,6 @@ snapper
 gnome-keyring
 libsecret
 
-llama-cpp
 
 gpu-screen-recorder-ui
 kdeconnect
