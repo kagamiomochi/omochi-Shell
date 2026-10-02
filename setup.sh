@@ -152,8 +152,6 @@ run_step() {
 # ============================================================
 
 step_system_update() {
-    sudo pacman -Sy reflector
-    sudo reflector --age 24 --protocol https --sort rate --latest 20 --save /etc/pacman.d/mirrorlist
     sudo pacman -Syu --noconfirm
 }
 
@@ -264,8 +262,6 @@ step_firewall_setup() {
 }
 
 step_theme_and_groups() {
-    gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
-    gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
     sudo usermod -aG input "$USER"
 }
 
