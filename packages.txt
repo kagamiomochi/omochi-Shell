@@ -44,8 +44,8 @@ inotify-tools
 sunshine
 gnome-themes-extra
 jq
-sudo
 llama-cpp
+python-evdev
 
 
 blueman
@@ -78,7 +78,6 @@ zip
 7zip
 
 cmake
-python-evdev
 
 qt6ct
 adwaita-qt6
@@ -132,7 +131,6 @@ uv
 npm
 opencode
 go
-wget
 
 
 # AUR
