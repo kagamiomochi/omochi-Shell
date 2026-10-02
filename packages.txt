@@ -80,7 +80,6 @@ unzip
 zip
 7zip
 
-reflector
 snap-pac
 snapper
 
