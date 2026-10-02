@@ -77,8 +77,6 @@ unzip
 zip
 7zip
 
-cmake
-
 qt6ct
 adwaita-qt6
 qt6-wayland
