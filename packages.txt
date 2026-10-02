@@ -82,6 +82,7 @@ zip
 
 snap-pac
 snapper
+reflector
 
 gnome-keyring
 libsecret

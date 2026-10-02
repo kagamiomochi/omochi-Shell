@@ -37,3 +37,4 @@ x-scheme-handler/http=zen.desktop;
 x-scheme-handler/https=zen.desktop;
 x-scheme-handler/chrome=zen.desktop;
 text/plain=code-oss.desktop;com.microsoft.VSCode.desktop;
+audio/x-mod=code-oss.desktop;

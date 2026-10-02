@@ -3,6 +3,7 @@ home/.config/hypr/private.lua
 home/.config/fcitx5/conf/cached_layouts
 home/.config/Vencord/dist/
 home/.config/qt6ct/qt6ct.conf
+home/.config/qt6ct/style-colors.conf
 home/.config/xfce4/xfconf/xfce-perchannel-xml/thunar-shares-plugin.xml
 home/.config/xfce4/desktop/icons.screen0.yaml
 home/.config/sunshine/credentials/
