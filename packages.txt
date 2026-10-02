@@ -58,8 +58,9 @@ bluez-hid2hci
 noto-fonts
 noto-fonts-cjk
 noto-fonts-emoji
+otf-monaspace
 otf-font-awesome
-cantarell-fonts
+nerd-fonts
 
 pavucontrol
 pipewire
