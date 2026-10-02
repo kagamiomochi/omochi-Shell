@@ -46,6 +46,19 @@ gnome-themes-extra
 jq
 llama-cpp
 python-evdev
+ufw
+ufw-extras
+noto-fonts
+noto-fonts-cjk
+noto-fonts-emoji
+otf-monaspace
+otf-font-awesome
+nerd-fonts
+xdg-desktop-portal
+xdg-desktop-portal-gtk
+xdg-desktop-portal-hyprland
+qt6ct
+qt6-wayland
 
 
 blueman
@@ -55,31 +68,17 @@ bluez-utils
 bluez-libs
 bluez-hid2hci
 
-noto-fonts
-noto-fonts-cjk
-noto-fonts-emoji
-otf-monaspace
-otf-font-awesome
-nerd-fonts
-
 pavucontrol
 pipewire
 pipewire-alsa
 pipewire-pulse
 wireplumber
 
-xdg-desktop-portal
-xdg-desktop-portal-gtk
-xdg-desktop-portal-hyprland
-
 exfatprogs
 unrar
 unzip
 zip
 7zip
-
-qt6ct
-qt6-wayland
 
 reflector
 snap-pac
