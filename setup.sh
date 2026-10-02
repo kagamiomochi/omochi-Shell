@@ -152,7 +152,7 @@ run_step() {
 # ============================================================
 
 step_system_update() {
-    sudo pacman -S reflector
+    sudo pacman -Sy reflector
     sudo reflector --age 24 --protocol https --sort rate --latest 20 --save /etc/pacman.d/mirrorlist
     sudo pacman -Syu --noconfirm
 }
