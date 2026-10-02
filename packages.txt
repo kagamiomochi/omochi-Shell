@@ -78,7 +78,6 @@ zip
 7zip
 
 qt6ct
-adwaita-qt6
 qt6-wayland
 
 reflector
