@@ -14,7 +14,6 @@ wl-paste --type text --watch cliphist store &
 wl-paste --type image --watch cliphist store &
 fcitx5 -d &
 easyeffects --gapplication-service &
-ollama serve &
 python ~/.config/hypr/scripts/click_shrink.py &
 ~/.config/hypr/scripts/update-notify.sh &
 ~/.config/hypr/scripts/random_wall.sh &

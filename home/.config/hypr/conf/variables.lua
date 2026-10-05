@@ -44,9 +44,7 @@ hl.config({
     },
 
     misc = {
-        force_default_wallpaper = 0,
-        session_lock_xray = true,
-        session_lock_blur = true,
+        force_default_wallpaper = 0
     },
 })
 

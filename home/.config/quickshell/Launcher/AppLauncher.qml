@@ -286,7 +286,7 @@ PanelWindow {
                         model: [
                             { label: "画面ロック",     icon: "\uF023", cmd: ["hyprlock"]               },
                             { label: "スリープ",       icon: "\uF186", cmd: ["systemctl", "suspend"]    },
-                            { label: "ハイバネート",   icon: "\uF7E2", cmd: ["systemctl", "hibernate"]  },
+                            { label: "ハイバネート",   icon: "\ue36f", cmd: ["systemctl", "hibernate"]  },
                             { label: "再起動",         icon: "\uF2F9", cmd: ["systemctl", "reboot"]     },
                             { label: "シャットダウン", icon: "\uF011", cmd: ["systemctl", "poweroff"]   },
                         ]
