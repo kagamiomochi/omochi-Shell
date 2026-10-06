@@ -140,3 +140,4 @@ minecraft-launcher
 bedrock-on-linux-bin
 unityhub
 opencode-desktop-bin
+appimagelauncher
