@@ -42,4 +42,6 @@ home/.config/YouTube Music/VideoDecodeStats/
 home/.config/YouTube Music/WebStorage/
 home/.config/YouTube Music/config.json
 home/.config/YouTube Music/shared_proto_db/
+home/.config/YouTube Music/.org.chromium.Chromium.*
+home/.config/YouTube Music/tempIcon.png
 home/.config/opencode/service.json

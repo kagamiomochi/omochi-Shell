@@ -40,22 +40,29 @@
 			"globalShortcuts": {}
 		},
 		"discord": {
-			"listenAlong": true,
-			"enabled": true
+			"enabled": true,
+			"autoReconnect": true,
+			"activityTimeoutEnabled": true,
+			"activityTimeoutTime": 30000,
+			"playOnYouTubeMusic": true,
+			"hideGitHubButton": true,
+			"hideDurationLeft": false,
+			"statusDisplayType": 2,
+			"listenAlong": true
 		},
 		"do-not-track": {
 			"enabled": true
 		},
 		"album-color-theme": {
 			"enabled": true,
-			"ratio": 0.5,
+			"ratio": 1,
 			"enableSeekbar": true
 		},
 		"ambient-mode": {
 			"enabled": true,
 			"quality": 50,
 			"buffer": 30,
-			"interpolationTime": 1500,
+			"interpolationTime": 500,
 			"blur": 100,
 			"size": 100,
 			"opacity": 1,
@@ -67,10 +74,10 @@
 		"synced-lyrics": {
 			"enabled": true,
 			"preciseTiming": true,
-			"showLyricsEvenIfInexact": true,
+			"showLyricsEvenIfInexact": false,
 			"showTimeCodes": false,
 			"defaultTextString": "♪",
-			"lineEffect": "fancy",
+			"lineEffect": "offset",
 			"romanization": false,
 			"preferredProvider": "LRCLib"
 		},
@@ -78,7 +85,23 @@
 			"enabled": false
 		},
 		"unobtrusive-player": {
-			"enabled": true
+			"enabled": false
+		},
+		"album-actions": {
+			"enabled": false
+		},
+		"in-app-menu": {
+			"enabled": false
+		},
+		"notifications": {
+			"enabled": false,
+			"unpauseNotification": false,
+			"urgency": "low",
+			"interactive": true,
+			"toastStyle": 1,
+			"refreshOnPlayPause": false,
+			"trayControls": true,
+			"hideButtonText": false
 		}
 	},
 	"__internal__": {
