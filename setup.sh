@@ -203,21 +203,19 @@ step_link_dotfiles() {
     
     touch ~/.config/hypr/private.lua
 
-    # vencordinstallercli -install -location ~/.config/discord
+    LANG=C xdg-user-dirs-update --force
 }
 
 step_system_symlinks() {
     local DOTFILES_DIR="$1"
     sudo ln -sfn "$DOTFILES_DIR/system/etc/keyd/default.conf"                    /etc/keyd/default.conf
     sudo ln -sfn "$DOTFILES_DIR/system/etc/pam.d/hyprlock"                       /etc/pam.d/hyprlock
+    sudo ln -sfn "$DOTFILES_DIR/system/etc/greetd/config.toml"                   /etc/greetd/config.toml
     sudo cp "$DOTFILES_DIR/system/etc/systemd/system/automount-all.service"      /etc/systemd/system/
-    
+
     sudo mkdir -p /usr/local/bin
     sed "s/__USERNAME__/${USER}/g" "$DOTFILES_DIR/system/usr/local/bin/automount-all.sh.template" | sudo tee /usr/local/bin/automount-all.sh > /dev/null
     sudo chmod +x /usr/local/bin/automount-all.sh
-
-    sudo mkdir -p /etc/greetd
-    sed "s/__USERNAME__/${USER}/g" "$DOTFILES_DIR/system/etc/greetd/config.toml.template" | sudo tee /etc/greetd/config.toml > /dev/null
 }
 
 step_sudo_feedback() {

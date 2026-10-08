@@ -6,13 +6,12 @@ hyprctl setcursor "Bibata-Modern-Classic" 24
 awww-daemon &
 udiskie -s &
 
-hyprlock
-
 systemctl --user enable --now hypridle.service
 quickshell &
 wl-paste --type text --watch cliphist store &
 wl-paste --type image --watch cliphist store &
 fcitx5 -d &
+sunshine &
 easyeffects --gapplication-service &
 python ~/.config/hypr/scripts/click_shrink.py &
 ~/.config/hypr/scripts/update-notify.sh &
@@ -22,6 +21,4 @@ gsr-ui &
 kdeconnectd &
 kdeconnect-indicator &
 thunar --daemon &
-sunshine &
-discord --start-minimized &
 steam -silent &

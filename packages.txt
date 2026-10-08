@@ -59,7 +59,7 @@ xdg-desktop-portal-gtk
 xdg-desktop-portal-hyprland
 qt6ct
 qt6-wayland
-
+uwsm
 
 blueman
 bluez
@@ -92,6 +92,7 @@ libva-nvidia-driver
 
 gpu-screen-recorder-ui
 kdeconnect
+greetd-tuigreet
 
 # Selection
 code
