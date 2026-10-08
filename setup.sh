@@ -203,7 +203,7 @@ step_link_dotfiles() {
     
     touch ~/.config/hypr/private.lua
 
-    vencordinstallercli -install -location ~/.config/discord
+    # vencordinstallercli -install -location ~/.config/discord
 }
 
 step_system_symlinks() {
