@@ -571,9 +571,6 @@
             "unlimitedSuperReactionPlaying": true,
             "superReactionPlayingLimit": 20
         },
-        "TenorGifSearch": {
-            "enabled": true
-        },
         "TextReplace": {
             "enabled": false
         },
@@ -692,6 +689,9 @@
         },
         "SupportHelper": {
             "enabled": true
+        },
+        "GifProviderSwitcher": {
+            "enabled": true
         }
     },
     "uiElements": {
@@ -718,6 +718,7 @@
         "authenticated": false,
         "url": "https://api.vencord.dev/",
         "settingsSync": false,
-        "settingsSyncVersion": 1790774897184
-    }
+        "settingsSyncVersion": 1791446980531
+    },
+    "nativeTitleBar": false
 }
