@@ -261,6 +261,8 @@ step_firewall_setup() {
 
 step_theme_and_groups() {
     sudo usermod -aG input "$USER"
+    gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+    gsettings set org.gnome.desktop.interface gtk-theme "Adwaita-dark"
 }
 
 step_env_var() {

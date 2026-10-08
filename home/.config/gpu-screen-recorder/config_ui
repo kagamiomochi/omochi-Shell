@@ -1,4 +1,5 @@
 main.config_file_version 2
+main.exclude_metadata false
 main.hotkeys_enable_option enable_hotkeys_no_grab
 main.joystick_hotkeys_enable_option disable_hotkeys
 main.language 
@@ -8,9 +9,9 @@ main.software_encoding_warning_shown false
 main.tint_color nvidia
 main.wayland_warning_shown true
 record.container mp4
+record.name_video_file_after_game false
 record.pause_unpause_hotkey 0 0
 record.record_options.advanced_view false
-record.record_options.application_audio_invert false
 record.record_options.audio_codec opus
 record.record_options.audio_track_item false [add_audio_track]
 record.record_options.audio_track_item false device:default_output
@@ -18,10 +19,10 @@ record.record_options.audio_track_item false device:default_input
 record.record_options.change_video_resolution false
 record.record_options.codec auto
 record.record_options.color_range limited
+record.record_options.enable_vulkan_video_encoding false
 record.record_options.fps 60
 record.record_options.framerate_mode auto
 record.record_options.low_power_mode false
-record.record_options.merge_audio_tracks true
 record.record_options.overclock false
 record.record_options.record_area_height 1080
 record.record_options.record_area_option focused_monitor
@@ -50,18 +51,19 @@ record.start_stop_hotkey 88 16
 record.start_stop_region_hotkey 0 0
 record.start_stop_window_hotkey 0 0
 replay.container mp4
+replay.name_video_file_after_game false
+replay.only_start_replay_if_power_supply_connected false
 replay.record_options.advanced_view false
-replay.record_options.application_audio_invert false
 replay.record_options.audio_codec opus
 replay.record_options.audio_track_item false [add_audio_track]
 replay.record_options.audio_track_item false device:default_output
 replay.record_options.change_video_resolution false
 replay.record_options.codec auto
 replay.record_options.color_range limited
+replay.record_options.enable_vulkan_video_encoding false
 replay.record_options.fps 60
 replay.record_options.framerate_mode auto
 replay.record_options.low_power_mode false
-replay.record_options.merge_audio_tracks true
 replay.record_options.overclock false
 replay.record_options.record_area_height 1080
 replay.record_options.record_area_option focused_monitor
@@ -100,6 +102,7 @@ screenshot.image_format png
 screenshot.image_height 1080
 screenshot.image_quality ultra
 screenshot.image_width 1920
+screenshot.name_screenshot_file_after_game false
 screenshot.record_area_option focused_monitor
 screenshot.record_cursor true
 screenshot.restore_portal_session true
@@ -118,17 +121,16 @@ streaming.custom.url
 streaming.kick.key 
 streaming.kick.url 
 streaming.record_options.advanced_view false
-streaming.record_options.application_audio_invert false
 streaming.record_options.audio_codec opus
 streaming.record_options.audio_track_item false [add_audio_track]
 streaming.record_options.audio_track_item false default_output
 streaming.record_options.change_video_resolution false
 streaming.record_options.codec auto
 streaming.record_options.color_range limited
+streaming.record_options.enable_vulkan_video_encoding false
 streaming.record_options.fps 60
 streaming.record_options.framerate_mode auto
 streaming.record_options.low_power_mode false
-streaming.record_options.merge_audio_tracks true
 streaming.record_options.overclock false
 streaming.record_options.record_area_height 0
 streaming.record_options.record_area_option focused_monitor
@@ -155,4 +157,6 @@ streaming.rumble.key
 streaming.service twitch
 streaming.start_stop_hotkey 0 0
 streaming.twitch.key 
+streaming.whip.bearer_token 
+streaming.whip.url 
 streaming.youtube.key 
