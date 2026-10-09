@@ -4,7 +4,7 @@ set -e
 
 cleanup() {
     sudo rm -f /etc/sudoers.d/post-setup-tmp
-    hyprctl notify 3 8000 0 "Error"
+    hyprctl notify 3 8000 0 "Initial setup failed."
 }
 trap cleanup ERR
 
@@ -19,4 +19,4 @@ vencordinstallercli -install -location ~/.config/discord
 sudo rm -f /etc/sudoers.d/post-setup-tmp
 mkdir -p "$HOME/.local/state/omochi-shell/"
 touch "$HOME/.local/state/omochi-shell/.setup_done"
-hyprctl notify 5 8000 0 "The initial setup has been completed"
+hyprctl notify 5 5000 0 "Initial setup is complete!"
