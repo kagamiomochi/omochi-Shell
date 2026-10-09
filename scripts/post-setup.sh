@@ -13,8 +13,6 @@ yes | hyprpm add https://github.com/hyprwm/hyprland-plugins
 yes | hyprpm add https://github.com/virtcode/hypr-dynamic-cursors
 hyprpm enable dynamic-cursors
 
-hyprpm reload
-
 vencordinstallercli -install -location ~/.config/discord
 
 sudo rm -f /etc/sudoers.d/post-setup-tmp
