@@ -5,7 +5,7 @@ set -e
 cleanup() {
     sudo rm -f /etc/sudoers.d/post-setup-tmp
 }
-trap cleanup EXIT
+trap cleanup ERR
 
 # Install Hyprland plugins
 hyprpm update
