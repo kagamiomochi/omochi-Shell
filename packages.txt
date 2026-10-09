@@ -133,7 +133,6 @@ go
 
 # AUR
 python-terminaltexteffects
-karukan-git
 bt-dualboot
 bibata-cursor-theme-bin
 vencord-hook
@@ -142,3 +141,5 @@ bedrock-on-linux-bin
 unityhub
 opencode-desktop-bin
 appimagelauncher
+fcitx5-hazkey-bin
+hazkey-zenzai-model
