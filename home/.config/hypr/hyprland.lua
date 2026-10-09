@@ -9,7 +9,6 @@ hl.on("hyprland.start", function ()
         fi
     ]]) end)
 require("conf/autostart")
-require("conf/env")
 require("conf/keybinds")
 require("conf/windowrule")
 require("conf/variables")

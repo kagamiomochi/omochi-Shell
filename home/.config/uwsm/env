@@ -1,0 +1,22 @@
+export GBM_BACKEND=nvidia-drm
+export __GLX_VENDOR_LIBRARY_NAME=nvidia
+export LIBVA_DRIVER_NAME=nvidia
+export NVD_BACKEND=direct
+
+export GDK_BACKEND=wayland,x11,*
+export QT_QPA_PLATFORM='wayland;xcb'
+
+export QT_QPA_PLATFORMTHEME=qt6ct
+export QT_STYLE_OVERRIDE=kvantum
+
+export HYPRCURSOR_THEME=Bibata-Modern-Classic
+export HYPRCURSOR_SIZE=24
+export XCURSOR_THEME=Bibata-Modern-Classic
+export XCURSOR_SIZE=24
+
+export QT_IM_MODULE=fcitx
+export GTK_IM_MODULE=fcitx
+export XMODIFIERS=@im=fcitx
+export SDL_IM_MODULE=fcitx
+
+export __GL_SHADER_DISK_CACHE_SIZE=12000000000
