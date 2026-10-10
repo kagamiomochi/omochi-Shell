@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Exec=discord
+Hidden=false
+NoDisplay=false
+Name=Discord
+Icon=/home/kagamimochi/.config/discord/app-1.0.161/discord.png
+Comment=Text and voice chat for gamers.
+X-GNOME-Autostart-enabled=true
+Path=
+Terminal=false
+StartupNotify=false
