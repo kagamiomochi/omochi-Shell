@@ -97,7 +97,7 @@ hl.bind(mainMod .. " + V", hl.dsp.exec_cmd("cliphist list | rofi -dmenu | cliphi
 
 -- Reload Shell
 hl.bind(mainMod .. " + SHIFT + R", function()
-    hl.exec_cmd("hyprctl reload && pkill quickshell; quickshell")
+    hl.exec_cmd("hyprctl reload && systemctl --user restart quickshell")
     hl.notification.create({ text = "Reloaded Hyprland and QuickShell.", timeout = 3000, icon = "ok" })
 end)
 
