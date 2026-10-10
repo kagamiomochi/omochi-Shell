@@ -17,7 +17,7 @@ hyprpm enable dynamic-cursors
 
 vencordinstallercli -install -location ~/.config/discord
 
+sudo mkdir -p "$HOME/.local/state/omochi-shell/"
+sudo touch "$HOME/.local/state/omochi-shell/.setup_done"
 sudo rm -f /etc/sudoers.d/post-setup-tmp
-mkdir -p "$HOME/.local/state/omochi-shell/"
-touch "$HOME/.local/state/omochi-shell/.setup_done"
 hyprctl notify 5 3000 0 "Initial setup is complete"
