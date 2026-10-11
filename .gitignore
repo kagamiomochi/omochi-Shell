@@ -2,6 +2,7 @@ home/.config/hypr/wallpapers/
 home/.config/hypr/private.lua
 home/.config/fcitx5/conf/cached_layouts
 home/.config/Vencord/dist/
+home/.config/opencode/service.json
 home/.config/qt6ct/qt6ct.conf
 home/.config/qt6ct/style-colors.conf
 home/.config/xfce4/xfconf/xfce-perchannel-xml/thunar-shares-plugin.xml
@@ -44,4 +45,9 @@ home/.config/YouTube Music/config.json
 home/.config/YouTube Music/shared_proto_db/
 home/.config/YouTube Music/.org.chromium.Chromium.*
 home/.config/YouTube Music/tempIcon.png
-home/.config/opencode/service.json
+home/.local/share/PrismLauncher/accounts.json
+home/.local/share/PrismLauncher/cache/feed/feed.xml
+home/.local/share/PrismLauncher/logs/PrismLauncher-0.log
+home/.local/share/PrismLauncher/metacache
+home/.local/share/PrismLauncher/translations/index_v2.json
+home/.local/share/PrismLauncher/translations/mmc_ja.qm
