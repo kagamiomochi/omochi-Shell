@@ -91,7 +91,6 @@ libva-nvidia-driver
 
 
 gpu-screen-recorder-ui
-kdeconnect
 greetd-tuigreet
 
 # Selection
@@ -129,7 +128,9 @@ uv
 npm
 opencode
 go
-
+scrcpy
+android-tools
+android-udev
 
 # AUR
 python-terminaltexteffects
@@ -140,6 +141,6 @@ minecraft-launcher
 bedrock-on-linux-bin
 unityhub
 opencode-desktop-bin
-appimagelauncher
 fcitx5-hazkey-bin
 hazkey-zenzai-model
+sefirah-bin
