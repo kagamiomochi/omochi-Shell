@@ -25,7 +25,7 @@ x-scheme-handler/opencode=ai.opencode.desktop.desktop
 [Added Associations]
 text/x-lua=code.desktop;
 text/x-shellscript=code-oss.desktop;code.desktop;com.microsoft.VSCode.desktop;
-application/xml=code.desktop;
+application/xml=code-oss.desktop;code.desktop;
 application/yaml=code.desktop;
 application/json=code-oss.desktop;com.microsoft.VSCode.desktop;code.desktop;
 application/x-zerosize=code.desktop;code-oss.desktop;

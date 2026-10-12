@@ -51,3 +51,4 @@ home/.local/share/PrismLauncher/logs/PrismLauncher-0.log
 home/.local/share/PrismLauncher/metacache
 home/.local/share/PrismLauncher/translations/index_v2.json
 home/.local/share/PrismLauncher/translations/mmc_ja.qm
+home/.local/share/PrismLauncher/logs/PrismLauncher-*.log
