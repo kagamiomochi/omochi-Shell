@@ -16,7 +16,7 @@ Name=keyboard-us
 # Name
 Name=hazkey
 # Layout
-Layout=us
+# Layout=
 
 [GroupOrder]
 0=デフォルト

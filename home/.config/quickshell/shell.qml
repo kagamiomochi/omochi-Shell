@@ -9,6 +9,7 @@ import "Launcher"
 import "NotificationCenter"
 import "ClipboardPopup"
 import "DesktopIcons"
+import "CursorTrail"
 
 ShellRoot {
     id: root
