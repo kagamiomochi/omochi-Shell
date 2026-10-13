@@ -4,30 +4,32 @@ import Quickshell.Wayland
 import QtQuick
 import QtQuick.Effects
 
-// カーソルトレイル
-//   mode: "blur" = モーションブラー風の残像 / "glow" = 光の尾 / "both" = 両方
-//   実行中の切り替え: qs -c cursor-trail ipc call trail set glow
-ShellRoot {
+// Cursor trail overlay
+//   mode: "blur" = motion-blur-like afterimage / "glow" = light tail / "both" = both
+//   Switch at runtime: qs ipc call trail set glow
+Scope {
     id: root
 
+    // Master switch. When false, the position stream stops and the overlay is hidden.
+    property bool enabled: true
     property string mode: "glow"
 
-    // ---- 調整用パラメータ ----
-    property color glowColor: "#73bfff"   // 光の尾の先頭(カーソル側)の色
-    property color glowTailColor: "#c77dff" // 光の尾の末端(古い側)の色。先頭と同じ色にすれば単色に戻る
-    property real glowLifetime: 450       // 光の尾が消えるまで(ms)
-    property real blurLifetime: 200       // 残像が消えるまで(ms)
-    property real cursorScale: 1.0        // 残像サイズの追加倍率(画像が使えない時の矢印にも効く)
-    property string cursorTheme: ""       // 空なら XCURSOR_THEME を使う
-    property int cursorSize: 0            // 0 なら XCURSOR_SIZE を使う
-    property var cursorInfo: null         // cursor-image.py の出力(画像パスとホットスポット)
+    // ---- Tunable parameters ----
+    property color glowColor: "#73bfff"     // Color at the head of the glow tail (cursor side)
+    property color glowTailColor: "#c77dff" // Color at the end of the glow tail (older side). Same as glowColor = single color
+    property real glowLifetime: 450         // Time until the glow tail fades out (ms)
+    property real blurLifetime: 200         // Time until the afterimage fades out (ms)
+    property real cursorScale: 1.0          // Extra scale for the afterimage (also applies to the fallback arrow)
+    property string cursorTheme: ""         // Empty = use XCURSOR_THEME
+    property int cursorSize: 0              // 0 = use XCURSOR_SIZE
+    property var cursorInfo: null           // Output of cursor-image.py (image path and hotspot)
 
     signal moved(real x, real y)
 
-    // カーソル位置のストリーム
+    // Cursor position stream
     Process {
-        running: true
-        command: ["python3", Quickshell.shellPath("cursor-stream.py")]
+        running: root.enabled
+        command: ["python3", Quickshell.shellPath("CursorTrail/cursor-stream.py")]
         stdout: SplitParser {
             onRead: line => {
                 const p = line.split(" ");
@@ -36,11 +38,11 @@ ShellRoot {
         }
     }
 
-    // 実際のカーソルテーマ画像を PNG 化して取得(失敗したら矢印にフォールバック)
+    // Convert the real cursor theme image to PNG (falls back to an arrow on failure)
     Process {
         running: true
         command: [
-            "python3", Quickshell.shellPath("cursor-image.py"),
+            "python3", Quickshell.shellPath("CursorTrail/cursor-image.py"),
             root.cursorTheme,
             root.cursorSize > 0 ? String(root.cursorSize) : ""
         ]
@@ -58,13 +60,16 @@ ShellRoot {
         function set(m: string): void {
             root.mode = m;
         }
+        function on(): void { root.enabled = true }
+        function off(): void { root.enabled = false }
+        function toggle(): void { root.enabled = !root.enabled }
     }
 
-    // 履歴を持って自分で描画するキャンバス
+    // Canvas that keeps its own history and draws it
     component TrailCanvas: Canvas {
         id: c
 
-        // "glow" = 太い色付きの帯 / "core" = 細い白い芯 / "ghost" = カーソル形の残像
+        // "glow" = thick colored band / "core" = thin white core / "ghost" = cursor-shaped afterimage
         property string kind: "glow"
         property real lifetime: 450
         property real offX: 0
@@ -116,7 +121,7 @@ ShellRoot {
             ctx.fill();
         }
 
-        // 3点の二次ベジェ(a → b、制御点 c)を細かく分割して out に追加する
+        // Subdivide a quadratic Bezier (a -> b, control point c) and append the points to out
         function addQuad(out, a, c, b, step) {
             const len = Math.hypot(c.x - a.x, c.y - a.y) + Math.hypot(b.x - c.x, b.y - c.y);
             const n = Math.max(1, Math.min(64, Math.ceil(len / step)));
@@ -130,9 +135,10 @@ ShellRoot {
             }
         }
 
-        // 離散的なサンプル点を、折れ線ではなく滑らかな曲線に直した細かい点列にする。
-        // 隣り合う点の中点どうしを、間の点を制御点とする二次ベジェでつなぐ。
-        // 行き過ぎ(オーバーシュート)が起きず、継ぎ目も滑らかになる
+        // Turn the discrete sample points into a dense point list along a smooth curve
+        // instead of a polyline. Midpoints of adjacent samples are connected by quadratic
+        // Beziers whose control point is the sample in between. This avoids overshoot
+        // and keeps the joins smooth.
         function smooth(step) {
             const n = pts.length;
             const mid = (a, b) => ({ x: (a.x + b.x) / 2, y: (a.y + b.y) / 2, t: (a.t + b.t) / 2 });
@@ -172,7 +178,8 @@ ShellRoot {
                 return;
 
             if (kind === "ghost") {
-                // 経路上にカーソル形の残像を並べる。重なるほど濃くなり、ブレた見た目になる
+                // Place cursor-shaped afterimages along the path. Overlaps get denser,
+                // which gives a blurred look.
                 ctx.fillStyle = "white";
                 for (let i = 1; i < pts.length; i++) {
                     const a = pts[i - 1], b = pts[i];
@@ -188,7 +195,7 @@ ShellRoot {
                         const gx = a.x + (b.x - a.x) * f;
                         const gy = a.y + (b.y - a.y) * f;
                         if (cursorInfo && isImageLoaded(imgUrl)) {
-                            // ホットスポットが経路上の点に来るように描く
+                            // Draw so that the hotspot lands on the path point
                             const s = cursorInfo.scale * scaleFactor;
                             ctx.drawImage(imgUrl,
                                           gx - cursorInfo.xhot * s,
@@ -204,12 +211,12 @@ ShellRoot {
                 return;
             }
 
-            // glow / core: 古い区間ほど細く・薄くなる帯。
-            // サンプル点をそのまま結ぶと高速移動で角ばるので、曲線化して細かく分割して描く
+            // glow / core: a band that gets thinner and fainter toward older segments.
+            // Connecting raw samples looks angular at high speed, so draw a densified curve.
             let total = 0;
             for (let i = 1; i < pts.length; i++)
                 total += Math.hypot(pts[i].x - pts[i - 1].x, pts[i].y - pts[i - 1].y);
-            // 分割の間隔。長い軌跡でも点列が増えすぎないよう上限を設ける
+            // Subdivision step, capped so long trails do not produce too many points
             const step = Math.max(kind === "glow" ? 3 : 2, total / 400);
             const dense = smooth(step);
 
@@ -228,7 +235,8 @@ ShellRoot {
                 if (kind === "glow") {
                     alpha = 0.85 * k * k;
                     width = 3 + 14 * k;
-                    // 古い区間ほど末端色に寄せる。末端は薄くなるので、色の変化は早めに進める
+                    // Older segments shift toward the tail color. The tail gets faint,
+                    // so progress the color change early.
                     const m = Math.min(1, (1 - k) * 1.5);
                     r = tint.r + (tailTint.r - tint.r) * m;
                     g = tint.g + (tailTint.g - tint.g) * m;
@@ -238,7 +246,8 @@ ShellRoot {
                     width = 1 + 2.5 * k;
                     r = 1; g = 1; bl = 1;
                 }
-                // 丸い端が重なる分だけ濃くなるので、重なり回数で割って見た目の濃さを揃える
+                // Round caps get denser where they overlap, so divide by the overlap
+                // count to keep the apparent opacity uniform
                 const a1 = 1 - Math.pow(1 - alpha, Math.min(1, segLen / width));
 
                 ctx.strokeStyle = Qt.rgba(r, g, bl, a1);
@@ -259,6 +268,7 @@ ShellRoot {
             required property var modelData
 
             screen: modelData
+            visible: root.enabled
             anchors {
                 top: true
                 bottom: true
@@ -269,9 +279,9 @@ ShellRoot {
             exclusionMode: ExclusionMode.Ignore
             WlrLayershell.layer: WlrLayer.Overlay
             WlrLayershell.namespace: "cursor-trail"
-            mask: Region {}   // 空のRegionでクリックを完全に透過
+            mask: Region {}   // Empty Region makes the window fully click-through
 
-            // 光の尾: ぼかした太い帯 + 細い芯
+            // Glow tail: blurred thick band + thin core
             TrailCanvas {
                 id: glow
                 kind: "glow"
@@ -292,7 +302,7 @@ ShellRoot {
                 offY: win.modelData.y
             }
 
-            // モーションブラー風: カーソル形の残像を軽くぼかす
+            // Motion-blur style: lightly blurred cursor-shaped afterimages
             TrailCanvas {
                 id: ghost
                 kind: "ghost"

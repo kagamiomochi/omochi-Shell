@@ -101,6 +101,9 @@ hl.bind(mainMod .. " + SHIFT + R", function()
     hl.notification.create({ text = "Reloaded Hyprland and QuickShell.", timeout = 3000, icon = "ok" })
 end)
 
+-- Toggle cursor trail
+hl.bind(mainMod .. " + SHIFT + T", hl.dsp.exec_cmd("qs ipc call trail toggle"))
+
 -- Move focus
 hl.bind(mainMod .. " + left",  hl.dsp.focus({ direction = "left" }))
 hl.bind(mainMod .. " + right", hl.dsp.focus({ direction = "right" }))

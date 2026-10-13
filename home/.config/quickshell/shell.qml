@@ -52,4 +52,6 @@ ShellRoot {
     ClipboardWatcher { popup: clipPopup }
 
     DesktopIcons {}
+
+    CursorTrail {}
 }
