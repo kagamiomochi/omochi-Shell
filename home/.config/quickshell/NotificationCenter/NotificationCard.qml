@@ -2,9 +2,6 @@ import QtQuick
 import QtQuick.Layouts
 import Quickshell.Services.Notifications
 
-// ============================================================
-// 通知1件分のカード。履歴パネル・トースト両方から使う共通部品
-// ============================================================
 Rectangle {
     id: card
 
@@ -18,11 +15,43 @@ Rectangle {
 
     signal dismissRequested()
 
+    // Collect actions that should be shown as buttons (non-empty text, not "default")
+    function buttonActions() {
+        const out = []
+        if (!notifObj || !notifObj.actions) return out
+        for (let i = 0; i < notifObj.actions.length; i++) {
+            const a = notifObj.actions[i]
+            if (a.text !== "" && a.identifier !== "default") out.push(a)
+        }
+        return out
+    }
+
+    // Invoke the "default" action (click on the notification body)
+    function invokeDefault() {
+        if (!notifObj || !notifObj.actions) return
+        for (let i = 0; i < notifObj.actions.length; i++) {
+            if (notifObj.actions[i].identifier === "default") {
+                notifObj.actions[i].invoke()
+                card.dismissRequested()
+                return
+            }
+        }
+    }
+
+    readonly property var shownActions: buttonActions()
+
     implicitHeight: contentCol.implicitHeight + 20
     radius: 10
     color: urgency === NotificationUrgency.Critical ? "#552a1a1a" : "#332f2f2f"
     border.color: urgency === NotificationUrgency.Critical ? "#ff5555" : "#44ffffff"
     border.width: 1
+
+    // Background click area (declared first so buttons and the close mark stay above it)
+    MouseArea {
+        anchors.fill: parent
+        cursorShape: Qt.PointingHandCursor
+        onClicked: card.invokeDefault()
+    }
 
     RowLayout {
         id: contentCol
@@ -30,7 +59,6 @@ Rectangle {
         anchors.margins: 10
         spacing: 10
 
-        // アイコン or 画像
         Image {
             visible: image !== "" || appIcon !== ""
             source: image !== "" ? image : ("image://icon/" + appIcon)
@@ -82,13 +110,13 @@ Rectangle {
                 elide: Text.ElideRight
             }
 
-            // 通知アクションボタン (返信・確認など)
             RowLayout {
-                visible: notifObj && notifObj.actions && notifObj.actions.length > 0
+                visible: card.shownActions.length > 0
                 spacing: 6
                 Repeater {
-                    model: notifObj ? notifObj.actions : []
+                    model: card.shownActions
                     delegate: Rectangle {
+                        required property var modelData
                         radius: 6
                         color: "#3a3a3a"
                         implicitHeight: 26
@@ -96,13 +124,17 @@ Rectangle {
                         Text {
                             id: actionLabel
                             anchors.centerIn: parent
-                            text: modelData.text
+                            text: parent.modelData.text
                             color: "white"
                             font.pixelSize: 11
                         }
                         MouseArea {
                             anchors.fill: parent
-                            onClicked: modelData.invoke()
+                            cursorShape: Qt.PointingHandCursor
+                            onClicked: {
+                                parent.modelData.invoke()
+                                card.dismissRequested()
+                            }
                         }
                     }
                 }
