@@ -201,9 +201,7 @@ step_link_dotfiles() {
     mkdir -p "$HOME/.config/YouTube Music"
     sed "s|\$DOTFILES_DIR|$DOTFILES_DIR|g" "$DOTFILES_DIR/home/.config/YouTube Music/config.json.template" > "$HOME/.config/YouTube Music/config.json"
 
-    link "$DOTFILES_DIR/home/.local/share/PrismLauncher"    "$HOME/.local/share/PrismLauncher"
-    
-    touch ~/.config/hypr/private.lua
+    link "$DOTFILES_DIR/home/.local/share/PrismLauncher" "$HOME/.local/share/PrismLauncher"
 
     LANG=C xdg-user-dirs-update --force
 }
