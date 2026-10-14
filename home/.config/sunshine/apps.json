@@ -7,17 +7,13 @@
         {
             "auto-detach": true,
             "cmd": "",
-            "detached": [
-                "pkill -USR1 hyprlock",
-                "bash -c \"${HOME}/.config/sunshine/bigpicture-restart.sh\""
-            ],
             "exclude-global-prep-cmd": false,
             "exit-timeout": 5,
             "image-path": "steam.png",
             "name": "Steam Big Picture",
             "prep-cmd": [
                 {
-                    "do": "",
+                    "do": "bash -c \"${HOME}/.config/sunshine/bigpicture-restart.sh\"",
                     "undo": "steam -shutdown"
                 }
             ],
