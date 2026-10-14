@@ -96,7 +96,7 @@ Item {
         acceptedButtons:    Qt.LeftButton
 
         onClicked: {
-            root.appEntry.execute()
+            root.Quickshell.execDetached(["uwsm", "app", "--", appEntry.id + ".desktop"])
             root.launched()
         }
     }

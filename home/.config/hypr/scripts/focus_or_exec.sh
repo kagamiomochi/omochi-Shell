@@ -24,5 +24,5 @@ fi
 if [ -n "$addr" ]; then
     hyprctl dispatch "hl.dsp.focus({ window = \"address:$addr\" })"
 else
-    setsid -f $cmd >/dev/null 2>&1
+    uwsm app -- $cmd >/dev/null 2>&1
 fi

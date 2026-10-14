@@ -64,20 +64,17 @@ local t = terminals[terminal]
 
 -- General
 hl.bind(mainMod .. " + L",  hl.dsp.exec_cmd("loginctl lock-session"))
-hl.bind(mainMod .. " + E",  hl.dsp.exec_cmd(fileManager))
-hl.bind(mainMod .. " + W",  hl.dsp.exec_cmd(browser))
+hl.bind(mainMod .. " + E",  hl.dsp.exec_cmd("uwsm app -- " .. fileManager))
+hl.bind(mainMod .. " + W",  hl.dsp.exec_cmd("uwsm app -- " .. browser))
 hl.bind(mainMod .. " + SHIFT + P", hl.dsp.exec_cmd("hyprpicker"))
 hl.bind(mainMod .. " + SUPER_L", hl.dsp.exec_cmd("qs ipc call launcher toggle"), { release = true })
-hl.bind(
-    "CONTROL + SHIFT + ESCAPE",
-    hl.dsp.exec_cmd(
-        terminal .. " " .. t.args .. " " .. t.exec .. " " .. SystemMonitor
-    )
-)
+hl.bind("CONTROL + SHIFT + ESCAPE", hl.dsp.exec_cmd(
+        "uwsm app -- " .. terminal .. " " .. t.args .. " " .. t.exec .. " " .. SystemMonitor
+    ))
 
 -- musicplayer
 hl.bind(mainMod .. " + M", function()
-    hl.exec_cmd("~/.config/hypr/scripts/focus_or_exec.sh " .. musicplayer)
+    hl.exec_cmd("uwsm app -- ~/.config/hypr/scripts/focus_or_exec.sh " .. musicplayer)
 end)
 
 -- Window Operations
@@ -87,7 +84,7 @@ hl.bind(mainMod .. " + Space", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + P",     toggle_pin)
 
 -- Terminal
-hl.bind(mainMod .. " + T", hl.dsp.exec_cmd(terminal .. " -- ~/.config/hypr/scripts/term-intro.sh"))
+hl.bind(mainMod .. " + T", hl.dsp.exec_cmd("uwsm app -- " .. terminal .. " -- ~/.config/hypr/scripts/term-intro.sh"))
 
 -- Window Mode
 hl.bind(mainMod .. " + SHIFT + Space", hl.dsp.exec_cmd("~/.config/hypr/scripts/window-mode.sh"))
