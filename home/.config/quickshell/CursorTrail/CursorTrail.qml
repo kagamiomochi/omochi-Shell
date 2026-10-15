@@ -5,8 +5,9 @@ import QtQuick
 import QtQuick.Effects
 
 // Cursor trail overlay
-//   mode: "blur" = motion-blur-like afterimage / "glow" = light tail / "both" = both
+//   mode: "blur" = motion-blur-like afterimage / "glow" = light tail + glowing orb
 //   Switch at runtime: qs ipc call trail set glow
+//   Cursor visibility (glow mode): qs ipc call trail hideCursor|showCursor|toggleCursor
 Scope {
     id: root
 
@@ -14,17 +15,43 @@ Scope {
     property bool enabled: true
     property string mode: "glow"
 
+    // In glow mode, hide the real cursor and draw an orb instead.
+    // Switchable at runtime via IPC.
+    property bool hideCursor: true
+    // True only while the real cursor is actually hidden (and the orb is drawn)
+    readonly property bool cursorHidden: enabled && mode === "glow" && hideCursor
+
     // ---- Tunable parameters ----
     property color glowColor: "#73bfff"     // Color at the head of the glow tail (cursor side)
     property color glowTailColor: "#c77dff" // Color at the end of the glow tail (older side). Same as glowColor = single color
     property real glowLifetime: 450         // Time until the glow tail fades out (ms)
     property real blurLifetime: 200         // Time until the afterimage fades out (ms)
+    property real orbRadius: 7             // Radius of the glow orb that replaces the cursor (px)
     property real cursorScale: 1.0          // Extra scale for the afterimage (also applies to the fallback arrow)
     property string cursorTheme: ""         // Empty = use XCURSOR_THEME
     property int cursorSize: 0              // 0 = use XCURSOR_SIZE
     property var cursorInfo: null           // Output of cursor-image.py (image path and hotspot)
 
     signal moved(real x, real y)
+
+    // Toggle Hyprland's real cursor visibility
+    function applyCursor() {
+        Quickshell.execDetached([
+            "hyprctl", "eval",
+            "hl.config({ cursor = { invisible = " + (root.cursorHidden ? "true" : "false") + " } })"
+        ]);
+    }
+
+    onCursorHiddenChanged: applyCursor()
+
+    // Sync on startup, and always restore the cursor when the shell goes away
+    Component.onCompleted: applyCursor()
+    Component.onDestruction: {
+        Quickshell.execDetached([
+            "hyprctl", "eval",
+            "hl.config({ cursor = { invisible = false } })"
+        ]);
+    }
 
     // Cursor position stream
     Process {
@@ -58,11 +85,16 @@ Scope {
     IpcHandler {
         target: "trail"
         function set(m: string): void {
-            root.mode = m;
+            if (m === "glow" || m === "blur")
+                root.mode = m;
         }
         function on(): void { root.enabled = true }
         function off(): void { root.enabled = false }
         function toggle(): void { root.enabled = !root.enabled }
+
+        function hideCursor(): void { root.hideCursor = true }
+        function showCursor(): void { root.hideCursor = false }
+        function toggleCursor(): void { root.hideCursor = !root.hideCursor }
     }
 
     // Canvas that keeps its own history and draws it
@@ -285,7 +317,7 @@ Scope {
             TrailCanvas {
                 id: glow
                 kind: "glow"
-                visible: root.mode !== "blur"
+                visible: root.mode === "glow"
                 lifetime: root.glowLifetime
                 tint: root.glowColor
                 tailTint: root.glowTailColor
@@ -296,7 +328,7 @@ Scope {
             TrailCanvas {
                 id: core
                 kind: "core"
-                visible: root.mode !== "blur"
+                visible: root.mode === "glow"
                 lifetime: root.glowLifetime
                 offX: win.modelData.x
                 offY: win.modelData.y
@@ -306,7 +338,7 @@ Scope {
             TrailCanvas {
                 id: ghost
                 kind: "ghost"
-                visible: root.mode !== "glow"
+                visible: root.mode === "blur"
                 lifetime: root.blurLifetime
                 scaleFactor: root.cursorScale
                 cursorInfo: root.cursorInfo
@@ -315,12 +347,54 @@ Scope {
                 offY: win.modelData.y
             }
 
+            // Glowing orb that replaces the real cursor while it is hidden
+            Item {
+                id: orb
+                visible: root.cursorHidden
+                property real cx: -100
+                property real cy: -100
+
+                // Blurred halo
+                Item {
+                    width: 96
+                    height: 96
+                    x: orb.cx - width / 2
+                    y: orb.cy - height / 2
+                    layer.enabled: true
+                    layer.effect: MultiEffect {
+                        blurEnabled: true
+                        blur: 1.0
+                        blurMax: 32
+                    }
+                    Rectangle {
+                        anchors.centerIn: parent
+                        width: root.orbRadius * 2
+                        height: width
+                        radius: width / 2
+                        color: root.glowColor
+                        opacity: 0.9
+                    }
+                }
+
+                // Bright core
+                Rectangle {
+                    width: root.orbRadius * 0.7
+                    height: width
+                    radius: width / 2
+                    x: orb.cx - width / 2
+                    y: orb.cy - height / 2
+                    color: "white"
+                }
+            }
+
             Connections {
                 target: root
                 function onMoved(x, y) {
                     glow.add(x, y);
                     core.add(x, y);
                     ghost.add(x, y);
+                    orb.cx = x - win.modelData.x;
+                    orb.cy = y - win.modelData.y;
                 }
             }
         }

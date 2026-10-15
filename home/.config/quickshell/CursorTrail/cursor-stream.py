@@ -13,7 +13,7 @@ sig = os.environ["HYPRLAND_INSTANCE_SIGNATURE"]
 runtime = os.environ.get("XDG_RUNTIME_DIR", f"/run/user/{os.getuid()}")
 path = f"{runtime}/hypr/{sig}/.socket.sock"
 
-INTERVAL = 1 / 60  # 取得間隔(秒)。モニターのリフレッシュレートに合わせる
+INTERVAL = 1 / 144  # 取得間隔(秒)。モニターのリフレッシュレートに合わせる
 last = None
 
 
