@@ -22,6 +22,12 @@ hl.window_rule({
     no_focus = true,
 })
 
+hl.layer_rule({
+    name  = "cursor-trail-on-top",
+    match = { namespace = "cursor-trail" },
+    order = 100,
+})
+
 local float_rules = {
     { name = "Thunar file operation progress",      class = "thunar", title = "ファイル操作の進捗" },
     { name = "Thunar confirm replace file",         class = "thunar", title = "置換するファイルの確認" },

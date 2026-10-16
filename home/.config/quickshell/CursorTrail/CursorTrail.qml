@@ -8,6 +8,7 @@ import QtQuick.Effects
 //   mode: "blur" = motion-blur-like afterimage / "glow" = light tail + glowing orb
 //   Switch at runtime: qs ipc call trail set glow
 //   Cursor visibility (glow mode): qs ipc call trail hideCursor|showCursor|toggleCursor
+//   Background color adaptation (glow mode): qs ipc call trail bgOn|bgOff|bgToggle
 Scope {
     id: root
 
@@ -32,7 +33,106 @@ Scope {
     property int cursorSize: 0              // 0 = use XCURSOR_SIZE
     property var cursorInfo: null           // Output of cursor-image.py (image path and hotspot)
 
+    // ---- Background color adaptation ----
+    // Samples one pixel ahead of the cursor with grim (requires the grim package)
+    // and mixes it gently into the glow colors.
+    property bool bgAdapt: true             // Enable sampling the pixels ahead of the cursor
+    property real bgMix: 0.9               // Mix amount for the head of the glow tail (0..1)
+    property real bgMixTail: 0.6            // Mix amount for the older end of the glow tail
+    property real bgMixOrb: 0.5             // Mix amount for the orb halo
+    property real bgMixCore: 0.2            // Mix amount for the white cores (orb center and thin trail core)
+    property real bgSampleDist: 56          // Sample distance ahead of the cursor (px), outside the halo
+    property int bgSampleInterval: 150      // Sampling interval while the cursor is moving (ms)
+    property real bgMinLightness: 0.5       // Lightness floor so dark backgrounds do not dim the glow
+    property color bgColor: glowColor       // Smoothed sampled color
+    Behavior on bgColor { ColorAnimation { duration: 250 } }
+
+    // Colors actually used for drawing
+    readonly property color effGlow: bgAdapt ? mixColor(glowColor, bgColor, bgMix) : glowColor
+    readonly property color effTail: bgAdapt ? mixColor(glowTailColor, bgColor, bgMixTail) : glowTailColor
+    readonly property color effOrb: bgAdapt ? mixColor(glowColor, bgColor, bgMixOrb) : glowColor
+    readonly property color effCore: bgAdapt ? mixColor(Qt.rgba(1, 1, 1, 1), bgColor, bgMixCore) : Qt.rgba(1, 1, 1, 1)
+
+    // Cursor tracking state used to pick the sample point
+    property real lastX: 0
+    property real lastY: 0
+    property real dirX: 1
+    property real dirY: 1
+    property bool moving: false
+
     signal moved(real x, real y)
+
+    function mixColor(a, b, t) {
+        return Qt.rgba(a.r + (b.r - a.r) * t,
+                       a.g + (b.g - a.g) * t,
+                       a.b + (b.b - a.b) * t, 1);
+    }
+
+    // Track the (smoothed) movement direction
+    onMoved: (x, y) => {
+        const dx = x - lastX, dy = y - lastY;
+        if (Math.hypot(dx, dy) > 0.5) {
+            dirX = dirX * 0.7 + dx * 0.3;
+            dirY = dirY * 0.7 + dy * 0.3;
+        }
+        lastX = x;
+        lastY = y;
+        moving = true;
+        idleTimer.restart();
+    }
+
+    Timer {
+        id: idleTimer
+        interval: 500
+        onTriggered: root.moving = false
+    }
+
+    // Pick a sample point ahead of the cursor, clamped to the screen under it
+    function samplePoint() {
+        const len = Math.hypot(dirX, dirY) || 1;
+        let x = lastX + dirX / len * bgSampleDist;
+        let y = lastY + dirY / len * bgSampleDist;
+        for (const s of Quickshell.screens) {
+            if (lastX >= s.x && lastX < s.x + s.width && lastY >= s.y && lastY < s.y + s.height) {
+                x = Math.min(Math.max(x, s.x), s.x + s.width - 1);
+                y = Math.min(Math.max(y, s.y), s.y + s.height - 1);
+                break;
+            }
+        }
+        return { x: Math.round(x), y: Math.round(y) };
+    }
+
+    // Poll only while the cursor is moving and the feature is active
+    Timer {
+        interval: root.bgSampleInterval
+        repeat: true
+        running: root.enabled && root.mode === "glow" && root.bgAdapt && root.moving
+        onTriggered: {
+            if (sampler.running)
+                return;
+            const p = root.samplePoint();
+            // The last 3 bytes of a P6 PPM stream are the single pixel (R, G, B)
+            sampler.command = ["sh", "-c",
+                "grim -g '" + p.x + "," + p.y + " 1x1' -t ppm - | tail -c 3 | od -An -tu1 -w3"];
+            sampler.running = true;
+        }
+    }
+
+    Process {
+        id: sampler
+        command: []
+        stdout: SplitParser {
+            onRead: line => {
+                const v = line.trim().split(/\s+/).map(Number);
+                if (v.length !== 3 || v.some(isNaN))
+                    return;
+                const c = Qt.rgba(v[0] / 255, v[1] / 255, v[2] / 255, 1);
+                // Raise lightness to the floor, keep hue and saturation
+                const l = Math.max(c.hslLightness, root.bgMinLightness);
+                root.bgColor = Qt.hsla(Math.max(c.hslHue, 0), c.hslSaturation, l, 1);
+            }
+        }
+    }
 
     // Toggle Hyprland's real cursor visibility
     function applyCursor() {
@@ -95,6 +195,10 @@ Scope {
         function hideCursor(): void { root.hideCursor = true }
         function showCursor(): void { root.hideCursor = false }
         function toggleCursor(): void { root.hideCursor = !root.hideCursor }
+
+        function bgOn(): void { root.bgAdapt = true }
+        function bgOff(): void { root.bgAdapt = false }
+        function bgToggle(): void { root.bgAdapt = !root.bgAdapt }
     }
 
     // Canvas that keeps its own history and draws it
@@ -276,7 +380,7 @@ Scope {
                 } else {
                     alpha = 0.95 * k;
                     width = 1 + 2.5 * k;
-                    r = 1; g = 1; bl = 1;
+                    r = tint.r; g = tint.g; bl = tint.b;
                 }
                 // Round caps get denser where they overlap, so divide by the overlap
                 // count to keep the apparent opacity uniform
@@ -319,8 +423,8 @@ Scope {
                 kind: "glow"
                 visible: root.mode === "glow"
                 lifetime: root.glowLifetime
-                tint: root.glowColor
-                tailTint: root.glowTailColor
+                tint: root.effGlow
+                tailTint: root.effTail
                 blurAmount: 0.7
                 offX: win.modelData.x
                 offY: win.modelData.y
@@ -330,6 +434,7 @@ Scope {
                 kind: "core"
                 visible: root.mode === "glow"
                 lifetime: root.glowLifetime
+                tint: root.effCore
                 offX: win.modelData.x
                 offY: win.modelData.y
             }
@@ -371,7 +476,7 @@ Scope {
                         width: root.orbRadius * 2
                         height: width
                         radius: width / 2
-                        color: root.glowColor
+                        color: root.effOrb
                         opacity: 0.9
                     }
                 }
@@ -383,7 +488,7 @@ Scope {
                     radius: width / 2
                     x: orb.cx - width / 2
                     y: orb.cy - height / 2
-                    color: "white"
+                    color: root.effCore
                 }
             }
 
