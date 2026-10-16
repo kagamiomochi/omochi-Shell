@@ -9,6 +9,7 @@ import QtQuick.Effects
 //   Switch at runtime: qs ipc call trail set glow
 //   Cursor visibility (glow mode): qs ipc call trail hideCursor|showCursor|toggleCursor
 //   Background color adaptation (glow mode): qs ipc call trail bgOn|bgOff|bgToggle
+//   Click particles (glow mode): qs ipc call trail particlesOn|particlesOff|particlesToggle
 Scope {
     id: root
 
@@ -53,6 +54,14 @@ Scope {
     readonly property color effOrb: bgAdapt ? mixColor(glowColor, bgColor, bgMixOrb) : glowColor
     readonly property color effCore: bgAdapt ? mixColor(Qt.rgba(1, 1, 1, 1), bgColor, bgMixCore) : Qt.rgba(1, 1, 1, 1)
 
+    // ---- Click particles (glow mode) ----
+    // Needs click-stream.py (evdev), so the user must be in the `input` group.
+    property bool clickParticles: true      // Emit particles when a mouse button is pressed
+    property int particleCount: 16          // Particles per click
+    property real particleSpeed: 220        // Max initial speed (px/s)
+    property real particleLifetime: 650     // Max particle lifetime (ms)
+    property real particleSize: 3.0         // Max particle radius (px)
+
     // Cursor tracking state used to pick the sample point
     property real lastX: 0
     property real lastY: 0
@@ -61,6 +70,7 @@ Scope {
     property bool moving: false
 
     signal moved(real x, real y)
+    signal clicked(real x, real y)
 
     function mixColor(a, b, t) {
         return Qt.rgba(a.r + (b.r - a.r) * t,
@@ -165,6 +175,15 @@ Scope {
         }
     }
 
+    // Mouse button press stream. Runs only while particles can actually be shown.
+    Process {
+        running: root.enabled && root.mode === "glow" && root.clickParticles
+        command: ["python3", Quickshell.shellPath("CursorTrail/click-stream.py")]
+        stdout: SplitParser {
+            onRead: line => root.clicked(root.lastX, root.lastY)
+        }
+    }
+
     // Convert the real cursor theme image to PNG (falls back to an arrow on failure)
     Process {
         running: true
@@ -199,6 +218,10 @@ Scope {
         function bgOn(): void { root.bgAdapt = true }
         function bgOff(): void { root.bgAdapt = false }
         function bgToggle(): void { root.bgAdapt = !root.bgAdapt }
+
+        function particlesOn(): void { root.clickParticles = true }
+        function particlesOff(): void { root.clickParticles = false }
+        function particlesToggle(): void { root.clickParticles = !root.clickParticles }
     }
 
     // Canvas that keeps its own history and draws it
@@ -396,6 +419,98 @@ Scope {
         }
     }
 
+    // Canvas that draws click particles: soft glowing dots that burst outward and fade
+    component ParticleCanvas: Canvas {
+        id: pc
+
+        property color tint: "#73bfff"
+        property color tailTint: "#c77dff"
+        property color coreTint: "white"
+        property real offX: 0
+        property real offY: 0
+        property var parts: []
+        property real lastTime: 0
+
+        anchors.fill: parent
+        renderTarget: Canvas.FramebufferObject
+
+        // x, y: global cursor position
+        function burst(x, y) {
+            if (!visible)
+                return;
+            const now = Date.now();
+            if (!ptick.running)
+                lastTime = now;
+            for (let i = 0; i < root.particleCount; i++) {
+                const ang = Math.random() * Math.PI * 2;
+                const sp = root.particleSpeed * (0.3 + 0.7 * Math.random());
+                parts.push({
+                    x: x - offX,
+                    y: y - offY,
+                    vx: Math.cos(ang) * sp,
+                    vy: Math.sin(ang) * sp,
+                    t0: now,
+                    life: root.particleLifetime * (0.5 + 0.5 * Math.random()),
+                    size: root.particleSize * (0.4 + 0.6 * Math.random()),
+                    mix: Math.random()   // 0 = head color, 1 = tail color
+                });
+            }
+            ptick.running = true;
+            requestPaint();
+        }
+
+        Timer {
+            id: ptick
+            interval: 16
+            repeat: true
+            onTriggered: pc.requestPaint()
+        }
+
+        onPaint: {
+            const ctx = getContext("2d");
+            ctx.clearRect(0, 0, width, height);
+
+            const now = Date.now();
+            const dt = Math.min(0.05, (now - lastTime) / 1000);
+            lastTime = now;
+
+            parts = parts.filter(p => now - p.t0 < p.life);
+            if (parts.length === 0) {
+                ptick.running = false;
+                return;
+            }
+
+            // Strong friction: the speed drops to about 4% per second
+            const drag = Math.pow(0.04, dt);
+            // Overlapping particles add up, which makes them look like light
+            ctx.globalCompositeOperation = "lighter";
+
+            for (const p of parts) {
+                p.x += p.vx * dt;
+                p.y += p.vy * dt;
+                p.vx *= drag;
+                p.vy *= drag;
+
+                const k = 1 - (now - p.t0) / p.life;
+                const r = p.size * (0.4 + 0.6 * k);
+                const cr = tint.r + (tailTint.r - tint.r) * p.mix;
+                const cg = tint.g + (tailTint.g - tint.g) * p.mix;
+                const cb = tint.b + (tailTint.b - tint.b) * p.mix;
+                const a = k * k;
+
+                const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r * 3);
+                grad.addColorStop(0, Qt.rgba(coreTint.r, coreTint.g, coreTint.b, 0.95 * a));
+                grad.addColorStop(0.35, Qt.rgba(cr, cg, cb, 0.8 * a));
+                grad.addColorStop(1, Qt.rgba(cr, cg, cb, 0));
+                ctx.fillStyle = grad;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, r * 3, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            ctx.globalCompositeOperation = "source-over";
+        }
+    }
+
     Variants {
         model: Quickshell.screens
 
@@ -492,8 +607,25 @@ Scope {
                 }
             }
 
+            // Click particles (drawn above the orb)
+            ParticleCanvas {
+                id: particles
+                visible: root.mode === "glow"
+                tint: root.effGlow
+                tailTint: root.effTail
+                coreTint: root.effCore
+                offX: win.modelData.x
+                offY: win.modelData.y
+            }
+
             Connections {
                 target: root
+                function onClicked(x, y) {
+                    // Only the screen under the cursor spawns particles
+                    const sx = win.modelData.x, sy = win.modelData.y;
+                    if (x >= sx && x < sx + win.modelData.width && y >= sy && y < sy + win.modelData.height)
+                        particles.burst(x, y);
+                }
                 function onMoved(x, y) {
                     glow.add(x, y);
                     core.add(x, y);
