@@ -43,7 +43,7 @@ Scope {
     property real bgMix: 0.9               // Mix amount for the head of the glow tail (0..1)
     property real bgMixTail: 0.6            // Mix amount for the older end of the glow tail
     property real bgMixOrb: 0.5             // Mix amount for the orb halo
-    property real bgMixCore: 0.2            // Mix amount for the white cores (orb center and thin trail core)
+    property real bgMixCore: 0.6            // Mix amount for the white cores (orb center and thin trail core)
     property int bgSampleInterval: 150      // Sampling interval while the cursor is moving (ms)
     property int bgHoleSettleMs: 50         // Wait after opening the hole so the compositor shows it (ms)
     property real bgMinLightness: 0.5       // Lightness floor so dark backgrounds do not dim the glow
