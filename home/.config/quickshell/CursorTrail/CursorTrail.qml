@@ -35,18 +35,26 @@ Scope {
     property var cursorInfo: null           // Output of cursor-image.py (image path and hotspot)
 
     // ---- Background color adaptation ----
-    // Samples one pixel ahead of the cursor with grim (requires the grim package)
+    // Samples the pixel directly under the cursor with grim (requires the grim package)
     // and mixes it gently into the glow colors.
-    property bool bgAdapt: true             // Enable sampling the pixels ahead of the cursor
+    // To keep the overlay itself out of the captured pixel, a 1px hole is punched
+    // into the overlay at the sample point just before grim runs.
+    property bool bgAdapt: true             // Enable sampling the pixel under the cursor
     property real bgMix: 0.9               // Mix amount for the head of the glow tail (0..1)
     property real bgMixTail: 0.6            // Mix amount for the older end of the glow tail
     property real bgMixOrb: 0.5             // Mix amount for the orb halo
     property real bgMixCore: 0.2            // Mix amount for the white cores (orb center and thin trail core)
-    property real bgSampleDist: 56          // Sample distance ahead of the cursor (px), outside the halo
     property int bgSampleInterval: 150      // Sampling interval while the cursor is moving (ms)
+    property int bgHoleSettleMs: 50         // Wait after opening the hole so the compositor shows it (ms)
     property real bgMinLightness: 0.5       // Lightness floor so dark backgrounds do not dim the glow
     property color bgColor: glowColor       // Smoothed sampled color
     Behavior on bgColor { ColorAnimation { duration: 250 } }
+
+    // Hole state: while holeActive is true, the overlay has a 1x1 transparent hole
+    // at global logical coordinates (holeX, holeY).
+    property bool holeActive: false
+    property int holeX: 0
+    property int holeY: 0
 
     // Colors actually used for drawing
     readonly property color effGlow: bgAdapt ? mixColor(glowColor, bgColor, bgMix) : glowColor
@@ -62,11 +70,9 @@ Scope {
     property real particleLifetime: 650     // Max particle lifetime (ms)
     property real particleSize: 3.0         // Max particle radius (px)
 
-    // Cursor tracking state used to pick the sample point
+    // Latest cursor position (global logical coordinates)
     property real lastX: 0
     property real lastY: 0
-    property real dirX: 1
-    property real dirY: 1
     property bool moving: false
 
     signal moved(real x, real y)
@@ -78,13 +84,7 @@ Scope {
                        a.b + (b.b - a.b) * t, 1);
     }
 
-    // Track the (smoothed) movement direction
     onMoved: (x, y) => {
-        const dx = x - lastX, dy = y - lastY;
-        if (Math.hypot(dx, dy) > 0.5) {
-            dirX = dirX * 0.7 + dx * 0.3;
-            dirY = dirY * 0.7 + dy * 0.3;
-        }
         lastX = x;
         lastY = y;
         moving = true;
@@ -97,11 +97,10 @@ Scope {
         onTriggered: root.moving = false
     }
 
-    // Pick a sample point ahead of the cursor, clamped to the screen under it
+    // Pick the sample point: the pixel directly under the cursor, clamped to its screen
     function samplePoint() {
-        const len = Math.hypot(dirX, dirY) || 1;
-        let x = lastX + dirX / len * bgSampleDist;
-        let y = lastY + dirY / len * bgSampleDist;
+        let x = Math.floor(lastX);
+        let y = Math.floor(lastY);
         for (const s of Quickshell.screens) {
             if (lastX >= s.x && lastX < s.x + s.width && lastY >= s.y && lastY < s.y + s.height) {
                 x = Math.min(Math.max(x, s.x), s.x + s.width - 1);
@@ -109,25 +108,39 @@ Scope {
                 break;
             }
         }
-        return { x: Math.round(x), y: Math.round(y) };
+        return { x: x, y: y };
     }
 
-    // Poll only while the cursor is moving and the feature is active
+    // Step 1: open the hole at the cursor and wait for it to be shown.
+    // Poll only while the cursor is moving and the feature is active.
     Timer {
         interval: root.bgSampleInterval
         repeat: true
         running: root.enabled && root.mode === "glow" && root.bgAdapt && root.moving
         onTriggered: {
-            if (sampler.running)
+            if (sampler.running || root.holeActive)
                 return;
             const p = root.samplePoint();
+            root.holeX = p.x;
+            root.holeY = p.y;
+            root.holeActive = true;
+            settleTimer.restart();
+        }
+    }
+
+    // Step 2: after the hole is visible, capture exactly that pixel.
+    Timer {
+        id: settleTimer
+        interval: root.bgHoleSettleMs
+        onTriggered: {
             // The last 3 bytes of a P6 PPM stream are the single pixel (R, G, B)
             sampler.command = ["sh", "-c",
-                "grim -g '" + p.x + "," + p.y + " 1x1' -t ppm - | tail -c 3 | od -An -tu1 -w3"];
+                "grim -g '" + root.holeX + "," + root.holeY + " 1x1' -t ppm - | tail -c 3 | od -An -tu1 -w3"];
             sampler.running = true;
         }
     }
 
+    // Step 3: close the hole once grim has finished (also on failure).
     Process {
         id: sampler
         command: []
@@ -142,6 +155,7 @@ Scope {
                 root.bgColor = Qt.hsla(Math.max(c.hslHue, 0), c.hslSaturation, l, 1);
             }
         }
+        onExited: (exitCode, exitStatus) => root.holeActive = false
     }
 
     // Toggle Hyprland's real cursor visibility
@@ -532,90 +546,152 @@ Scope {
             WlrLayershell.namespace: "cursor-trail"
             mask: Region {}   // Empty Region makes the window fully click-through
 
-            // Glow tail: blurred thick band + thin core
-            TrailCanvas {
-                id: glow
-                kind: "glow"
-                visible: root.mode === "glow"
-                lifetime: root.glowLifetime
-                tint: root.effGlow
-                tailTint: root.effTail
-                blurAmount: 0.7
-                offX: win.modelData.x
-                offY: win.modelData.y
-            }
-            TrailCanvas {
-                id: core
-                kind: "core"
-                visible: root.mode === "glow"
-                lifetime: root.glowLifetime
-                tint: root.effCore
-                offX: win.modelData.x
-                offY: win.modelData.y
-            }
+            // Hole position in this window's local coordinates.
+            // When no hole is active it is moved above the window (y = -10), so the
+            // mask below covers the whole window and nothing is cut out.
+            readonly property real holeLX: root.holeActive ? root.holeX - modelData.x : -10
+            readonly property real holeLY: root.holeActive ? root.holeY - modelData.y : -10
 
-            // Motion-blur style: lightly blurred cursor-shaped afterimages
-            TrailCanvas {
-                id: ghost
-                kind: "ghost"
-                visible: root.mode === "blur"
-                lifetime: root.blurLifetime
-                scaleFactor: root.cursorScale
-                cursorInfo: root.cursorInfo
-                blurAmount: 0.15
-                offX: win.modelData.x
-                offY: win.modelData.y
-            }
-
-            // Glowing orb that replaces the real cursor while it is hidden
+            // Mask source: opaque everywhere except a 1x1 hole at (holeLX, holeLY).
+            // Built from four rectangles around the hole.
             Item {
-                id: orb
-                visible: root.cursorHidden
-                property real cx: -100
-                property real cy: -100
+                id: holeMask
+                anchors.fill: parent
+                visible: false
+                layer.enabled: true
 
-                // Blurred halo
+                // Above the hole
+                Rectangle {
+                    x: 0
+                    y: 0
+                    width: holeMask.width
+                    height: Math.max(0, win.holeLY)
+                    color: "white"
+                }
+                // Below the hole
+                Rectangle {
+                    x: 0
+                    y: win.holeLY + 1
+                    width: holeMask.width
+                    height: Math.max(0, holeMask.height - (win.holeLY + 1))
+                    color: "white"
+                }
+                // Left of the hole (same row)
+                Rectangle {
+                    x: 0
+                    y: win.holeLY
+                    width: Math.max(0, win.holeLX)
+                    height: 1
+                    color: "white"
+                }
+                // Right of the hole (same row)
+                Rectangle {
+                    x: win.holeLX + 1
+                    y: win.holeLY
+                    width: Math.max(0, holeMask.width - (win.holeLX + 1))
+                    height: 1
+                    color: "white"
+                }
+            }
+
+            // All drawn content lives here so the hole cuts through everything.
+            // The layer (and the mask effect) is enabled only while a hole is open,
+            // so the full-screen offscreen pass costs nothing the rest of the time.
+            Item {
+                id: content
+                anchors.fill: parent
+
+                layer.enabled: root.holeActive
+                layer.effect: MultiEffect {
+                    maskEnabled: true
+                    maskSource: holeMask
+                }
+
+                // Glow tail: blurred thick band + thin core
+                TrailCanvas {
+                    id: glow
+                    kind: "glow"
+                    visible: root.mode === "glow"
+                    lifetime: root.glowLifetime
+                    tint: root.effGlow
+                    tailTint: root.effTail
+                    blurAmount: 0.7
+                    offX: win.modelData.x
+                    offY: win.modelData.y
+                }
+                TrailCanvas {
+                    id: core
+                    kind: "core"
+                    visible: root.mode === "glow"
+                    lifetime: root.glowLifetime
+                    tint: root.effCore
+                    offX: win.modelData.x
+                    offY: win.modelData.y
+                }
+
+                // Motion-blur style: lightly blurred cursor-shaped afterimages
+                TrailCanvas {
+                    id: ghost
+                    kind: "ghost"
+                    visible: root.mode === "blur"
+                    lifetime: root.blurLifetime
+                    scaleFactor: root.cursorScale
+                    cursorInfo: root.cursorInfo
+                    blurAmount: 0.15
+                    offX: win.modelData.x
+                    offY: win.modelData.y
+                }
+
+                // Glowing orb that replaces the real cursor while it is hidden
                 Item {
-                    width: 96
-                    height: 96
-                    x: orb.cx - width / 2
-                    y: orb.cy - height / 2
-                    layer.enabled: true
-                    layer.effect: MultiEffect {
-                        blurEnabled: true
-                        blur: 1.0
-                        blurMax: 32
+                    id: orb
+                    visible: root.cursorHidden
+                    property real cx: -100
+                    property real cy: -100
+
+                    // Blurred halo
+                    Item {
+                        width: 96
+                        height: 96
+                        x: orb.cx - width / 2
+                        y: orb.cy - height / 2
+                        layer.enabled: true
+                        layer.effect: MultiEffect {
+                            blurEnabled: true
+                            blur: 1.0
+                            blurMax: 32
+                        }
+                        Rectangle {
+                            anchors.centerIn: parent
+                            width: root.orbRadius * 2
+                            height: width
+                            radius: width / 2
+                            color: root.effOrb
+                            opacity: 0.9
+                        }
                     }
+
+                    // Bright core
                     Rectangle {
-                        anchors.centerIn: parent
-                        width: root.orbRadius * 2
+                        width: root.orbRadius * 0.7
                         height: width
                         radius: width / 2
-                        color: root.effOrb
-                        opacity: 0.9
+                        x: orb.cx - width / 2
+                        y: orb.cy - height / 2
+                        color: root.effCore
                     }
                 }
 
-                // Bright core
-                Rectangle {
-                    width: root.orbRadius * 0.7
-                    height: width
-                    radius: width / 2
-                    x: orb.cx - width / 2
-                    y: orb.cy - height / 2
-                    color: root.effCore
+                // Click particles (drawn above the orb)
+                ParticleCanvas {
+                    id: particles
+                    visible: root.mode === "glow"
+                    tint: root.effGlow
+                    tailTint: root.effTail
+                    coreTint: root.effCore
+                    offX: win.modelData.x
+                    offY: win.modelData.y
                 }
-            }
-
-            // Click particles (drawn above the orb)
-            ParticleCanvas {
-                id: particles
-                visible: root.mode === "glow"
-                tint: root.effGlow
-                tailTint: root.effTail
-                coreTint: root.effCore
-                offX: win.modelData.x
-                offY: win.modelData.y
             }
 
             Connections {
