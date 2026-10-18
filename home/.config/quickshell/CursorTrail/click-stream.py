@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
-"""Print one line to stdout every time a mouse button is pressed.
+"""Print one line to stdout for every mouse button press and release.
 
-Reads evdev directly (same approach as hypr/scripts/click_shrink.py), so the
-user must be in the `input` group. Devices are never grabbed, so normal input
-handling is not affected. Output format: "press <button code>".
+Reads evdev directly, so the user must be in the `input` group. Devices are never grabbed, so normal input handling is not affected.
+Output format: "press <button code>" or "release <button code>".
 """
 import selectors
 import sys
@@ -14,6 +13,8 @@ from evdev import ecodes
 
 BUTTONS = {ecodes.BTN_LEFT, ecodes.BTN_RIGHT, ecodes.BTN_MIDDLE}
 RESCAN_INTERVAL = 5  # seconds, picks up hot-plugged mice
+# Same events closer than this are duplicates (some mice expose several nodes)
+DEBOUNCE_SEC = 0.02
 
 
 def is_pointer(dev: evdev.InputDevice) -> bool:
@@ -25,6 +26,7 @@ def main() -> None:
     sel = selectors.DefaultSelector()
     devices: dict[str, evdev.InputDevice] = {}
     last_scan = 0.0
+    last_seen: dict[tuple[str, int], float] = {}
 
     while True:
         now = time.monotonic()
@@ -47,13 +49,23 @@ def main() -> None:
             time.sleep(1.0)
             continue
 
-        for key, _mask in sel.select(timeout=1.0):
-            dev = key.fileobj
+        for sel_key, _mask in sel.select(timeout=1.0):
+            dev = sel_key.fileobj
             try:
                 for ev in dev.read():
-                    if ev.type == ecodes.EV_KEY and ev.value == 1 and ev.code in BUTTONS:
-                        sys.stdout.write(f"press {ev.code}\n")
-                        sys.stdout.flush()
+                    if ev.type != ecodes.EV_KEY or ev.code not in BUTTONS:
+                        continue
+                    if ev.value not in (0, 1):  # ignore key repeat
+                        continue
+
+                    kind = "press" if ev.value == 1 else "release"
+                    stamp = time.monotonic()
+                    if stamp - last_seen.get((kind, ev.code), 0.0) < DEBOUNCE_SEC:
+                        continue
+                    last_seen[(kind, ev.code)] = stamp
+
+                    sys.stdout.write(f"{kind} {ev.code}\n")
+                    sys.stdout.flush()
             except OSError:
                 # Device was unplugged; forget it and let the rescan find it again
                 sel.unregister(dev)

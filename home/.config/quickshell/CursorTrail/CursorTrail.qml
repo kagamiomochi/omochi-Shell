@@ -10,11 +10,17 @@ import QtQuick.Effects
 //   Cursor visibility (glow mode): qs ipc call trail hideCursor|showCursor|toggleCursor
 //   Background color adaptation (glow mode): qs ipc call trail bgOn|bgOff|bgToggle
 //   Click particles (glow mode): qs ipc call trail particlesOn|particlesOff|particlesToggle
+//   Click shrink (blur mode): qs ipc call trail shrinkOn|shrinkOff|shrinkToggle
 Scope {
     id: root
 
-    // Master switch. When false, the position stream stops and the overlay is hidden.
-    property bool enabled: true
+    // Manual master switch (controlled via IPC).
+    property bool userEnabled: true
+    // Automatically turn the trail off while the pointer is locked (games, etc.)
+    property bool autoDisableOnLock: true
+    property bool pointerLocked: false
+    // Effective switch. When false, the position stream stops and the overlay is hidden.
+    readonly property bool enabled: userEnabled && !(autoDisableOnLock && pointerLocked)
     property string mode: "glow"
 
     // In glow mode, hide the real cursor and draw an orb instead.
@@ -69,6 +75,15 @@ Scope {
     property real particleSpeed: 220        // Max initial speed (px/s)
     property real particleLifetime: 650     // Max particle lifetime (ms)
     property real particleSize: 3.0         // Max particle radius (px)
+
+    // ---- Click shrink (blur mode) ----
+    // Shrinks the real cursor while the left button is held (hypr-dynamic-cursors magnify).
+    // Needs click-stream.py (evdev) and the dynamic-cursors plugin.
+    property bool clickShrink: true         // Enable shrinking while the left button is held
+    property real shrinkSize: 0.6           // Cursor scale while held
+    property int shrinkReleaseMs: 150       // Animation time when released (ms)
+    readonly property bool shrinkActive: enabled && mode === "blur" && clickShrink
+    property bool shrunk: false             // True while the cursor is currently shrunk
 
     // Latest cursor position (global logical coordinates)
     property real lastX: 0
@@ -175,6 +190,8 @@ Scope {
             "hyprctl", "eval",
             "hl.config({ cursor = { invisible = false } })"
         ]);
+        if (root.shrunk)
+            root.setShrunk(false);
     }
 
     // Cursor position stream
@@ -189,12 +206,52 @@ Scope {
         }
     }
 
-    // Mouse button press stream. Runs only while particles can actually be shown.
+    // Pointer lock detector (heuristic, see lock-stream.py)
     Process {
-        running: root.enabled && root.mode === "glow" && root.clickParticles
+        running: root.autoDisableOnLock
+        command: ["python3", Quickshell.shellPath("CursorTrail/lock-stream.py")]
+        stdout: SplitParser {
+            onRead: line => root.pointerLocked = (line.trim() === "locked")
+        }
+    }
+
+    // Button handling: particles in glow mode, click shrink in blur mode
+    function handleButton(line) {
+        const p = line.trim().split(" ");
+        const pressed = p[0] === "press";
+        const code = parseInt(p[1]);
+        if (pressed && root.mode === "glow" && root.clickParticles)
+            root.clicked(root.lastX, root.lastY);
+        // 272 = BTN_LEFT
+        if (code === 272 && root.shrinkActive)
+            setShrunk(pressed);
+    }
+
+    // Shrink or restore the real cursor through hypr-dynamic-cursors
+    function setShrunk(on) {
+        if (on === root.shrunk)
+            return;
+        root.shrunk = on;
+        const duration = on ? 600000 : root.shrinkReleaseMs;
+        const size = on ? root.shrinkSize : 1.0;
+        Quickshell.execDetached([
+            "hyprctl", "dispatch",
+            "hl.plugin.dynamic_cursors.dsp_magnify({ duration = " + duration + ", size = " + size + " })"
+        ]);
+    }
+
+    // Restore the cursor when shrink gets disabled or the mode changes
+    onShrinkActiveChanged: {
+        if (!shrinkActive)
+            setShrunk(false);
+    }
+
+    // Mouse button press/release stream. Runs only while particles or click shrink can be used.
+    Process {
+        running: root.enabled && ((root.mode === "glow" && root.clickParticles) || root.shrinkActive)
         command: ["python3", Quickshell.shellPath("CursorTrail/click-stream.py")]
         stdout: SplitParser {
-            onRead: line => root.clicked(root.lastX, root.lastY)
+            onRead: line => root.handleButton(line)
         }
     }
 
@@ -221,9 +278,13 @@ Scope {
             if (m === "glow" || m === "blur")
                 root.mode = m;
         }
-        function on(): void { root.enabled = true }
-        function off(): void { root.enabled = false }
-        function toggle(): void { root.enabled = !root.enabled }
+        function on(): void { root.userEnabled = true }
+        function off(): void { root.userEnabled = false }
+        function toggle(): void { root.userEnabled = !root.userEnabled }
+
+        function autoLockOn(): void { root.autoDisableOnLock = true }
+        function autoLockOff(): void { root.autoDisableOnLock = false }
+        function autoLockToggle(): void { root.autoDisableOnLock = !root.autoDisableOnLock }
 
         function hideCursor(): void { root.hideCursor = true }
         function showCursor(): void { root.hideCursor = false }
@@ -236,6 +297,10 @@ Scope {
         function particlesOn(): void { root.clickParticles = true }
         function particlesOff(): void { root.clickParticles = false }
         function particlesToggle(): void { root.clickParticles = !root.clickParticles }
+
+        function shrinkOn(): void { root.clickShrink = true }
+        function shrinkOff(): void { root.clickShrink = false }
+        function shrinkToggle(): void { root.clickShrink = !root.clickShrink }
     }
 
     // Canvas that keeps its own history and draws it
