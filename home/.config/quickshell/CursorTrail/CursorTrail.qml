@@ -181,10 +181,54 @@ Scope {
         ]);
     }
 
-    onCursorHiddenChanged: applyCursor()
+    // While a plugin load/unload is in flight, applyCursor() runs after it finishes
+    onCursorHiddenChanged: { if (!pluginProc.running) applyCursor() }
+
+    // Load the plugin while the trail is enabled, unload it otherwise so that
+    // Hyprland falls back to the hardware cursor
+    function applyPlugin() {
+        const path = "/var/cache/hyprpm/" + Quickshell.env("USER") + "/dynamic-cursors/dynamic-cursors.so";
+        const cmd = root.enabled
+            ? "hyprctl plugin list | grep -q dynamic-cursors || hyprctl plugin load " + path
+            : "hyprctl plugin list | grep -q dynamic-cursors && hyprctl plugin unload " + path;
+        root.runPluginCmd(cmd);
+    }
+
+    property string pendingPluginCmd: ""
+
+    function runPluginCmd(cmd) {
+        if (pluginProc.running) {
+            pendingPluginCmd = cmd;
+            return;
+        }
+        pluginProc.command = ["sh", "-c", cmd + "; true"];
+        pluginProc.running = true;
+    }
+
+    Process {
+        id: pluginProc
+        command: []
+        onExited: {
+            if (root.pendingPluginCmd !== "") {
+                const c = root.pendingPluginCmd;
+                root.pendingPluginCmd = "";
+                root.runPluginCmd(c);
+            } else {
+                cursorSettle.restart();
+            }
+        }
+    }
+
+    // Small delay so the plugin has finished re-initializing the cursor before we override it
+    Timer { id: cursorSettle; interval: 150; onTriggered: root.applyCursor() }
+
+    onEnabledChanged: applyPlugin()
 
     // Sync on startup, and always restore the cursor when the shell goes away
-    Component.onCompleted: applyCursor()
+    Component.onCompleted: {
+        applyCursor()
+        applyPlugin()
+    }
     Component.onDestruction: {
         Quickshell.execDetached([
             "hyprctl", "eval",
