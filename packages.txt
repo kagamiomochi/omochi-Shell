@@ -60,7 +60,6 @@ xdg-desktop-portal-hyprland
 qt6ct
 qt6-wayland
 uwsm
-kmscon
 
 blueman
 bluez

@@ -1,6 +1,7 @@
 home/.config/hypr/wallpapers/
 home/.config/hypr/private.lua
 home/.config/fcitx5/conf/cached_layouts
+home/.config/fcitx5/crash.log
 home/.config/Vencord/dist/
 home/.config/opencode/service.json
 home/.config/qt6ct/qt6ct.conf
