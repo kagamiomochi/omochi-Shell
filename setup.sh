@@ -244,10 +244,8 @@ EOF
     sudo visudo -c -f "$SUDOERS_FILE"
 }
 
-step_firewall_setup() {
-    sudo ufw allow 1714:1764/tcp
-    sudo ufw allow 1714:1764/udp
-
+step_firewall_setup() { 
+    # Steam
     sudo ufw allow steam
 
     # Sunshine
