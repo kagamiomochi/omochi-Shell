@@ -18,4 +18,7 @@ cd omochi-Shell
  </picture>
 </a>
 
+<details>
+<summary> </summary>
 ほしがほしい
+</details>
