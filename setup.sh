@@ -185,7 +185,8 @@ step_link_dotfiles() {
         ln -sfn "$src" "$dst"
     }
 
-    link "$DOTFILES_DIR/home/.zshrc"    "$HOME/.zshrc"
+    link "$DOTFILES_DIR/home/.omochi-Shell.zsh"    "$HOME/.omochi-Shell.zsh"
+    grep -Fxq 'source $HOME/.omochi-Shell.zsh' "$HOME/.zshrc" || echo 'source $HOME/.omochi-Shell.zsh' >> "$HOME/.zshrc"
     link "$DOTFILES_DIR/home/.p10k.zsh" "$HOME/.p10k.zsh"
 
     shopt -s nullglob dotglob
