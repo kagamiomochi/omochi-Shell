@@ -75,6 +75,14 @@ hl.window_rule({
 })
 
 hl.window_rule({
+    name = "Spotify",
+    match = {
+        class = "Spotify"
+    },
+    workspace = "special"
+})
+
+hl.window_rule({
     name = "Zen Browser",
     match = {
         class = "zen"

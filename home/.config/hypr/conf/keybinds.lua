@@ -5,7 +5,7 @@ local fileManager = "thunar"
 local browser = "zen-browser"
 local terminal = "kitty"
 local SystemMonitor = "btop"
-local musicplayer = "pear-desktop"
+local musicplayer = "spotify-launcher"
 
 
 -- pin window
