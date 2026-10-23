@@ -144,3 +144,4 @@ opencode-desktop-bin
 fcitx5-hazkey-bin
 hazkey-zenzai-model
 sefirah-bin
+spicetify-cli
