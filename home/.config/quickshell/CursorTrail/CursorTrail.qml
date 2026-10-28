@@ -15,7 +15,7 @@ Scope {
     id: root
 
     // Manual master switch (controlled via IPC).
-    property bool userEnabled: true
+    property bool userEnabled: false
     // Automatically turn the trail off while the pointer is locked (games, etc.)
     property bool autoDisableOnLock: true
     property bool pointerLocked: false
