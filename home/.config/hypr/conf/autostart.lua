@@ -9,7 +9,6 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("uwsm app -- sunshine")
     hl.exec_cmd("~/.config/hypr/scripts/update-notify.sh")
     hl.exec_cmd("~/.config/hypr/scripts/random_wall.sh")
-    hl.exec_cmd("uwsm app -- sefirah")
 
     hl.exec_cmd("thunar --daemon")
 end)

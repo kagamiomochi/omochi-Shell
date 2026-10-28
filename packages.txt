@@ -44,7 +44,6 @@ inotify-tools
 sunshine
 gnome-themes-extra
 jq
-llama-cpp
 python-evdev
 ufw
 ufw-extras
@@ -60,6 +59,8 @@ xdg-desktop-portal-hyprland
 qt6ct
 qt6-wayland
 uwsm
+llama-cpp
+ggml-cuda
 
 blueman
 bluez
@@ -143,5 +144,4 @@ unityhub
 opencode-desktop-bin
 fcitx5-hazkey-bin
 hazkey-zenzai-model
-sefirah-bin
 spicetify-cli
