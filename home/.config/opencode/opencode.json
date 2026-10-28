@@ -8,19 +8,13 @@
         "baseURL": "http://127.0.0.1:8080/v1"
       },
       "models": {
-        "Ternary-Bonsai-2-27B-PTQ1_0": {
-          "name": "Bonsai-2"
+        "prism-ml/Ternary-Bonsai-2-27B-gguf:PTQ1_0": {
+          "name": "Ternary Bonsai 2 27B"
+        },
+        "unsloth/Qwen3.6-35B-A3B-MTP-GGUF:UD-Q4_K_M": {
+          "name": "Qwen 3.6 35B A3B"
         }
       }
-    }
-  },
-
-  "agent": {
-    "build": {
-      "temperature": 0.3
-    },
-    "plan": {
-      "temperature": 0.2
     }
   }
 }
