@@ -501,9 +501,9 @@
         "ShikiCodeblocks": {
             "enabled": false,
             "theme": "https://cdn.jsdelivr.net/gh/shikijs/textmate-grammars-themes@bc5436518111d87ea58eb56d97b3f9bec30e6b83/packages/tm-themes/themes/dark-plus.json",
-            "tryHljs": "SECONDARY",
             "useDevIcon": "GREYSCALE",
-            "bgOpacity": 100
+            "bgOpacity": 100,
+            "tryDiscordHighlighter": "SECONDARY"
         },
         "ShowAllMessageButtons": {
             "enabled": false
@@ -718,7 +718,7 @@
         "authenticated": false,
         "url": "https://api.vencord.dev/",
         "settingsSync": false,
-        "settingsSyncVersion": 1791446980531
+        "settingsSyncVersion": 1792840166919
     },
     "nativeTitleBar": false
 }

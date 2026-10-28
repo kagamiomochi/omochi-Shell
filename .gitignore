@@ -53,3 +53,9 @@ home/.local/share/PrismLauncher/metacache
 home/.local/share/PrismLauncher/translations/index_v2.json
 home/.local/share/PrismLauncher/translations/mmc_ja.qm
 home/.local/share/PrismLauncher/logs/PrismLauncher-*.log
+home/.local/share/PrismLauncher/assets/
+home/.local/share/PrismLauncher/cache/
+home/.local/share/PrismLauncher/instances/
+home/.local/share/PrismLauncher/java/
+home/.local/share/PrismLauncher/libraries/
+home/.local/share/PrismLauncher/meta/
