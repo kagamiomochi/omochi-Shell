@@ -1,14 +1,14 @@
 #!/bin/bash
 
 official_updates=$(checkupdates 2>/dev/null)
-aur_updates=$(yay -Qu --aur 2>/dev/null)
+aur_updates=$(paru -Qu --aur 2>/dev/null)
 updates=$(printf "%s\n%s" "$official_updates" "$aur_updates" | sed '/^\s*$/d')
 
 if [ -z "$updates" ]; then
     exit 0
 fi
 
-important_updates=$(echo "$updates" | grep -E "linux|systemd|nvidia|hyprland|networkmanager|pacman|discord|steam" || echo "")
+important_updates=$(echo "$updates" | grep -E "linux|systemd|nvidia|hyprland|networkmanager|pacman|quickshell" || echo "")
 
 if [ -n "$important_updates" ]; then
     msg_title="重要な更新があります"
@@ -24,7 +24,7 @@ res=$(notify-send "$msg_title" "$display_text" \
 
 if [ "$res" = "update" ]; then
     kitty sh -c "
-        yay -Syu --noconfirm;
+        paru -Syu --noconfirm;
         echo '';
         
         if sudo needrestart -b | grep -q 'NEEDRESTART-KSTAT: 2'; then
