@@ -96,15 +96,12 @@ greetd-tuigreet
 
 # Selection
 code
-blender
 discord
 docker
 docker-compose
 gamescope
 jellyfin-server
 jellyfin-web
-obs-studio
-v4l2loopback-dkms
 prismlauncher
 steam
 proton-cachyos-slr
