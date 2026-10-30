@@ -30,8 +30,6 @@ hyprpm update
 hyprpm_add "https://github.com/hyprwm/hyprland-plugins"
 hyprpm_add "https://github.com/virtcode/hypr-dynamic-cursors"
 
-hyprpm enable dynamic-cursors
-
 discord --start-minimized ; sleep 60 && vencordinstallercli -install -location ~/.config/discord
 
 sudo mkdir -p "$HOME/.local/state/omochi-shell/"
