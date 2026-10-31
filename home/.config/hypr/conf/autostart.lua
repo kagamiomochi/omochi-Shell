@@ -7,6 +7,7 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("uwsm app -- wl-paste --type image --watch cliphist store")
     hl.exec_cmd("uwsm app -- fcitx5 -d")
     hl.exec_cmd("uwsm app -- sunshine")
+    hl.exec_cmd("uwsm app -- llama-server")
     hl.exec_cmd("~/.config/hypr/scripts/update-notify.sh")
     hl.exec_cmd("~/.config/hypr/scripts/random_wall.sh")
 
